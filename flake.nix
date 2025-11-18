@@ -52,16 +52,7 @@
     home.packages = [ config.programs.niri.package ];
 
     # Create basic config file for testing
-    xdg.configFile."niri/config.kdl".text = ''
-      // Auto-generated niri configuration
-      input {
-          keyboard {
-              xkb {
-                  layout "us"
-              }
-          }
-      }
-    '';
+    xdg.configFile."niri/config.kdl".text = "// Auto-generated niri configuration\\n";
   };
 }
 EOF
