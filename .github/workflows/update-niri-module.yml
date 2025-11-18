@@ -250,7 +250,8 @@ jobs:
             echo "Creating release for niri update..."
 
             # Create a tag for this update
-            TAG_NAME="niri-$(date +%Y%m%d)-${{ needs.check-updates.outputs.niri_commit | cut -c1-8 }}"
+            NIRI_SHORT_COMMIT=$(echo "${{ needs.check-updates.outputs.niri_commit }}" | cut -c1-8)
+            TAG_NAME="niri-$(date +%Y%m%d)-$NIRI_SHORT_COMMIT"
 
             git tag -a "$TAG_NAME" -m "Niri module update to ${{ needs.check-updates.outputs.niri_commit }}"
             git push origin "$TAG_NAME"
