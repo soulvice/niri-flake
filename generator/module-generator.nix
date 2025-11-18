@@ -101,7 +101,14 @@ let
 
       # Generate the KDL configuration file
       configFile = pkgs.writeText "niri-config.kdl" (
-        kdlGenerator.generateKdlConfig cfg.settings
+        let
+          generatedConfig = kdlGenerator.generateKdlConfig cfg.settings;
+          extraConfig = cfg.extraConfig;
+        in
+        if extraConfig != "" then
+          generatedConfig + "\n\n// Extra configuration\n" + extraConfig + "\n"
+        else
+          generatedConfig
       );
 
       # Create actions library for easy keybind configuration
@@ -164,6 +171,40 @@ let
         };
 
         settings = mainOptions;
+
+        extraConfig = mkOption {
+          type = types.lines;
+          default = "";
+          description = ''
+            Additional configuration in raw KDL format.
+
+            This allows you to add niri configuration that isn't yet
+            supported by the generated module, or to override specific
+            settings with custom KDL syntax.
+
+            The extraConfig is appended to the end of the generated
+            configuration file.
+          '';
+          example = ''
+            // Custom experimental settings
+            debug {
+                render-drm true
+                damage "off"
+            }
+
+            // Override specific binds with complex syntax
+            binds {
+                Mod+Alt+Shift+R { action = screenshot-screen; }
+            }
+
+            // Custom window rules with complex matching
+            window-rule {
+                matches app-id="^special-app$" title="Important.*"
+                exclude-from-screenshot true
+                opacity 0.95
+            }
+          '';
+        };
 
         finalConfigFile = mkOption {
           type = types.path;

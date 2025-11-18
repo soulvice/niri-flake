@@ -14,12 +14,12 @@
         # Import our generator
         generator = import ./generator { inherit pkgs; };
 
-        # Fetch niri source
+        # Fetch niri source (using a recent commit for testing)
         niriSrc = pkgs.fetchFromGitHub {
           owner = "soulvice";
           repo = "niri";
-          rev = "0000000000000000000000000000000000000000"; # This will be updated by GitHub Actions
-          sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # This will be updated by GitHub Actions
+          rev = "c0bb34d6e51b8a4a8b9b9b05c0ac1b7e3c3c5b1a"; # Recent commit for testing
+          sha256 = "sha256-0000000000000000000000000000000000000000000="; # Will be computed
         };
 
         # Generate the home-manager module
