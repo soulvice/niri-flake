@@ -96,7 +96,23 @@ EOF
         lib.niri-generator = generator;
 
         packages = {
-          # generator is a function, not a derivation, so we don't include it
+          # Create a generator package that contains the generator functions
+          generator = pkgs.runCommand "niri-generator" { } ''
+            mkdir -p $out/lib $out/bin
+
+            # Copy generator library files
+            cp -r ${./generator}/* $out/lib/
+
+            # Create a simple wrapper script for CLI usage
+            cat > $out/bin/niri-generator << 'EOF'
+            #!/usr/bin/env bash
+            echo "Niri home-manager module generator"
+            echo "This package contains the generator library functions."
+            echo "Available at: $out/lib/"
+            EOF
+            chmod +x $out/bin/niri-generator
+          '';
+
           niri-module = moduleDerivation;
           niri-docs = documentation;
           default = moduleDerivation;

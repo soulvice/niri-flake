@@ -108,7 +108,7 @@ jobs:
 
           # Copy the generated module to the module directory
           mkdir -p module
-          cp -L result/share/niri-module.nix module/niri.nix
+          cp -L result/default.nix module/niri.nix
 
           # Verify the module is valid Nix
           nix eval --file module/niri.nix --show-trace
