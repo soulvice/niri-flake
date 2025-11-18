@@ -1,0 +1,310 @@
+name: Update Niri Module
+
+on:
+  schedule:
+    # Check for updates daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes detected'
+        required: false
+        default: false
+        type: boolean
+      niri_ref:
+        description: 'Specific niri commit/tag to use'
+        required: false
+        default: 'main'
+        type: string
+
+env:
+  NIRI_REPO: soulvice/niri
+  GENERATED_MODULE_PATH: module/niri.nix
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_update: ${{ steps.check.outputs.needs_update }}
+      niri_commit: ${{ steps.check.outputs.niri_commit }}
+      niri_sha256: ${{ steps.check.outputs.niri_sha256 }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Check for niri updates
+        id: check
+        run: |
+          # Get the latest commit from niri repository
+          NIRI_REF="${{ github.event.inputs.niri_ref || 'main' }}"
+          LATEST_COMMIT=$(curl -s "https://api.github.com/repos/$NIRI_REPO/commits/$NIRI_REF" | jq -r '.sha')
+
+          echo "Latest niri commit: $LATEST_COMMIT"
+          echo "niri_commit=$LATEST_COMMIT" >> $GITHUB_OUTPUT
+
+          # Get current commit from flake.nix if it exists
+          CURRENT_COMMIT=""
+          if grep -q "rev.*=" flake.nix; then
+            CURRENT_COMMIT=$(grep "rev.*=" flake.nix | sed -n 's/.*rev = "\([^"]*\)".*/\1/p')
+          fi
+
+          echo "Current commit: $CURRENT_COMMIT"
+
+          # Check if we need to update
+          NEEDS_UPDATE="false"
+          if [[ "$LATEST_COMMIT" != "$CURRENT_COMMIT" ]] || [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
+            NEEDS_UPDATE="true"
+          fi
+
+          echo "needs_update=$NEEDS_UPDATE" >> $GITHUB_OUTPUT
+
+          # Calculate sha256 for the new commit
+          TARBALL_URL="https://github.com/$NIRI_REPO/archive/$LATEST_COMMIT.tar.gz"
+          SHA256=$(nix-prefetch-url --unpack "$TARBALL_URL")
+          echo "niri_sha256=$SHA256" >> $GITHUB_OUTPUT
+
+  generate-module:
+    needs: check-updates
+    if: needs.check-updates.outputs.needs_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Update flake.nix with new niri commit
+        run: |
+          NIRI_COMMIT="${{ needs.check-updates.outputs.niri_commit }}"
+          NIRI_SHA256="${{ needs.check-updates.outputs.niri_sha256 }}"
+
+          # Update the rev and sha256 in flake.nix
+          sed -i "s/rev = \".*\"/rev = \"$NIRI_COMMIT\"/" flake.nix
+          sed -i "s/sha256 = \".*\"/sha256 = \"$NIRI_SHA256\"/" flake.nix
+
+      - name: Generate niri module
+        run: |
+          echo "Generating niri home-manager module..."
+
+          # Build the generator
+          nix build .#generator
+
+          # Generate the module
+          nix build .#niri-module
+
+          # Copy the generated module to the module directory
+          mkdir -p module
+          cp -L result/share/niri-module.nix module/niri.nix
+
+          # Verify the module is valid Nix
+          nix eval --file module/niri.nix --show-trace
+
+      - name: Update documentation
+        run: |
+          echo "Updating documentation..."
+
+          # Generate comprehensive markdown documentation
+          nix build .#niri-docs
+
+          # Copy the generated documentation
+          mkdir -p docs
+          cp -L result docs/MODULE_OPTIONS.md
+
+          # Generate options JSON for programmatic access
+          nix eval .#niri-module.options --json > docs/options.json 2>/dev/null || echo "{}" > docs/options.json
+
+          # Update the main documentation with generation info
+          cat >> docs/MODULE_OPTIONS.md << EOF
+
+          ---
+
+          **Generation Info:**
+          - Generated on: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          - Niri commit: [${{ needs.check-updates.outputs.niri_commit }}](https://github.com/$NIRI_REPO/commit/${{ needs.check-updates.outputs.niri_commit }})
+          - Module version: $(date +%Y%m%d)
+
+          EOF
+
+          echo "Documentation updated successfully!"
+
+      - name: Create example configuration
+        run: |
+          cat > examples/basic-config.nix << 'EOF'
+          { config, ... }:
+
+          {
+            programs.niri = {
+              enable = true;
+              settings = {
+                input = {
+                  keyboard = {
+                    xkb = {
+                      layout = "us";
+                      variant = "";
+                    };
+                    repeat_delay = 600;
+                    repeat_rate = 25;
+                  };
+
+                  touchpad = {
+                    tap = true;
+                    natural_scroll = true;
+                    accel_profile = "adaptive";
+                  };
+
+                  focus_follows_mouse = {
+                    max_scroll_amount = 0;
+                  };
+                };
+
+                layout = {
+                  gaps = 16;
+                  center_focused_column = "never";
+
+                  focus_ring = {
+                    enable = true;
+                    width = 4;
+                    active_color = "#7fc8ff";
+                    inactive_color = "#505050";
+                  };
+
+                  border = {
+                    enable = false;
+                  };
+                };
+
+                spawn_at_startup = [
+                  "waybar"
+                  "mako"
+                ];
+
+                binds = with config.lib.niri.actions; {
+                  "Mod+Return".action = spawn "alacritty";
+                  "Mod+D".action = spawn "wofi --show drun";
+                  "Mod+Q".action = close_window;
+                  "Mod+F".action = fullscreen_window;
+
+                  "Mod+Left".action = focus_left;
+                  "Mod+Right".action = focus_right;
+                  "Mod+Up".action = focus_up;
+                  "Mod+Down".action = focus_down;
+
+                  "Mod+Shift+Left".action = move_left;
+                  "Mod+Shift+Right".action = move_right;
+                  "Mod+Shift+Up".action = move_up;
+                  "Mod+Shift+Down".action = move_down;
+
+                  "Mod+Page_Up".action = focus_workspace_previous;
+                  "Mod+Page_Down".action = focus_workspace_next;
+
+                  "Print".action = screenshot;
+                  "Mod+Shift+E".action = quit;
+                };
+              };
+            };
+          }
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add .
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: update niri module to commit ${{ needs.check-updates.outputs.niri_commit }}
+
+          - Updated niri source to ${{ needs.check-updates.outputs.niri_commit }}
+          - Regenerated home-manager module
+          - Updated documentation and examples
+
+          Auto-generated by GitHub Actions"
+
+          git push
+
+      - name: Create release if major update
+        run: |
+          # Check if this is a significant update (could be improved with more logic)
+          COMMIT_COUNT=$(git rev-list --count HEAD^..HEAD)
+
+          if [[ $COMMIT_COUNT -gt 0 ]]; then
+            echo "Creating release for niri update..."
+
+            # Create a tag for this update
+            TAG_NAME="niri-$(date +%Y%m%d)-${{ needs.check-updates.outputs.niri_commit | cut -c1-8 }}"
+
+            git tag -a "$TAG_NAME" -m "Niri module update to ${{ needs.check-updates.outputs.niri_commit }}"
+            git push origin "$TAG_NAME"
+
+            # Create GitHub release
+            gh release create "$TAG_NAME" \
+              --title "Niri Module Update - $(date +%Y-%m-%d)" \
+              --notes "Automated update of the niri home-manager module.
+
+          **Changes:**
+          - Updated niri source to commit [${{ needs.check-updates.outputs.niri_commit }}](https://github.com/$NIRI_REPO/commit/${{ needs.check-updates.outputs.niri_commit }})
+          - Regenerated module options and validation
+          - Updated documentation and examples
+
+          **Usage:**
+          \`\`\`nix
+          {
+            inputs.niri-flake.url = \"github:${{ github.repository }}/$TAG_NAME\";
+            # ... rest of your flake
+          }
+          \`\`\`"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test-module:
+    needs: [check-updates, generate-module]
+    if: needs.check-updates.outputs.needs_update == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Test generated module
+        run: |
+          echo "Testing generated niri module..."
+
+          # Test that the module can be imported
+          nix eval .#homeManagerModules.niri --show-trace
+
+          # Test example configuration
+          nix eval --expr '
+            let
+              pkgs = import <nixpkgs> {};
+              module = import ./module/niri.nix;
+              config = { programs.niri.enable = true; };
+            in
+              module { inherit config pkgs; }
+          ' --show-trace
+
+          echo "Module tests passed!"

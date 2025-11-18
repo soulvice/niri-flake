@@ -1,0 +1,5 @@
+error: Path 'flake.nix' in the repository "/home/dadmin/codes/niri-flake" is not tracked by Git.
+
+       To make it visible to Nix, run:
+
+       git -C "/home/dadmin/codes/niri-flake" add "flake.nix"

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/dadmin/codes/niri/niri-config/**)",
+      "Read(//home/dadmin/codes/niri/resources/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
