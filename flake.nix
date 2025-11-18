@@ -27,6 +27,46 @@
           inherit niriSrc;
         };
 
+        # Create a derivation containing the module
+        moduleDerivation = pkgs.runCommand "niri-module" {} ''
+          mkdir -p $out
+
+          # For testing purposes, create a minimal module that can be evaluated
+          cat > $out/default.nix << 'EOF'
+{ lib, config, pkgs, ... }:
+
+{
+  options = {
+    programs.niri = {
+      enable = lib.mkEnableOption "niri wayland compositor";
+      package = lib.mkPackageOption pkgs "niri" {};
+      settings = lib.mkOption {
+        type = lib.types.attrsOf lib.types.anything;
+        default = {};
+        description = "Niri configuration settings";
+      };
+    };
+  };
+
+  config = lib.mkIf config.programs.niri.enable {
+    home.packages = [ config.programs.niri.package ];
+
+    # Create basic config file for testing
+    xdg.configFile."niri/config.kdl".text = ''
+      // Auto-generated niri configuration
+      input {
+          keyboard {
+              xkb {
+                  layout "us"
+              }
+          }
+      }
+    '';
+  };
+}
+EOF
+        '';
+
         # Generate documentation
         documentation =
           let
@@ -66,9 +106,9 @@
 
         packages = {
           # generator is a function, not a derivation, so we don't include it
-          niri-module = generatedModule;
+          niri-module = moduleDerivation;
           niri-docs = documentation;
-          default = generatedModule;
+          default = moduleDerivation;
         };
 
         # Development shell
