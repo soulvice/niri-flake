@@ -18,8 +18,8 @@
         niriSrc = pkgs.fetchFromGitHub {
           owner = "soulvice";
           repo = "niri";
-          rev = "c0bb34d6e51b8a4a8b9b9b05c0ac1b7e3c3c5b1a"; # Recent commit for testing
-          sha256 = "sha256-0000000000000000000000000000000000000000000="; # Will be computed
+          rev = "dfcbbbb03071cadf3fd9bbb0903ead364a839412"; # Recent commit for testing
+          sha256 = "0ad642z34vfvdv22bzl7m9c13f1m45va43whmjhvyxkqf72nssj5"; # Will be computed
         };
 
         # Generate the home-manager module

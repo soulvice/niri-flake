@@ -510,3 +510,11 @@ RUST_LOG=niri=debug niri
 ---
 
 *This documentation is automatically generated from the niri source code. For the most up-to-date information, please refer to the [niri project](https://github.com/YaLTeR/niri).*
+
+---
+
+**Generation Info:**
+- Generated on: 2025-11-18 23:29:39 UTC
+- Niri commit: [dfcbbbb03071cadf3fd9bbb0903ead364a839412](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412)
+- Module version: 20251118
+
