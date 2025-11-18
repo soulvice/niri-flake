@@ -61,8 +61,11 @@
           pkgs.writeText "niri-module-docs.md" docs;
       in
       {
+        # Make generator functions available
+        lib.niri-generator = generator;
+
         packages = {
-          inherit generator documentation;
+          # generator is a function, not a derivation, so we don't include it
           niri-module = generatedModule;
           niri-docs = documentation;
           default = generatedModule;
