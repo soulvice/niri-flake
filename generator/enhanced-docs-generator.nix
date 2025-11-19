@@ -109,29 +109,21 @@ let
       # Clean up description
       description = escapeMarkdown (option.description or "No description available.");
 
-      # Check if this has sub-options
-      hasSubOptions = option ? options ||
-                      option ? type.functor.wrapped.options ||
-                      (option ? type && option.type ? getSubOptions);
+      # Check if this has sub-options using improved extraction
+      subOptions = if option ? type then
+        extractOptionsFromType option.type
+      else if option ? options then
+        option.options
+      else
+        {};
+
+      hasSubOptions = subOptions != {};
 
       subOptionsDoc =
         if hasSubOptions then
           let
-            subOptions =
-              if option ? options then option.options
-              else if option ? type.functor.wrapped.options then option.type.functor.wrapped.options
-              else if option ? type && option.type ? getSubOptions then
-                let
-                  extracted = option.type.getSubOptions [];
-                in
-                  # getSubOptions returns an attrset, but handle case where it might not
-                  if builtins.isAttrs extracted then extracted else {}
-              else {};
-            # Filter out internal module options (only if subOptions is an attrset)
-            filteredSubOptions = if builtins.isAttrs subOptions then
-              lib.filterAttrs (name: value: !lib.hasPrefix "_" name) subOptions
-            else
-              {};
+            # Filter out internal module options
+            filteredSubOptions = lib.filterAttrs (name: value: !lib.hasPrefix "_" name) subOptions;
             subOptionsList = mapAttrsToList (name: subOpt:
               generateOptionDoc fullPath name subOpt typeInfo (depth + 1)
             ) filteredSubOptions;
@@ -331,11 +323,21 @@ let
     else if type ? options then
       type.options
     else if type ? functor && type.functor ? wrapped then
+      # Handle wrapped types like nullOr (submodule ...)
       extractOptionsFromType type.functor.wrapped
     else if type ? type && type.type ? options then
       type.type.options
-    else if type ? nestedTypes && type.nestedTypes ? elemType then
-      extractOptionsFromType type.nestedTypes.elemType
+    else if type ? nestedTypes then
+      # Handle nestedTypes like nullOr, listOf, etc.
+      if type.nestedTypes ? elemType then
+        extractOptionsFromType type.nestedTypes.elemType
+      else if type.nestedTypes ? wrapped then
+        extractOptionsFromType type.nestedTypes.wrapped
+      else
+        {}
+    else if type ? functor && type.functor ? payload then
+      # Handle some complex type functors
+      extractOptionsFromType type.functor.payload
     else
       {};
 
