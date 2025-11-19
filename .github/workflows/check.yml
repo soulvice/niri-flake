@@ -22,6 +22,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Check flake
         run: nix flake check --show-trace
@@ -56,6 +59,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Check formatting
         run: |
@@ -78,6 +84,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Run statix (Nix linter)
         run: |

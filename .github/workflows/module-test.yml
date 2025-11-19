@@ -42,6 +42,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Test module generation
         run: |
@@ -94,6 +97,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Test example configuration - ${{ matrix.example }}
         run: |
@@ -156,6 +162,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Test complex configuration scenarios
         run: |
@@ -265,6 +274,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Test actions library
         run: |

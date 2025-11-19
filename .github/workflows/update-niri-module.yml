@@ -47,7 +47,7 @@ permissions:
   pull-requests: write
 
 env:
-  NIRI_REPO: soulvice/niri
+  NIRI_REPO: "soulvice/niri"
   GENERATED_MODULE_PATH: module/niri.nix
 
 jobs:
@@ -68,6 +68,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Check for niri updates
         id: check
@@ -115,6 +118,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Update flake.nix with new niri commit
         run: |
@@ -315,6 +321,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Test generated module
         run: |

@@ -19,7 +19,7 @@
           owner = "soulvice";
           repo = "niri";
           rev = "dfcbbbb03071cadf3fd9bbb0903ead364a839412"; # Recent commit for testing
-          sha256 = "0ad642z34vfvdv22bzl7m9c13f1m45va43whmjhvyxkqf72nssj5"; # Will be computed
+          sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # Placeholder - will be updated by workflow
         };
 
         # Generate the home-manager module
@@ -88,7 +88,7 @@ EOF
             # Extract niri version info
             niriInfo = {
               commit = "dfcbbbb03071cadf3fd9bbb0903ead364a839412";
-              sha256 = "0ad642z34vfvdv22bzl7m9c13f1m45va43whmjhvyxkqf72nssj5";
+              sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
               repository = "soulvice/niri";
             };
 

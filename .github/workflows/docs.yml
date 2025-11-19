@@ -31,7 +31,7 @@ permissions:
   contents: write
 
 env:
-  NIRI_REPO: soulvice/niri
+  NIRI_REPO: "soulvice/niri"
 
 jobs:
   generate-docs:
@@ -47,6 +47,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Get niri version info
         id: niri-info
@@ -91,7 +94,7 @@ jobs:
       - name: Add niri version information to documentation
         run: |
           # Create niri version info section
-          cat >> docs/MODULE_OPTIONS.md << 'EOF'
+          cat >> docs/MODULE_OPTIONS.md << "EOL"
 
           ---
 
@@ -101,13 +104,13 @@ jobs:
 
           ### Current Integration
 
-          **Niri Commit:** [`${{ steps.niri-info.outputs.current_commit }}`](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.niri-info.outputs.current_commit }})
+          **Niri Commit:** [\`${{ steps.niri-info.outputs.current_commit }}\`](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.niri-info.outputs.current_commit }})
           **Commit Message:** ${{ steps.niri-info.outputs.latest_commit_message }}
-          **Integration SHA256:** `${{ steps.niri-info.outputs.current_sha256 }}`
+          **Integration SHA256:** \`${{ steps.niri-info.outputs.current_sha256 }}\`
 
           ### Latest Niri Development
 
-          **Latest Commit:** [`${{ steps.niri-info.outputs.latest_commit }}`](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.niri-info.outputs.latest_commit }})
+          **Latest Commit:** [\`${{ steps.niri-info.outputs.latest_commit }}\`](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.niri-info.outputs.latest_commit }})
           **Commit Date:** ${{ steps.niri-info.outputs.latest_commit_date }}
 
           ### Automatic Updates
@@ -122,11 +125,11 @@ jobs:
 
           | Component | Version |
           |-----------|---------|
-          | Niri Source | [`${{ steps.niri-info.outputs.current_commit }}`](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.niri-info.outputs.current_commit }}) |
+          | Niri Source | [\`${{ steps.niri-info.outputs.current_commit }}\`](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.niri-info.outputs.current_commit }}) |
           | Module Generated | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
           | Documentation | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
 
-          EOF
+          EOL
 
       - name: Generate options JSON
         run: |
@@ -191,6 +194,9 @@ jobs:
 
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
 
       - name: Validate generated documentation
         run: |
