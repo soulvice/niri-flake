@@ -32,6 +32,9 @@
         niri = generatedModule;
         default = generatedModule;
       };
+
+      # Make the module easily testable
+      nixosModules.niri = generatedModule;
     } // flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};

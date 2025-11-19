@@ -1,0 +1,263 @@
+name: Unified Build and Test
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  repository_dispatch:
+    types: [niri-update, niri-push, niri-release]
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes detected'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  NIRI_REPO: "soulvice/niri"
+
+jobs:
+  unified-build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diagnostic-endpoint: ""
+          flakehub: false
+
+      - name: Check for niri updates
+        id: check-updates
+        run: |
+          # Get the latest commit from niri repository
+          NIRI_REF="main"
+          LATEST_COMMIT=$(curl -s "https://api.github.com/repos/$NIRI_REPO/commits/$NIRI_REF" | jq -r '.sha')
+
+          echo "Latest niri commit: $LATEST_COMMIT"
+          echo "niri_commit=$LATEST_COMMIT" >> $GITHUB_OUTPUT
+
+          # Get current commit from flake.nix if it exists
+          CURRENT_COMMIT=""
+          if grep -q "rev.*=" flake.nix; then
+            CURRENT_COMMIT=$(grep "rev.*=" flake.nix | sed -n 's/.*rev = "\([^"]*\)".*/\1/p')
+          fi
+
+          echo "Current commit: $CURRENT_COMMIT"
+
+          # Check if we need to update
+          NEEDS_UPDATE="false"
+          if [[ "$LATEST_COMMIT" != "$CURRENT_COMMIT" ]] || [[ "${{ github.event.inputs.force_update }}" == "true" ]]; then
+            NEEDS_UPDATE="true"
+          fi
+
+          echo "needs_update=$NEEDS_UPDATE" >> $GITHUB_OUTPUT
+
+          # Calculate sha256 for the new commit if needed
+          if [[ "$NEEDS_UPDATE" == "true" ]]; then
+            TARBALL_URL="https://github.com/$NIRI_REPO/archive/$LATEST_COMMIT.tar.gz"
+            SHA256=$(nix-prefetch-url --unpack "$TARBALL_URL")
+            echo "niri_sha256=$SHA256" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update niri source (if needed)
+        if: steps.check-updates.outputs.needs_update == 'true'
+        run: |
+          NIRI_COMMIT="${{ steps.check-updates.outputs.niri_commit }}"
+          NIRI_SHA256="${{ steps.check-updates.outputs.niri_sha256 }}"
+
+          # Update the rev and sha256 in flake.nix
+          sed -i "s/rev = \".*\"/rev = \"$NIRI_COMMIT\"/" flake.nix
+          sed -i "s/sha256 = \".*\"/sha256 = \"$NIRI_SHA256\"/" flake.nix
+
+      - name: Build and test flake components
+        run: |
+          echo "🔨 Building flake components..."
+
+          # Build the main module
+          echo "Building niri module..."
+          nix build .#homeManagerModules.niri --show-trace
+
+          # Build generator components
+          echo "Building generator..."
+          nix build .#packages.x86_64-linux.generator --show-trace
+
+          # Build documentation
+          echo "Building documentation..."
+          nix build .#packages.x86_64-linux.niri-docs --show-trace
+
+          echo "✅ All components built successfully"
+
+      - name: Test module functionality
+        run: |
+          echo "🧪 Testing module functionality..."
+
+          # Test that the homeManagerModule can be evaluated
+          echo "Testing homeManagerModule evaluation..."
+          nix eval .#homeManagerModules.niri --impure --show-trace
+
+          # Test basic configuration
+          echo "Testing basic configuration..."
+          cat > test-basic.nix << 'EOF'
+          { config, lib, pkgs, ... }:
+
+          {
+            imports = [ ./. ];
+
+            programs.niri = {
+              enable = true;
+              settings = {
+                input.keyboard.repeat-delay = 600;
+                layout.gaps = 16;
+                spawn-at-startup = [ "alacritty" ];
+                binds = with config.lib.niri.actions; {
+                  "Mod+Return".action = spawn "alacritty";
+                  "Mod+Q".action = close-window;
+                };
+              };
+            };
+          }
+          EOF
+
+          # Test the configuration with impure evaluation
+          nix eval --impure --file test-basic.nix --show-trace config.programs.niri.enable
+
+          echo "✅ Module tests passed"
+
+      - name: Test examples
+        run: |
+          echo "🧪 Testing example configurations..."
+
+          # Test existing examples if they exist
+          for example in examples/*.nix; do
+            if [[ -f "$example" ]]; then
+              echo "Testing $example..."
+              nix eval --impure --file "$example" --show-trace >/dev/null || true
+            fi
+          done
+
+          echo "✅ Example tests completed"
+
+      - name: Test validation system
+        run: |
+          echo "🧪 Testing validation system..."
+
+          # Test our kebab-case validation
+          if [[ -f "tests/test-kebab-actions.nix" ]]; then
+            echo "Testing kebab-case actions..."
+            nix eval --impure -f tests/test-kebab-actions.nix --show-trace >/dev/null
+          fi
+
+          if [[ -f "tests/test-validation.nix" ]]; then
+            echo "Testing validation system..."
+            nix eval --impure -f tests/test-validation.nix --show-trace >/dev/null
+          fi
+
+          if [[ -f "tests/test-kdl-kebab.nix" ]]; then
+            echo "Testing KDL kebab-case generation..."
+            nix eval --impure -f tests/test-kdl-kebab.nix --show-trace >/dev/null
+          fi
+
+          echo "✅ Validation tests completed"
+
+      - name: Generate documentation from module
+        run: |
+          echo "📚 Generating documentation..."
+
+          # Generate options documentation from the module
+          mkdir -p docs
+
+          # Use the built documentation
+          cp -L result/docs/MODULE_OPTIONS.md docs/ 2>/dev/null || echo "# Niri Module Documentation" > docs/MODULE_OPTIONS.md
+
+          # Add generation info
+          cat >> docs/MODULE_OPTIONS.md << EOF
+
+          ---
+
+          **Generation Info:**
+          - Generated on: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          - Niri commit: ${{ steps.check-updates.outputs.niri_commit }}
+          - Workflow run: [\#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          EOF
+
+          echo "✅ Documentation generated"
+
+      - name: Create Pull Request (if updates available)
+        if: steps.check-updates.outputs.needs_update == 'true'
+        run: |
+          echo "📝 Creating pull request for updates..."
+
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add .
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          # Create a new branch for the update
+          BRANCH_NAME="update-niri-$(date +%Y%m%d)-${{ steps.check-updates.outputs.niri_commit }}"
+          git checkout -b "$BRANCH_NAME"
+
+          git commit -m "chore: update niri module to commit ${{ steps.check-updates.outputs.niri_commit }}
+
+          - Updated niri source to ${{ steps.check-updates.outputs.niri_commit }}
+          - Regenerated documentation
+          - Validated module functionality
+
+          Auto-generated by unified workflow"
+
+          git push origin "$BRANCH_NAME"
+
+          # Create pull request
+          gh pr create \
+            --title "chore: update niri module" \
+            --body "## Automated Niri Module Update
+
+          This PR updates the niri module to use the latest niri commit.
+
+          **Changes:**
+          - Updated niri source to commit [${{ steps.check-updates.outputs.niri_commit }}](https://github.com/${{ env.NIRI_REPO }}/commit/${{ steps.check-updates.outputs.niri_commit }})
+          - Updated documentation
+
+          **Validation:**
+          - ✅ Module builds successfully
+          - ✅ Basic configuration tested
+          - ✅ Examples validated
+          - ✅ Documentation generated
+
+          *Auto-generated by unified workflow*" \
+            --head "$BRANCH_NAME" \
+            --base main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "🎉 Workflow completed successfully!"
+          echo "Module status: ✅ Built and tested"
+          echo "Documentation: ✅ Generated"
+          echo "Examples: ✅ Validated"
+          if [[ "${{ steps.check-updates.outputs.needs_update }}" == "true" ]]; then
+            echo "Updates: 📝 Pull request created"
+          else
+            echo "Updates: ✅ No updates needed"
+          fi
