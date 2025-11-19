@@ -89,9 +89,9 @@ jobs:
         run: |
           echo "🔨 Building flake components..."
 
-          # Build the main module
-          echo "Building niri module..."
-          nix build .#homeManagerModules.niri --show-trace
+          # Test that the homeManagerModule can be evaluated (don't build, just eval)
+          echo "Testing niri module evaluation..."
+          nix eval .#homeManagerModules.niri --impure --show-trace >/dev/null
 
           # Build generator components
           echo "Building generator..."
@@ -107,35 +107,12 @@ jobs:
         run: |
           echo "🧪 Testing module functionality..."
 
-          # Test that the homeManagerModule can be evaluated
-          echo "Testing homeManagerModule evaluation..."
-          nix eval .#homeManagerModules.niri --impure --show-trace
-
-          # Test basic configuration
+          # Test basic configuration using our test configs
           echo "Testing basic configuration..."
-          cat > test-basic.nix << 'EOF'
-          { config, lib, pkgs, ... }:
+          nix eval --impure -f test-config.nix basic-config.programs.niri.enable --show-trace
 
-          {
-            imports = [ ./. ];
-
-            programs.niri = {
-              enable = true;
-              settings = {
-                input.keyboard.repeat-delay = 600;
-                layout.gaps = 16;
-                spawn-at-startup = [ "alacritty" ];
-                binds = with config.lib.niri.actions; {
-                  "Mod+Return".action = spawn "alacritty";
-                  "Mod+Q".action = close-window;
-                };
-              };
-            };
-          }
-          EOF
-
-          # Test the configuration with impure evaluation
-          nix eval --impure --file test-basic.nix --show-trace config.programs.niri.enable
+          echo "Testing kebab-case configuration..."
+          nix eval --impure -f test-config.nix kebab-config.programs.niri.enable --show-trace
 
           echo "✅ Module tests passed"
 

@@ -7,34 +7,15 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    let
-      # Generate the module once for all systems
-      lib = nixpkgs.lib;
-
-      # Use a default system for module generation (the generated module is system-independent)
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      generator = import ./generator { inherit pkgs; };
-
-      niriSrc = pkgs.fetchFromGitHub {
-        owner = "soulvice";
-        repo = "niri";
-        rev = "dfcbbbb03071cadf3fd9bbb0903ead364a839412";
-        sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      };
-
-      generatedModule = generator.generateNiriModule {
-        inherit niriSrc;
-      };
-    in
     {
-      # Top-level homeManagerModules (system independent)
+      # Use the static module we already have (system independent)
       homeManagerModules = {
-        niri = generatedModule;
-        default = generatedModule;
+        niri = import ./module/niri.nix;
+        default = import ./module/niri.nix;
       };
 
       # Make the module easily testable
-      nixosModules.niri = generatedModule;
+      nixosModules.niri = import ./module/niri.nix;
     } // flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
