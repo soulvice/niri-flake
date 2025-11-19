@@ -85,7 +85,7 @@ EOF
               quit = "quit";
             };
 
-            docs = generator.generateDocs {
+            docs = generator.generateComprehensiveDocs {
               inherit nixTypes actionsLib;
             };
           in

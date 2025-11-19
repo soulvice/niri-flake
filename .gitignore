@@ -3,47 +3,98 @@ result
 result-*
 .nix-build-tmp-*
 .nix-gcroots
-
-# Nix development environment
 .direnv/
 .envrc
+
+# Generated documentation (regenerated automatically from source)
+/docs/MODULE_OPTIONS.md
+/docs/options.json
+/docs/generated/
+
+# Test outputs and temporary files
+/test-results/
+/test-results-local/
+/examples/test-*
+/examples/generated-*
+/test-configs/
+*.log
+*.tmp
+*.temp
+*~
+.#*
+\#*#
+*.kdl.test
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Development and local overrides
+local.nix
+local-*.nix
+override.nix
+config.local.*
+.dev/
+.scratch/
+.cache/
+.nix-cache/
+
+# Generated module outputs (if testing locally)
+niri-module/
+generated-module/
+output/
+/tmp/
+/temp/
+/temporary/
+
+# Backup and version control
+*.bak
+*.backup
+*.orig
+*.draft.md
+*.wip.md
+
+# Programming artifacts
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache/
+node_modules/
+target/
+Cargo.lock
+coverage.xml
+*.coverage
+.coverage*
+
+# Sensitive data
+.env
+.env.local
+.env.*.local
+secrets.*
+*.key
+*.pem
 
 # Claude Code settings (user-specific)
 .claude/settings.local.json
 .claude/chat-history/
 .claude/logs/
 
-# Test results and logs
-test-results/
-test-results-local/
-*.log
+# Large binary files
+*.iso
+*.img
+*.bin
+*.exe
 
-# Temporary files
-*.tmp
-*.temp
-*~
-.#*
-\#*#
-
-# Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Local configuration overrides
-local.nix
-local-*.nix
-override.nix
-config.local.*
-
-# Generated module outputs (if testing locally)
-niri-module/
-generated-module/
-output/
-
-# Backup files
-*.bak
-*.backup
+# Editor-specific
+.vim/
+.nvim/
+.emacs.d/

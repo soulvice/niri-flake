@@ -9,6 +9,7 @@ let
   kdlGenerator = import ./kdl-generator.nix { inherit lib; };
   moduleGenerator = import ./module-generator.nix { inherit lib; };
   docsGenerator = import ./docs-generator.nix { inherit lib; };
+  enhancedDocsGenerator = import ./enhanced-docs-generator.nix { inherit lib; };
 
 in {
   # Main function to generate the niri home-manager module
@@ -28,12 +29,18 @@ in {
     in
     module;
 
-  # Generate documentation
+  # Generate documentation (legacy)
   generateDocs = { nixTypes, actionsLib ? {}, moduleOptions ? {} }:
     docsGenerator.generateModuleDocs {
       inherit nixTypes actionsLib moduleOptions;
     };
 
+  # Generate comprehensive documentation
+  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, moduleOptions ? {} }:
+    enhancedDocsGenerator.generateComprehensiveDocs {
+      inherit nixTypes actionsLib moduleOptions;
+    };
+
   # Expose individual components for testing
-  inherit parser typeMapper kdlGenerator moduleGenerator docsGenerator;
+  inherit parser typeMapper kdlGenerator moduleGenerator docsGenerator enhancedDocsGenerator;
 }
