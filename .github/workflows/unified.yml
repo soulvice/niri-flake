@@ -212,8 +212,8 @@ jobs:
           # Generate options documentation from the module
           mkdir -p docs
 
-          # Use the built documentation
-          cp -L result/docs/MODULE_OPTIONS.md docs/ 2>/dev/null || echo "# Niri Module Documentation" > docs/MODULE_OPTIONS.md
+          # Use the built documentation (result symlinks directly to the documentation file)
+          cp -L result docs/MODULE_OPTIONS.md 2>/dev/null || echo "# Niri Module Documentation" > docs/MODULE_OPTIONS.md
 
           # Add generation info
           cat >> docs/MODULE_OPTIONS.md << EOF
