@@ -559,7 +559,7 @@ let
         concatStringsSep "\n\n" optionsList;
 
     in ''
-      ## Complete Module Options Reference
+      ## Module Options
 
       This section documents all available configuration options for the niri home-manager module. Options are organized hierarchically and include type information, default values, and descriptions.
 
@@ -586,7 +586,7 @@ let
         - [Overview](#overview)
         - [Installation](#installation)
         - [Quick Start](#quick-start)
-        - [Complete Module Options Reference](#complete-module-options-reference)
+        - [Module Options](#module-options)
         - [Actions Library Reference](#actions-library-reference)
         - [Configuration Examples](#configuration-examples)
         - [Type Reference](#type-reference)
