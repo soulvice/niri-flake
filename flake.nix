@@ -27,8 +27,8 @@
         niriSrc = pkgs.fetchFromGitHub {
           owner = "soulvice";
           repo = "niri";
-          rev = "dfcbbbb03071cadf3fd9bbb0903ead364a839412"; # Recent commit for testing
-          sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # Placeholder - will be updated by workflow
+          rev = "9358f2c1cfe61206749af3a3389971906da42c01"; # Recent commit for testing
+          sha256 = "00ifhdgd9f8m52kh2j18axr74yi2nc9yy9xsgc1ibw1syabm2g45"; # Placeholder - will be updated by workflow
         };
 
         # Generate the home-manager module
@@ -68,7 +68,7 @@ EOF
             # Extract niri version info
             niriInfo = {
               commit = "dfcbbbb03071cadf3fd9bbb0903ead364a839412";
-              sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+              sha256 = "00ifhdgd9f8m52kh2j18axr74yi2nc9yy9xsgc1ibw1syabm2g45";
               repository = "soulvice/niri";
             };
 
