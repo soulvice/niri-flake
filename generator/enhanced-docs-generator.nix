@@ -49,7 +49,20 @@ let
       "`${toString defaultValue}`"
     else if builtins.isList defaultValue then
       if length defaultValue == 0 then "`[]` (empty list)"
-      else "`[ ${concatStringsSep ", " (map toString (lib.take 3 defaultValue))}${if length defaultValue > 3 then ", ..." else ""} ]`"
+      else
+        let
+          # Safely format list items, handling complex types
+          formatItem = item:
+            if builtins.isString item || builtins.isInt item || builtins.isFloat item || builtins.isBool item then
+              toString item
+            else if builtins.isAttrs item then
+              "{ ... }"
+            else if builtins.isList item then
+              "[ ... ]"
+            else
+              "...";
+        in
+        "`[ ${concatStringsSep ", " (map formatItem (lib.take 3 defaultValue))}${if length defaultValue > 3 then ", ..." else ""} ]`"
     else if builtins.isAttrs defaultValue then
       if defaultValue == {} then "`{}` (empty attribute set)"
       else
@@ -59,7 +72,7 @@ let
           moreKeys = length keys > 3;
         in
         "`{ ${concatStringsSep ", " (map (k: "${k} = ...") displayKeys)}${if moreKeys then ", ..." else ""} }`"
-    else "`${toString defaultValue}`";
+    else "`<complex value>`";
 
   # Generate option path with proper array/object notation
   formatOptionPath = basePath: optionName: parentType:
