@@ -7,7 +7,32 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+    let
+      # Generate the module once for all systems
+      lib = nixpkgs.lib;
+
+      # Use a default system for module generation (the generated module is system-independent)
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      generator = import ./generator { inherit pkgs; };
+
+      niriSrc = pkgs.fetchFromGitHub {
+        owner = "soulvice";
+        repo = "niri";
+        rev = "dfcbbbb03071cadf3fd9bbb0903ead364a839412";
+        sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      };
+
+      generatedModule = generator.generateNiriModule {
+        inherit niriSrc;
+      };
+    in
+    {
+      # Top-level homeManagerModules (system independent)
+      homeManagerModules = {
+        niri = generatedModule;
+        default = generatedModule;
+      };
+    } // flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -27,36 +52,24 @@
           inherit niriSrc;
         };
 
-        # Create a derivation containing the module
-        moduleDerivation = pkgs.runCommand "niri-module" {} ''
-          mkdir -p $out
+        # Create a derivation containing the generated module file
+        moduleDerivation =
+          let
+            # Parse the configuration and generate types
+            configStructs = generator.parser.parseNiriConfig niriSrc;
+            nixTypes = generator.typeMapper.mapConfigToNixTypes configStructs;
 
-          # For testing purposes, create a minimal module that can be evaluated
-          cat > $out/default.nix << 'EOF'
-{ lib, config, pkgs, ... }:
-
-{
-  options = {
-    programs.niri = {
-      enable = lib.mkEnableOption "niri wayland compositor";
-      package = lib.mkPackageOption pkgs "niri" {};
-      settings = lib.mkOption {
-        type = lib.types.attrsOf lib.types.anything;
-        default = {};
-        description = "Niri configuration settings";
-      };
-    };
-  };
-
-  config = lib.mkIf config.programs.niri.enable {
-    home.packages = [ config.programs.niri.package ];
-
-    # Create basic config file for testing
-    xdg.configFile."niri/config.kdl".text = "// Auto-generated niri configuration\\n";
-  };
-}
+            # Generate the module file as a string
+            moduleFileContent = generator.generateModuleFile {
+              inherit nixTypes niriSrc;
+            };
+          in
+          pkgs.runCommand "niri-module" {} ''
+            mkdir -p $out
+            cat > $out/default.nix << 'EOF'
+${moduleFileContent}
 EOF
-        '';
+          '';
 
         # Generate documentation
         documentation =
@@ -65,25 +78,8 @@ EOF
             configStructs = generator.parser.parseNiriConfig niriSrc;
             nixTypes = generator.typeMapper.mapConfigToNixTypes configStructs;
 
-            # Actions library (simplified for documentation)
-            actionsLib = {
-              spawn = "spawn";
-              spawn_shell = "spawn_shell";
-              close_window = "close-window";
-              fullscreen_window = "fullscreen-window";
-              focus_left = "focus-left";
-              focus_right = "focus-right";
-              focus_up = "focus-up";
-              focus_down = "focus-down";
-              move_left = "move-left";
-              move_right = "move-right";
-              move_up = "move-up";
-              move_down = "move-down";
-              focus_workspace_next = "focus-workspace-next";
-              focus_workspace_previous = "focus-workspace-previous";
-              screenshot = "screenshot";
-              quit = "quit";
-            };
+            # Use shared actions library
+            actionsLib = import ./generator/actions-lib.nix;
 
             # Extract niri version info
             niriInfo = {
@@ -93,7 +89,8 @@ EOF
             };
 
             docs = generator.generateComprehensiveDocs {
-              inherit nixTypes actionsLib niriInfo;
+              inherit nixTypes actionsLib;
+              moduleOptions = niriInfo;
             };
           in
           pkgs.writeText "niri-module-docs.md" docs;
@@ -145,12 +142,6 @@ EOF
             echo "  module/niri.nix         - Home-manager module"
             echo "  docs/MODULE_OPTIONS.md  - Comprehensive documentation"
           '';
-        };
-
-        # Home-manager module output
-        homeManagerModules = {
-          niri = generatedModule;
-          default = generatedModule;
         };
 
         # For easy importing

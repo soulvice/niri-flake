@@ -12,6 +12,8 @@ result-*
 /docs/generated/
 
 # Test outputs and temporary files
+*tests*
+test-*
 /test-results/
 /test-results-local/
 /examples/test-*
@@ -84,6 +86,7 @@ secrets.*
 *.pem
 
 # Claude Code settings (user-specific)
+.claude/
 .claude/settings.local.json
 .claude/chat-history/
 .claude/logs/

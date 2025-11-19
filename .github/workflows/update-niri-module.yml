@@ -3,17 +3,7 @@ name: Update Niri Module
 on:
   # Trigger when this repository changes
   push:
-    branches: [ main, master ]
-    paths:
-      - 'generator/**'
-      - 'flake.nix'
-      - '.github/workflows/update-niri-module.yml'
   pull_request:
-    branches: [ main, master ]
-    paths:
-      - 'generator/**'
-      - 'flake.nix'
-      - '.github/workflows/update-niri-module.yml'
 
   # Trigger when niri repository has new commits (via webhook/repository_dispatch)
   repository_dispatch:

@@ -31,19 +31,13 @@ let
         str;
     in "\"${escaped}\"";
 
-  # Convert kebab-case back to snake_case for KDL (niri expects snake_case)
-  kebabToSnake = str: replaceStrings ["-"] ["_"] str;
-
   # Format a KDL identifier (node names, property names)
+  # Niri uses kebab-case in KDL, so we keep kebab-case as-is
   formatKdlIdentifier = name:
-    let
-      # Convert kebab-case back to snake_case for niri KDL format
-      snakeCase = kebabToSnake name;
-    in
-    if builtins.match "^[a-zA-Z][a-zA-Z0-9_]*$" snakeCase != null then
-      snakeCase
+    if builtins.match "^[a-zA-Z][a-zA-Z0-9_-]*$" name != null then
+      name
     else
-      escapeKdlString snakeCase;
+      escapeKdlString name;
 
   # Format a KDL value based on its type
   formatKdlValue = value:

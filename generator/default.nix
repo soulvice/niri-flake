@@ -41,6 +41,13 @@ in {
       inherit nixTypes actionsLib moduleOptions;
     };
 
+  # Generate module file as string (for static file generation)
+  generateModuleFile = { nixTypes, niriSrc }:
+    moduleGenerator.generateModuleFileString {
+      inherit nixTypes kdlGenerator;
+      niriCommit = niriSrc.rev;
+    };
+
   # Expose individual components for testing
   inherit parser typeMapper kdlGenerator moduleGenerator docsGenerator enhancedDocsGenerator;
 }
