@@ -27,9 +27,6 @@ let
 
   # Convert type to human-readable string with more detail
   typeToString = nixType:
-    let
-      typeStr = toString nixType;
-    in
     if nixType == lib.types.bool then "boolean"
     else if nixType == lib.types.str then "string"
     else if nixType == lib.types.int then "integer"
@@ -37,18 +34,8 @@ let
     else if nixType == lib.types.path then "path"
     else if nixType == lib.types.attrs then "attribute set"
     else if nixType == lib.types.package then "package"
-    else if lib.hasInfix "listOf" typeStr then
-      if lib.hasInfix "string" typeStr then "list of strings"
-      else if lib.hasInfix "int" typeStr then "list of integers"
-      else if lib.hasInfix "attrs" typeStr then "list of attribute sets"
-      else "list"
-    else if lib.hasInfix "attrsOf" typeStr then "attribute set of values"
-    else if lib.hasInfix "nullOr" typeStr then "null or value"
-    else if lib.hasInfix "oneOf" typeStr then "one of multiple types"
-    else if lib.hasInfix "submodule" typeStr then "submodule"
-    else if lib.hasInfix "enum" typeStr then "enum"
-    else if lib.hasInfix "between" typeStr then "number (with range)"
-    else typeStr;
+    else if hasAttr "description" nixType then nixType.description
+    else "unknown type";
 
   # Format default value for display with better formatting
   formatDefault = defaultValue:
@@ -618,7 +605,7 @@ let
         ### Key Features
 
         - 🔒 **Type Safety** - Comprehensive validation catches errors at build time
-        - 🎯 **Complete Coverage** - All ${toString (length (attrNames allActions))} niri actions available
+        - 🎯 **Complete Coverage** - All ${toString (length (attrNames actionsLib))} niri actions available
         - 🔄 **Auto-Generated** - Always up-to-date with niri development
         - 📖 **Rich Documentation** - Detailed descriptions and examples
         - 🎨 **Flexible** - Structured Nix + raw KDL support

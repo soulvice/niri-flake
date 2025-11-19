@@ -175,7 +175,8 @@ let
 
   # Generate comprehensive documentation
   docs = generator.generateComprehensiveDocs {
-    inherit nixTypes actionsLib niriInfo;
+    inherit nixTypes actionsLib;
+    moduleOptions = niriInfo;
   };
 
 in pkgs.writeTextFile {
