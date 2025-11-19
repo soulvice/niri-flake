@@ -19,6 +19,9 @@ let
   configStructs = generator.parser.parseNiriConfig niriSrc;
   nixTypes = generator.typeMapper.mapConfigToNixTypes configStructs;
 
+  # Import the niri settings schema
+  schema = import ./generator/niri-settings-schema.nix { inherit lib; };
+
   # Complete actions library (matching what would be in module-generator.nix)
   actionsLib = {
     # System & Power Management
@@ -175,7 +178,7 @@ let
 
   # Generate comprehensive documentation
   docs = generator.generateComprehensiveDocs {
-    inherit nixTypes actionsLib;
+    inherit nixTypes actionsLib schema;
     moduleOptions = niriInfo;
   };
 

@@ -312,7 +312,7 @@ in {
                     '';
                   };
 
-                  natural_scroll = mkOption {
+                  natural-scroll = mkOption {
                     type = types.nullOr types.bool;
                     default = null;
                     description = ''
@@ -322,7 +322,7 @@ in {
                     '';
                   };
 
-                  accel_speed = mkOption {
+                  accel-speed = mkOption {
                     type = types.nullOr (floatOrIntType (-1.0) 1.0);
                     default = null;
                     description = ''
@@ -335,7 +335,7 @@ in {
                     example = 0.2;
                   };
 
-                  accel_profile = mkOption {
+                  accel-profile = mkOption {
                     type = types.nullOr accelProfileType;
                     default = null;
                     description = ''
@@ -346,7 +346,7 @@ in {
                     '';
                   };
 
-                  tap_button_map = mkOption {
+                  tap-button-map = mkOption {
                     type = types.nullOr tapButtonMapType;
                     default = null;
                     description = ''
@@ -357,7 +357,7 @@ in {
                     '';
                   };
 
-                  click_method = mkOption {
+                  click-method = mkOption {
                     type = types.nullOr clickMethodType;
                     default = null;
                     description = ''
@@ -368,7 +368,7 @@ in {
                     '';
                   };
 
-                  scroll_method = mkOption {
+                  scroll-method = mkOption {
                     type = types.nullOr scrollMethodType;
                     default = null;
                     description = ''
@@ -389,7 +389,7 @@ in {
             mouse = mkOption {
               type = types.nullOr (types.submodule {
                 options = {
-                  accel_speed = mkOption {
+                  accel-speed = mkOption {
                     type = types.nullOr (floatOrIntType (-1.0) 1.0);
                     default = null;
                     description = ''
@@ -402,7 +402,7 @@ in {
                     example = 0.0;
                   };
 
-                  accel_profile = mkOption {
+                  accel-profile = mkOption {
                     type = types.nullOr accelProfileType;
                     default = null;
                     description = ''
@@ -413,7 +413,7 @@ in {
                     '';
                   };
 
-                  natural_scroll = mkOption {
+                  natural-scroll = mkOption {
                     type = types.nullOr types.bool;
                     default = null;
                     description = ''
@@ -431,20 +431,20 @@ in {
             trackball = mkOption {
               type = types.nullOr (types.submodule {
                 options = {
-                  accel_speed = mkOption {
+                  accel-speed = mkOption {
                     type = types.nullOr (floatOrIntType (-1.0) 1.0);
                     default = null;
                     description = "Trackball acceleration speed (-1.0 to 1.0)";
                     example = 0.0;
                   };
 
-                  accel_profile = mkOption {
+                  accel-profile = mkOption {
                     type = types.nullOr accelProfileType;
                     default = null;
                     description = "Trackball acceleration profile";
                   };
 
-                  natural_scroll = mkOption {
+                  natural-scroll = mkOption {
                     type = types.nullOr types.bool;
                     default = null;
                     description = "Enable natural scrolling for trackball";
@@ -458,7 +458,7 @@ in {
             tablet = mkOption {
               type = types.nullOr (types.submodule {
                 options = {
-                  map_to_output = mkOption {
+                  map-to-output = mkOption {
                     type = types.nullOr outputNameType;
                     default = null;
                     description = ''
@@ -477,7 +477,7 @@ in {
             touch = mkOption {
               type = types.nullOr (types.submodule {
                 options = {
-                  map_to_output = mkOption {
+                  map-to-output = mkOption {
                     type = types.nullOr outputNameType;
                     default = null;
                     description = ''
@@ -517,7 +517,7 @@ in {
               example = 16;
             };
 
-            center_focused_column = mkOption {
+            center-focused-column = mkOption {
               type = types.nullOr centerFocusedColumnType;
               default = null;
               description = ''
@@ -529,7 +529,7 @@ in {
               '';
             };
 
-            always_center_single_column = mkOption {
+            always-center-single-column = mkOption {
               type = types.nullOr types.bool;
               default = null;
               description = ''
@@ -539,7 +539,7 @@ in {
               '';
             };
 
-            default_column_width = mkOption {
+            default-column-width = mkOption {
               type = types.nullOr (types.submodule {
                 options = {
                   proportion = mkOption {
@@ -576,7 +576,7 @@ in {
               '';
             };
 
-            preset_column_widths = mkOption {
+            preset-column-widths = mkOption {
               type = types.nullOr (types.listOf presetSizeType);
               default = null;
               description = ''
@@ -588,7 +588,7 @@ in {
               example = [ 0.25 0.5 0.75 1920 ];
             };
 
-            focus_ring = mkOption {
+            focus-ring = mkOption {
               type = types.nullOr (types.submodule {
                 options = {
                   enable = mkOption {
@@ -612,7 +612,7 @@ in {
                     example = 4;
                   };
 
-                  active_color = mkOption {
+                  active-color = mkOption {
                     type = types.nullOr (types.oneOf [ colorType gradientType ]);
                     default = null;
                     description = ''
@@ -623,7 +623,7 @@ in {
                     example = "#7fc8ff";
                   };
 
-                  inactive_color = mkOption {
+                  inactive-color = mkOption {
                     type = types.nullOr (types.oneOf [ colorType gradientType ]);
                     default = null;
                     description = ''
@@ -663,14 +663,14 @@ in {
                     example = 2;
                   };
 
-                  active_color = mkOption {
+                  active-color = mkOption {
                     type = types.nullOr (types.oneOf [ colorType gradientType ]);
                     default = null;
                     description = "Border color for the active window";
                     example = "#ffffff";
                   };
 
-                  inactive_color = mkOption {
+                  inactive-color = mkOption {
                     type = types.nullOr (types.oneOf [ colorType gradientType ]);
                     default = null;
                     description = "Border color for inactive windows";
@@ -732,7 +732,7 @@ in {
       };
 
       # Spawn at startup
-      spawn_at_startup = mkOption {
+      spawn-at-startup = mkOption {
         type = types.nullOr (types.listOf types.str);
         default = null;
         description = ''
@@ -775,7 +775,7 @@ in {
       };
 
       # Window rules
-      window_rules = mkOption {
+      window-rules = mkOption {
         type = types.nullOr (types.listOf windowRuleType);
         default = null;
         description = ''
@@ -929,7 +929,7 @@ in {
               example = "main";
             };
 
-            open_on_output = mkOption {
+            open-on-output = mkOption {
               type = types.nullOr outputNameType;
               default = null;
               description = ''
@@ -981,7 +981,7 @@ in {
               example = 1.0;
             };
 
-            window_movement = mkOption {
+            window-movement = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -991,7 +991,7 @@ in {
               '';
             };
 
-            window_open = mkOption {
+            window-open = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -1001,7 +1001,7 @@ in {
               '';
             };
 
-            window_close = mkOption {
+            window-close = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -1011,7 +1011,7 @@ in {
               '';
             };
 
-            window_resize = mkOption {
+            window-resize = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -1021,7 +1021,7 @@ in {
               '';
             };
 
-            horizontal_view_movement = mkOption {
+            horizontal-view-movement = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -1031,7 +1031,7 @@ in {
               '';
             };
 
-            workspace_switch = mkOption {
+            workspace-switch = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -1041,7 +1041,7 @@ in {
               '';
             };
 
-            config_notification_open_close = mkOption {
+            config-notification-open-close = mkOption {
               type = types.nullOr animationType;
               default = null;
               description = ''
@@ -1112,7 +1112,7 @@ in {
       };
 
       # Prefer no CSD (client-side decorations)
-      prefer_no_csd = mkOption {
+      prefer-no-csd = mkOption {
         type = types.nullOr types.bool;
         default = null;
         description = ''
@@ -1124,7 +1124,7 @@ in {
       };
 
       # Screenshot path
-      screenshot_path = mkOption {
+      screenshot-path = mkOption {
         type = types.nullOr types.str;
         default = null;
         description = ''
@@ -1150,7 +1150,7 @@ in {
               '';
             };
 
-            dbus_interfaces_in_non_session_instances = mkOption {
+            dbus-interfaces-in-non-session-instances = mkOption {
               type = types.nullOr types.bool;
               default = null;
               description = ''
@@ -1160,7 +1160,7 @@ in {
               '';
             };
 
-            wait_for_frame_completion_before_queueing = mkOption {
+            wait-for-frame-completion-before-queueing = mkOption {
               type = types.nullOr types.bool;
               default = null;
               description = ''
@@ -1170,7 +1170,7 @@ in {
               '';
             };
 
-            enable_color_transformations_capability = mkOption {
+            enable-color-transformations-capability = mkOption {
               type = types.nullOr types.bool;
               default = null;
               description = ''
@@ -1180,7 +1180,7 @@ in {
               '';
             };
 
-            emulate_zero_presentation_time = mkOption {
+            emulate-zero-presentation-time = mkOption {
               type = types.nullOr types.bool;
               default = null;
               description = ''
