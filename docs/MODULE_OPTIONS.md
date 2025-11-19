@@ -7,7 +7,7 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Complete Module Options Reference](#complete-module-options-reference)
+- [Module Options](#module-options)
 - [Actions Library Reference](#actions-library-reference)
 - [Configuration Examples](#configuration-examples)
 - [Type Reference](#type-reference)
@@ -25,7 +25,7 @@ The **niri-flake** provides a comprehensive, type-safe home-manager module for c
 ### Key Features
 
 - 🔒 **Type Safety** - Comprehensive validation catches errors at build time
-- 🎯 **Complete Coverage** - All 87 niri actions available
+- 🎯 **Complete Coverage** - All 72 niri actions available
 - 🔄 **Auto-Generated** - Always up-to-date with niri development
 - 📖 **Rich Documentation** - Detailed descriptions and examples
 - 🎨 **Flexible** - Structured Nix + raw KDL support
@@ -156,7 +156,7 @@ programs.niri = {
 ```
 
 
-## Complete Module Options Reference
+## Module Options
 
 This section documents all available configuration options for the niri home-manager module. Options are organized hierarchically and include type information, default values, and descriptions.
 
@@ -208,6 +208,1123 @@ The niri package to use.
 
 Niri configuration settings
 
+### `programs.niri.settings.animations`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Animation configuration.
+
+Controls various animations throughout the compositor for smooth visual transitions.
+
+
+### `programs.niri.settings.animations.config_notification_open_close`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for configuration reload notifications.
+
+Controls how config change notifications appear and disappear.
+
+
+
+### `programs.niri.settings.animations.horizontal_view_movement`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for horizontal workspace/column scrolling.
+
+Controls smoothness when moving between columns or workspaces.
+
+
+
+### `programs.niri.settings.animations.shaders`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to use GPU shaders for animations.
+
+Provides smoother animations but may increase GPU usage.
+
+
+
+### `programs.niri.settings.animations.slowdown`
+
+**Type:** null or number between 0.001000 and 100.000000
+**Default:** `null`**Example:** `1.000000`
+
+Global animation speed multiplier.
+
+1.0 = normal speed
+2.0 = half speed (slower)
+0.5 = double speed (faster)
+
+
+
+### `programs.niri.settings.animations.window_close`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for window closure.
+
+Controls how windows animate when being closed.
+
+
+
+### `programs.niri.settings.animations.window_movement`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for window movement between columns.
+
+Controls how smoothly windows animate when moved around.
+
+
+
+### `programs.niri.settings.animations.window_open`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for new window appearance.
+
+Controls how new windows animate when they first appear.
+
+
+
+### `programs.niri.settings.animations.window_resize`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for window resizing.
+
+Controls how smoothly windows animate when being resized.
+
+
+
+### `programs.niri.settings.animations.workspace_switch`
+
+**Type:** null or animation (off, spring, or easing)
+**Default:** `null`
+
+Animation for workspace switching.
+
+Controls how smoothly the view transitions between workspaces.
+
+
+
+
+### `programs.niri.settings.binds`
+
+**Type:** null or (attribute set of (string or (submodule)))
+**Default:** `null`**Example:** `{ Mod+D = ..., Mod+Q = ..., Mod+Return = ... }`
+
+Keyboard and mouse bindings.
+
+Maps key combinations to actions. Use config.lib.niri.actions for predefined actions.
+
+Key syntax:
+- Modifiers: Mod (Super), Alt, Ctrl, Shift
+- Keys: letters, numbers, function keys (F1-F12), special keys
+- Mouse: click actions can be bound to mouse buttons
+
+Examples:
+- "Mod+Return" - Super + Enter
+- "Alt+Shift+Q" - Alt + Shift + Q
+- "Ctrl+Alt+Delete" - Ctrl + Alt + Delete
+
+
+
+### `programs.niri.settings.cursor`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Mouse cursor appearance configuration.
+
+Controls the visual appearance of the mouse cursor.
+
+
+### `programs.niri.settings.cursor.size`
+
+**Type:** null or (positive integer, meaning >0)
+**Default:** `null`**Example:** `24`
+
+Cursor size in pixels.
+
+Larger values make the cursor bigger and more visible.
+
+
+
+### `programs.niri.settings.cursor.theme`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"Adwaita"`
+
+Cursor theme name.
+
+Must be installed on the system and available in cursor theme directories.
+
+
+
+
+### `programs.niri.settings.debug`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Debug and development options.
+
+These options are primarily useful for development and troubleshooting.
+
+
+### `programs.niri.settings.debug.dbus_interfaces_in_non_session_instances`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable D-Bus interfaces in non-session instances.
+
+Useful for debugging and testing when niri isn't running as the main session.
+
+
+
+### `programs.niri.settings.debug.emulate_zero_presentation_time`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Emulate zero presentation time.
+
+Debugging option for timing-related issues.
+
+
+
+### `programs.niri.settings.debug.enable`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable debug mode.
+
+Shows additional debugging information and overlays.
+
+
+
+### `programs.niri.settings.debug.enable_color_transformations_capability`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable color transformation capability.
+
+Experimental feature for advanced color management.
+
+
+
+### `programs.niri.settings.debug.wait_for_frame_completion_before_queueing`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Wait for frame completion before queueing next frame.
+
+May reduce performance but can help debug frame timing issues.
+
+
+
+
+### `programs.niri.settings.environment`
+
+**Type:** null or (attribute set of string)
+**Default:** `null`**Example:** `{ BROWSER = ..., EDITOR = ..., TERM = ... }`
+
+Environment variables to set for spawned processes.
+
+These variables will be available to all applications launched by niri.
+
+
+
+### `programs.niri.settings.input`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Input device configuration.
+
+Controls keyboards, mice, touchpads, tablets, and other input devices.
+
+
+### `programs.niri.settings.input.keyboard`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Keyboard input configuration
+
+### `programs.niri.settings.input.keyboard.repeat-delay`
+
+**Type:** null or (positive integer, meaning >0)
+**Default:** `null`**Example:** `600`
+
+Delay in milliseconds before key repeat starts.
+
+Higher values mean you need to hold a key longer before it starts repeating.
+
+
+
+### `programs.niri.settings.input.keyboard.repeat-rate`
+
+**Type:** null or (positive integer, meaning >0)
+**Default:** `null`**Example:** `25`
+
+Key repeat rate in characters per second.
+
+Higher values mean faster key repeat when holding a key.
+
+
+
+### `programs.niri.settings.input.keyboard.track-layout`
+
+**Type:** null or track layout (global, window)
+**Default:** `null`
+
+How to track keyboard layout changes.
+
+"global" = same layout for all windows
+"window" = remember layout per window
+
+
+
+### `programs.niri.settings.input.keyboard.xkb`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+XKB (X Keyboard Extension) configuration.
+
+Controls keyboard layout, variant, and options.
+
+
+### `programs.niri.settings.input.keyboard.xkb.layout`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"us,de"`
+
+XKB keyboard layout(s)
+
+
+### `programs.niri.settings.input.keyboard.xkb.model`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"pc105"`
+
+XKB keyboard model
+
+
+### `programs.niri.settings.input.keyboard.xkb.options`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"grp:alt\_shift\_toggle,caps:escape"`
+
+XKB options
+
+
+### `programs.niri.settings.input.keyboard.xkb.rules`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"evdev"`
+
+XKB rules file to use
+
+
+### `programs.niri.settings.input.keyboard.xkb.variant`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"dvorak"`
+
+XKB layout variant(s)
+
+
+
+
+### `programs.niri.settings.input.mouse`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Mouse input configuration
+
+### `programs.niri.settings.input.mouse.accel_profile`
+
+**Type:** null or acceleration profile (adaptive, flat)
+**Default:** `null`
+
+Mouse acceleration profile.
+
+"adaptive" = cursor speed adapts to movement speed
+"flat" = constant cursor speed regardless of movement
+
+
+
+### `programs.niri.settings.input.mouse.accel_speed`
+
+**Type:** null or number between -1.000000 and 1.000000
+**Default:** `null`**Example:** `0.000000`
+
+Mouse acceleration speed.
+
+-1.0 = slowest
+ 0.0 = default
+ 1.0 = fastest
+
+
+
+### `programs.niri.settings.input.mouse.natural_scroll`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable natural (reversed) scrolling direction.
+
+Scrolling down moves content down (like on mobile devices).
+
+
+
+
+### `programs.niri.settings.input.tablet`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Graphics tablet input configuration
+
+### `programs.niri.settings.input.tablet.map_to_output`
+
+**Type:** null or output (monitor) name
+**Default:** `null`**Example:** `"DP-1"`
+
+Map tablet input to specific output.
+
+Must reference an output defined in the outputs section.
+
+
+
+
+### `programs.niri.settings.input.touch`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Touchscreen input configuration
+
+### `programs.niri.settings.input.touch.map_to_output`
+
+**Type:** null or output (monitor) name
+**Default:** `null`**Example:** `"eDP-1"`
+
+Map touch input to specific output.
+
+Must reference an output defined in the outputs section.
+
+
+
+
+### `programs.niri.settings.input.touchpad`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Touchpad input configuration
+
+### `programs.niri.settings.input.touchpad.accel_profile`
+
+**Type:** null or acceleration profile (adaptive, flat)
+**Default:** `null`
+
+Touchpad acceleration profile.
+
+"adaptive" = cursor speed adapts to movement speed
+"flat" = constant cursor speed regardless of movement
+
+
+
+### `programs.niri.settings.input.touchpad.accel_speed`
+
+**Type:** null or number between -1.000000 and 1.000000
+**Default:** `null`**Example:** `0.200000`
+
+Touchpad acceleration speed.
+
+-1.0 = slowest
+ 0.0 = default
+ 1.0 = fastest
+
+
+
+### `programs.niri.settings.input.touchpad.click_method`
+
+**Type:** null or click method (clickfinger, button-areas)
+**Default:** `null`
+
+Touchpad click method.
+
+"clickfinger" = click location determines button (modern)
+"button-areas" = touchpad areas determine button (traditional)
+
+
+
+### `programs.niri.settings.input.touchpad.dwt`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Disable touchpad while typing.
+
+Prevents accidental touchpad activation when typing.
+
+
+
+### `programs.niri.settings.input.touchpad.natural_scroll`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable natural (reversed) scrolling direction.
+
+Scrolling down moves content down (like on mobile devices).
+
+
+
+### `programs.niri.settings.input.touchpad.scroll_method`
+
+**Type:** null or scroll method (no-scroll, two-finger, edge, on-button-down)
+**Default:** `null`
+
+Touchpad scroll method.
+
+"two-finger" = scroll with two fingers (most common)
+"edge" = scroll by moving along touchpad edge
+"on-button-down" = scroll while holding button
+"no-scroll" = disable scrolling
+
+
+
+### `programs.niri.settings.input.touchpad.tap`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable tap-to-click on touchpad.
+
+When enabled, lightly tapping the touchpad will register as a click.
+
+
+
+### `programs.niri.settings.input.touchpad.tap_button_map`
+
+**Type:** null or tap button map (left-right-middle, left-middle-right)
+**Default:** `null`
+
+Touchpad tap button mapping.
+
+"left-right-middle" = 1-finger=left, 2-finger=right, 3-finger=middle
+"left-middle-right" = 1-finger=left, 2-finger=middle, 3-finger=right
+
+
+
+
+### `programs.niri.settings.input.trackball`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Trackball input configuration
+
+### `programs.niri.settings.input.trackball.accel_profile`
+
+**Type:** null or acceleration profile (adaptive, flat)
+**Default:** `null`
+
+Trackball acceleration profile
+
+
+### `programs.niri.settings.input.trackball.accel_speed`
+
+**Type:** null or number between -1.000000 and 1.000000
+**Default:** `null`**Example:** `0.000000`
+
+Trackball acceleration speed (-1.0 to 1.0)
+
+
+### `programs.niri.settings.input.trackball.natural_scroll`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Enable natural scrolling for trackball
+
+
+
+
+### `programs.niri.settings.layout`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Window layout and visual configuration.
+
+Controls window positioning, spacing, borders, and visual indicators.
+
+
+### `programs.niri.settings.layout.always_center_single_column`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to center single columns on the screen.
+
+When only one column is present, center it instead of placing it at the left edge.
+
+
+
+### `programs.niri.settings.layout.border`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Window border configuration
+
+### `programs.niri.settings.layout.border.active_color`
+
+**Type:** null or color (hex, CSS name, or rgb/rgba function) or color gradient
+**Default:** `null`**Example:** `"#ffffff"`
+
+Border color for the active window
+
+
+### `programs.niri.settings.layout.border.enable`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to show borders around windows.
+
+Persistent borders around all windows, separate from focus rings.
+
+
+
+### `programs.niri.settings.layout.border.inactive_color`
+
+**Type:** null or color (hex, CSS name, or rgb/rgba function) or color gradient
+**Default:** `null`**Example:** `"#808080"`
+
+Border color for inactive windows
+
+
+### `programs.niri.settings.layout.border.width`
+
+**Type:** null or (positive integer, meaning >0)
+**Default:** `null`**Example:** `2`
+
+Window border width in pixels
+
+
+
+### `programs.niri.settings.layout.center_focused_column`
+
+**Type:** null or center focused column (never, always, on-overflow)
+**Default:** `null`
+
+When to center the focused column on screen.
+
+"never" = never center columns
+"always" = always center the focused column
+"on-overflow" = center only when columns don't fit on screen
+
+
+
+### `programs.niri.settings.layout.default_column_width`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Default width for new columns.
+
+Can be specified as either a proportion of screen width or fixed pixels.
+Only one of proportion or fixed should be set.
+
+
+### `programs.niri.settings.layout.default_column_width.fixed`
+
+**Type:** null or (positive integer, meaning >0)
+**Default:** `null`**Example:** `1920`
+
+Default column width in pixels.
+
+Fixed pixel width regardless of screen size.
+
+
+
+### `programs.niri.settings.layout.default_column_width.proportion`
+
+**Type:** null or number between 0.100000 and 10.000000
+**Default:** `null`**Example:** `0.500000`
+
+Default column width as proportion of screen width.
+
+1.0 = full screen width
+0.5 = half screen width
+Values > 1.0 create wider-than-screen columns
+
+
+
+
+### `programs.niri.settings.layout.focus_ring`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Focus ring visual indicator configuration.
+
+Shows a colored border around focused windows.
+
+
+### `programs.niri.settings.layout.focus_ring.active_color`
+
+**Type:** null or color (hex, CSS name, or rgb/rgba function) or color gradient
+**Default:** `null`**Example:** `"#7fc8ff"`
+
+Color or gradient for the active window focus ring.
+
+Can be a solid color or a gradient for visual effects.
+
+
+
+### `programs.niri.settings.layout.focus_ring.enable`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to show a focus ring around the active window.
+
+Visual indicator to highlight which window has focus.
+
+
+
+### `programs.niri.settings.layout.focus_ring.inactive_color`
+
+**Type:** null or color (hex, CSS name, or rgb/rgba function) or color gradient
+**Default:** `null`**Example:** `"#505050"`
+
+Color or gradient for inactive window focus rings.
+
+Used for non-focused windows when they have visible focus indicators.
+
+
+
+### `programs.niri.settings.layout.focus_ring.width`
+
+**Type:** null or (positive integer, meaning >0)
+**Default:** `null`**Example:** `4`
+
+Focus ring width in pixels.
+
+Thickness of the border drawn around the focused window.
+
+
+
+
+### `programs.niri.settings.layout.gaps`
+
+**Type:** null or (unsigned integer, meaning >=0)
+**Default:** `null`**Example:** `16`
+
+Gap size in pixels between windows and screen edges.
+
+Sets uniform gaps around all windows for a clean, spaced look.
+
+
+
+### `programs.niri.settings.layout.preset_column_widths`
+
+**Type:** null or (list of preset size (proportion 0.0-1.0 or fixed pixels))
+**Default:** `null`**Example:** `[ 0.250000, 0.500000, 0.750000, ... ]`
+
+Predefined column widths for quick switching.
+
+List of widths that can be cycled through with keybindings.
+Values can be proportions (0.0-1.0) or fixed pixel sizes.
+
+
+
+### `programs.niri.settings.layout.struts`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Reserved screen edge space.
+
+Prevents windows from using specified screen areas, useful for panels/docks.
+
+
+### `programs.niri.settings.layout.struts.bottom`
+
+**Type:** null or (unsigned integer, meaning >=0)
+**Default:** `null`**Example:** `32`
+
+Reserved space on bottom edge in pixels
+
+
+### `programs.niri.settings.layout.struts.left`
+
+**Type:** null or (unsigned integer, meaning >=0)
+**Default:** `null`**Example:** `64`
+
+Reserved space on left edge in pixels
+
+
+### `programs.niri.settings.layout.struts.right`
+
+**Type:** null or (unsigned integer, meaning >=0)
+**Default:** `null`**Example:** `64`
+
+Reserved space on right edge in pixels
+
+
+### `programs.niri.settings.layout.struts.top`
+
+**Type:** null or (unsigned integer, meaning >=0)
+**Default:** `null`**Example:** `32`
+
+Reserved space on top edge in pixels
+
+
+
+
+### `programs.niri.settings.outputs`
+
+**Type:** null or (list of (submodule))
+**Default:** `null`**Example:** `[ { ... }, { ... } ]`
+
+Display output configuration.
+
+Configure connected monitors/displays including resolution, scaling, and positioning.
+Use \`niri msg outputs\` to see available outputs.
+
+
+### `programs.niri.settings.outputs.mode`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Display mode configuration.
+
+If not specified, niri will use the preferred mode from EDID.
+
+
+### `programs.niri.settings.outputs.mode.height`
+
+**Type:** positive integer, meaning >0
+**Default:** `null`**Example:** `1080`
+
+Display height in pixels
+
+
+### `programs.niri.settings.outputs.mode.refresh`
+
+**Type:** null or number between 1 and 1000
+**Default:** `null`**Example:** `144.000000`
+
+Refresh rate in Hz
+
+
+### `programs.niri.settings.outputs.mode.width`
+
+**Type:** positive integer, meaning >0
+**Default:** `null`**Example:** `1920`
+
+Display width in pixels
+
+
+
+### `programs.niri.settings.outputs.name`
+
+**Type:** output (monitor) name
+**Default:** `null`**Example:** `"DP-1"`
+
+Output connector name.
+
+Use \`niri msg outputs\` or check system logs to find available output names.
+Common examples: "DP-1", "HDMI-A-1", "eDP-1"
+
+
+
+### `programs.niri.settings.outputs.position`
+
+**Type:** null or (submodule)
+**Default:** `null`
+
+Output position in the global coordinate space.
+
+Used for multi-monitor setups to specify monitor arrangement.
+If not specified, niri will arrange outputs automatically.
+
+
+### `programs.niri.settings.outputs.position.x`
+
+**Type:** integer
+**Default:** `null`**Example:** `1920`
+
+Horizontal position in pixels
+
+
+### `programs.niri.settings.outputs.position.y`
+
+**Type:** integer
+**Default:** `null`**Example:** `0`
+
+Vertical position in pixels
+
+
+
+### `programs.niri.settings.outputs.scale`
+
+**Type:** null or number between 0.100000 and 10.000000
+**Default:** `null`**Example:** `1.500000`
+
+Display scaling factor.
+
+1.0 = no scaling (100%)
+2.0 = 2x scaling (200%)
+1.5 = 1.5x scaling (150%)
+
+Higher values make UI elements larger for high-DPI displays.
+
+
+
+### `programs.niri.settings.outputs.transform`
+
+**Type:** null or transform (normal, 90, 180, 270, flipped, flipped-90, flipped-180, flipped-270)
+**Default:** `null`
+
+Display rotation and reflection.
+
+"normal" = no rotation
+"90", "180", "270" = clockwise rotation in degrees
+"flipped-\*" = mirror horizontally then rotate
+
+
+
+
+### `programs.niri.settings.prefer_no_csd`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to prefer server-side decorations over client-side.
+
+When true, asks applications to use server-side window decorations
+instead of drawing their own title bars and borders.
+
+
+
+### `programs.niri.settings.screenshot_path`
+
+**Type:** null or string
+**Default:** `null`**Example:** `"~/Screenshots"`
+
+Directory path for saving screenshots.
+
+Screenshots taken with niri will be saved to this directory.
+If not specified, uses the default Pictures directory.
+
+
+
+### `programs.niri.settings.spawn_at_startup`
+
+**Type:** null or (list of string)
+**Default:** `null`**Example:** `[ waybar, mako, swww init ]`
+
+Commands to run when niri starts.
+
+List of shell commands that will be executed during niri initialization.
+Useful for starting essential applications like status bars, notification daemons, etc.
+
+
+
+### `programs.niri.settings.window_rules`
+
+**Type:** null or (list of (submodule))
+**Default:** `null`**Example:** `[ { ... }, { ... } ]`
+
+Per-window behavior rules.
+
+Configure how specific windows should behave based on their properties.
+Rules are evaluated in order, and the first matching rule applies.
+
+
+### `programs.niri.settings.window_rules.app-id`
+
+**Type:** null or regular expression
+**Default:** `null`**Example:** `"^firefox$"`
+
+Match windows by their application ID (Wayland) or WM\_CLASS (X11).
+
+Supports regular expressions for flexible matching.
+
+
+
+### `programs.niri.settings.window_rules.block-out-from`
+
+**Type:** null or one of "screencast", "screen-capture"
+**Default:** `null`
+
+Block this window from appearing in screencasts or screenshots.
+
+Useful for sensitive windows like password managers.
+
+
+
+### `programs.niri.settings.window_rules.is-active`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Match only the currently active window.
+
+Useful for rules that should only apply to focused windows.
+
+
+
+### `programs.niri.settings.window_rules.is-floating`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Match only floating or tiling windows.
+
+true = floating windows only
+false = tiling windows only
+null = both floating and tiling
+
+
+
+### `programs.niri.settings.window_rules.opacity`
+
+**Type:** null or number between 0.000000 and 1.000000
+**Default:** `null`**Example:** `0.900000`
+
+Window opacity/transparency level.
+
+0.0 = fully transparent
+1.0 = fully opaque
+
+
+
+### `programs.niri.settings.window_rules.open-floating`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to open this window as floating.
+
+true = always floating
+false = always tiling
+null = use default behavior
+
+
+
+### `programs.niri.settings.window_rules.open-fullscreen`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to open this window in fullscreen mode.
+
+
+
+### `programs.niri.settings.window_rules.open-maximized`
+
+**Type:** null or boolean
+**Default:** `null`
+
+Whether to open this window maximized.
+
+Only applies to tiling windows.
+
+
+
+### `programs.niri.settings.window_rules.open-on-output`
+
+**Type:** null or output (monitor) name
+**Default:** `null`**Example:** `"DP-1"`
+
+Which output (monitor) to open this window on.
+
+Must reference an output defined in the outputs section.
+
+
+
+### `programs.niri.settings.window_rules.open-on-workspace`
+
+**Type:** null or workspace name
+**Default:** `null`**Example:** `"main"`
+
+Which workspace to open this window on.
+
+Must reference a workspace defined in the workspaces section.
+
+
+
+### `programs.niri.settings.window_rules.title`
+
+**Type:** null or regular expression
+**Default:** `null`**Example:** `".\*YouTube.\*"`
+
+Match windows by their title/name.
+
+Supports regular expressions for flexible matching.
+
+
+
+
+### `programs.niri.settings.workspaces`
+
+**Type:** null or (list of (submodule))
+**Default:** `null`**Example:** `[ { ... }, { ... }, { ... } ]`
+
+Workspace definitions.
+
+Define named workspaces that can be referenced in window rules and keybindings.
+
+
+### `programs.niri.settings.workspaces.name`
+
+**Type:** workspace name
+**Default:** `null`**Example:** `"main"`
+
+Workspace name/identifier
+
+
+### `programs.niri.settings.workspaces.open_on_output`
+
+**Type:** null or output (monitor) name
+**Default:** `null`**Example:** `"DP-1"`
+
+Which output this workspace should open on.
+
+Must reference an output defined in the outputs section.
+
+
+
+
 
 
 ## Actions Library
@@ -229,9 +1346,9 @@ programs.niri.settings.binds = with config.lib.niri.actions; {
 
 ### Available Actions (87 total)
 
-### `center_column`
+### `center-column`
 
-**KDL Action:** `center-column`
+**Nix Function:** `center_column`
 **Description:** Center the focused column
 
 **Usage:**
@@ -249,9 +1366,9 @@ binds {
 ```
 
 
-### `center_visible_columns`
+### `center-visible-columns`
 
-**KDL Action:** `center-visible-columns`
+**Nix Function:** `center_visible_columns`
 **Description:** Center all visible columns
 
 **Usage:**
@@ -269,9 +1386,9 @@ binds {
 ```
 
 
-### `center_window`
+### `center-window`
 
-**KDL Action:** `center-window`
+**Nix Function:** `center_window`
 **Description:** Center the focused window
 
 **Usage:**
@@ -289,9 +1406,9 @@ binds {
 ```
 
 
-### `close_overview`
+### `close-overview`
 
-**KDL Action:** `close-overview`
+**Nix Function:** `close_overview`
 **Description:** Close overview mode
 
 **Usage:**
@@ -309,9 +1426,9 @@ binds {
 ```
 
 
-### `close_window`
+### `close-window`
 
-**KDL Action:** `close-window`
+**Nix Function:** `close_window`
 **Description:** Close the focused window
 
 **Usage:**
@@ -329,9 +1446,9 @@ binds {
 ```
 
 
-### `debug_toggle_damage`
+### `debug-toggle-damage`
 
-**KDL Action:** `debug-toggle-damage`
+**Nix Function:** `debug_toggle_damage`
 **Description:** Toggle damage debug overlay
 
 **Usage:**
@@ -349,9 +1466,9 @@ binds {
 ```
 
 
-### `debug_toggle_opaque_regions`
+### `debug-toggle-opaque-regions`
 
-**KDL Action:** `debug-toggle-opaque-regions`
+**Nix Function:** `debug_toggle_opaque_regions`
 **Description:** Toggle opaque regions debug overlay
 
 **Usage:**
@@ -369,9 +1486,9 @@ binds {
 ```
 
 
-### `do_screen_transition`
+### `do-screen-transition`
 
-**KDL Action:** `do-screen-transition`
+**Nix Function:** `do_screen_transition`
 **Description:** Perform screen transition effect
 
 **Usage:**
@@ -389,9 +1506,9 @@ binds {
 ```
 
 
-### `expand_column_to_available_width`
+### `expand-column-to-available-width`
 
-**KDL Action:** `expand-column-to-available-width`
+**Nix Function:** `expand_column_to_available_width`
 **Description:** Expand column to fill available width
 
 **Usage:**
@@ -409,9 +1526,9 @@ binds {
 ```
 
 
-### `focus_column`
+### `focus-column`
 
-**KDL Action:** `focus-column`
+**Nix Function:** `focus_column`
 **Description:** Focus column by index
 
 **Usage:**
@@ -429,9 +1546,9 @@ binds {
 ```
 
 
-### `focus_column_first`
+### `focus-column-first`
 
-**KDL Action:** `focus-column-first`
+**Nix Function:** `focus_column_first`
 **Description:** Focus first column
 
 **Usage:**
@@ -449,9 +1566,9 @@ binds {
 ```
 
 
-### `focus_column_last`
+### `focus-column-last`
 
-**KDL Action:** `focus-column-last`
+**Nix Function:** `focus_column_last`
 **Description:** Focus last column
 
 **Usage:**
@@ -469,9 +1586,9 @@ binds {
 ```
 
 
-### `focus_column_left`
+### `focus-column-left`
 
-**KDL Action:** `focus-column-left`
+**Nix Function:** `focus_column_left`
 **Description:** Focus column to the left
 
 **Usage:**
@@ -489,9 +1606,9 @@ binds {
 ```
 
 
-### `focus_column_left_or_last`
+### `focus-column-left-or-last`
 
-**KDL Action:** `focus-column-left-or-last`
+**Nix Function:** `focus_column_left_or_last`
 **Description:** Focus left column or wrap to last
 
 **Usage:**
@@ -509,9 +1626,9 @@ binds {
 ```
 
 
-### `focus_column_or_monitor_left`
+### `focus-column-or-monitor-left`
 
-**KDL Action:** `focus-column-or-monitor-left`
+**Nix Function:** `focus_column_or_monitor_left`
 **Description:** Focus column left or monitor left
 
 **Usage:**
@@ -529,9 +1646,9 @@ binds {
 ```
 
 
-### `focus_column_or_monitor_right`
+### `focus-column-or-monitor-right`
 
-**KDL Action:** `focus-column-or-monitor-right`
+**Nix Function:** `focus_column_or_monitor_right`
 **Description:** Focus column right or monitor right
 
 **Usage:**
@@ -549,9 +1666,9 @@ binds {
 ```
 
 
-### `focus_column_right`
+### `focus-column-right`
 
-**KDL Action:** `focus-column-right`
+**Nix Function:** `focus_column_right`
 **Description:** Focus column to the right
 
 **Usage:**
@@ -569,9 +1686,9 @@ binds {
 ```
 
 
-### `focus_column_right_or_first`
+### `focus-column-right-or-first`
 
-**KDL Action:** `focus-column-right-or-first`
+**Nix Function:** `focus_column_right_or_first`
 **Description:** Focus right column or wrap to first
 
 **Usage:**
@@ -589,9 +1706,9 @@ binds {
 ```
 
 
-### `focus_floating`
+### `focus-floating`
 
-**KDL Action:** `focus-floating`
+**Nix Function:** `focus_floating`
 **Description:** Focus floating windows
 
 **Usage:**
@@ -609,9 +1726,9 @@ binds {
 ```
 
 
-### `focus_monitor`
+### `focus-monitor`
 
-**KDL Action:** `focus-monitor`
+**Nix Function:** `focus_monitor`
 **Description:** Focus specific monitor
 
 **Usage:**
@@ -629,9 +1746,9 @@ binds {
 ```
 
 
-### `focus_monitor_down`
+### `focus-monitor-down`
 
-**KDL Action:** `focus-monitor-down`
+**Nix Function:** `focus_monitor_down`
 **Description:** Focus monitor below
 
 **Usage:**
@@ -649,9 +1766,9 @@ binds {
 ```
 
 
-### `focus_monitor_left`
+### `focus-monitor-left`
 
-**KDL Action:** `focus-monitor-left`
+**Nix Function:** `focus_monitor_left`
 **Description:** Focus monitor to the left
 
 **Usage:**
@@ -669,9 +1786,9 @@ binds {
 ```
 
 
-### `focus_monitor_next`
+### `focus-monitor-next`
 
-**KDL Action:** `focus-monitor-next`
+**Nix Function:** `focus_monitor_next`
 **Description:** Focus next monitor
 
 **Usage:**
@@ -689,9 +1806,9 @@ binds {
 ```
 
 
-### `focus_monitor_previous`
+### `focus-monitor-previous`
 
-**KDL Action:** `focus-monitor-previous`
+**Nix Function:** `focus_monitor_previous`
 **Description:** Focus previously focused monitor
 
 **Usage:**
@@ -709,9 +1826,9 @@ binds {
 ```
 
 
-### `focus_monitor_right`
+### `focus-monitor-right`
 
-**KDL Action:** `focus-monitor-right`
+**Nix Function:** `focus_monitor_right`
 **Description:** Focus monitor to the right
 
 **Usage:**
@@ -729,9 +1846,9 @@ binds {
 ```
 
 
-### `focus_monitor_up`
+### `focus-monitor-up`
 
-**KDL Action:** `focus-monitor-up`
+**Nix Function:** `focus_monitor_up`
 **Description:** Focus monitor above
 
 **Usage:**
@@ -749,9 +1866,9 @@ binds {
 ```
 
 
-### `focus_tiling`
+### `focus-tiling`
 
-**KDL Action:** `focus-tiling`
+**Nix Function:** `focus_tiling`
 **Description:** Focus tiling windows
 
 **Usage:**
@@ -769,9 +1886,9 @@ binds {
 ```
 
 
-### `focus_window_bottom`
+### `focus-window-bottom`
 
-**KDL Action:** `focus-window-bottom`
+**Nix Function:** `focus_window_bottom`
 **Description:** Focus bottommost window in column
 
 **Usage:**
@@ -789,9 +1906,9 @@ binds {
 ```
 
 
-### `focus_window_down`
+### `focus-window-down`
 
-**KDL Action:** `focus-window-down`
+**Nix Function:** `focus_window_down`
 **Description:** Focus window below
 
 **Usage:**
@@ -809,9 +1926,9 @@ binds {
 ```
 
 
-### `focus_window_down_or_column_left`
+### `focus-window-down-or-column-left`
 
-**KDL Action:** `focus-window-down-or-column-left`
+**Nix Function:** `focus_window_down_or_column_left`
 **Description:** Focus window down or column left
 
 **Usage:**
@@ -829,9 +1946,9 @@ binds {
 ```
 
 
-### `focus_window_down_or_column_right`
+### `focus-window-down-or-column-right`
 
-**KDL Action:** `focus-window-down-or-column-right`
+**Nix Function:** `focus_window_down_or_column_right`
 **Description:** Focus window down or column right
 
 **Usage:**
@@ -849,9 +1966,9 @@ binds {
 ```
 
 
-### `focus_window_down_or_top`
+### `focus-window-down-or-top`
 
-**KDL Action:** `focus-window-down-or-top`
+**Nix Function:** `focus_window_down_or_top`
 **Description:** Focus window down or wrap to top
 
 **Usage:**
@@ -869,9 +1986,9 @@ binds {
 ```
 
 
-### `focus_window_or_monitor_down`
+### `focus-window-or-monitor-down`
 
-**KDL Action:** `focus-window-or-monitor-down`
+**Nix Function:** `focus_window_or_monitor_down`
 **Description:** Focus window down or monitor down
 
 **Usage:**
@@ -889,9 +2006,9 @@ binds {
 ```
 
 
-### `focus_window_or_monitor_up`
+### `focus-window-or-monitor-up`
 
-**KDL Action:** `focus-window-or-monitor-up`
+**Nix Function:** `focus_window_or_monitor_up`
 **Description:** Focus window up or monitor up
 
 **Usage:**
@@ -909,9 +2026,9 @@ binds {
 ```
 
 
-### `focus_window_or_workspace_down`
+### `focus-window-or-workspace-down`
 
-**KDL Action:** `focus-window-or-workspace-down`
+**Nix Function:** `focus_window_or_workspace_down`
 **Description:** Focus window down or workspace down
 
 **Usage:**
@@ -929,9 +2046,9 @@ binds {
 ```
 
 
-### `focus_window_or_workspace_up`
+### `focus-window-or-workspace-up`
 
-**KDL Action:** `focus-window-or-workspace-up`
+**Nix Function:** `focus_window_or_workspace_up`
 **Description:** Focus window up or workspace up
 
 **Usage:**
@@ -949,9 +2066,9 @@ binds {
 ```
 
 
-### `focus_window_previous`
+### `focus-window-previous`
 
-**KDL Action:** `focus-window-previous`
+**Nix Function:** `focus_window_previous`
 **Description:** Focus previously focused window
 
 **Usage:**
@@ -969,9 +2086,9 @@ binds {
 ```
 
 
-### `focus_window_top`
+### `focus-window-top`
 
-**KDL Action:** `focus-window-top`
+**Nix Function:** `focus_window_top`
 **Description:** Focus topmost window in column
 
 **Usage:**
@@ -989,9 +2106,9 @@ binds {
 ```
 
 
-### `focus_window_up`
+### `focus-window-up`
 
-**KDL Action:** `focus-window-up`
+**Nix Function:** `focus_window_up`
 **Description:** Focus window above
 
 **Usage:**
@@ -1009,9 +2126,9 @@ binds {
 ```
 
 
-### `focus_window_up_or_bottom`
+### `focus-window-up-or-bottom`
 
-**KDL Action:** `focus-window-up-or-bottom`
+**Nix Function:** `focus_window_up_or_bottom`
 **Description:** Focus window up or wrap to bottom
 
 **Usage:**
@@ -1029,9 +2146,9 @@ binds {
 ```
 
 
-### `focus_window_up_or_column_left`
+### `focus-window-up-or-column-left`
 
-**KDL Action:** `focus-window-up-or-column-left`
+**Nix Function:** `focus_window_up_or_column_left`
 **Description:** Focus window up or column left
 
 **Usage:**
@@ -1049,9 +2166,9 @@ binds {
 ```
 
 
-### `focus_window_up_or_column_right`
+### `focus-window-up-or-column-right`
 
-**KDL Action:** `focus-window-up-or-column-right`
+**Nix Function:** `focus_window_up_or_column_right`
 **Description:** Focus window up or column right
 
 **Usage:**
@@ -1069,9 +2186,9 @@ binds {
 ```
 
 
-### `focus_workspace`
+### `focus-workspace`
 
-**KDL Action:** `focus-workspace`
+**Nix Function:** `focus_workspace`
 **Description:** Focus specific workspace
 
 **Usage:**
@@ -1089,9 +2206,9 @@ binds {
 ```
 
 
-### `focus_workspace_down`
+### `focus-workspace-down`
 
-**KDL Action:** `focus-workspace-down`
+**Nix Function:** `focus_workspace_down`
 **Description:** Focus workspace below
 
 **Usage:**
@@ -1109,9 +2226,9 @@ binds {
 ```
 
 
-### `focus_workspace_previous`
+### `focus-workspace-previous`
 
-**KDL Action:** `focus-workspace-previous`
+**Nix Function:** `focus_workspace_previous`
 **Description:** Focus previously focused workspace
 
 **Usage:**
@@ -1129,9 +2246,9 @@ binds {
 ```
 
 
-### `focus_workspace_up`
+### `focus-workspace-up`
 
-**KDL Action:** `focus-workspace-up`
+**Nix Function:** `focus_workspace_up`
 **Description:** Focus workspace above
 
 **Usage:**
@@ -1149,9 +2266,9 @@ binds {
 ```
 
 
-### `fullscreen_window`
+### `fullscreen-window`
 
-**KDL Action:** `fullscreen-window`
+**Nix Function:** `fullscreen_window`
 **Description:** Toggle window fullscreen
 
 **Usage:**
@@ -1169,9 +2286,9 @@ binds {
 ```
 
 
-### `maximize_column`
+### `maximize-column`
 
-**KDL Action:** `maximize-column`
+**Nix Function:** `maximize_column`
 **Description:** Maximize column width
 
 **Usage:**
@@ -1189,9 +2306,9 @@ binds {
 ```
 
 
-### `maximize_window_to_edges`
+### `maximize-window-to-edges`
 
-**KDL Action:** `maximize-window-to-edges`
+**Nix Function:** `maximize_window_to_edges`
 **Description:** Maximize window to screen edges
 
 **Usage:**
@@ -1209,9 +2326,9 @@ binds {
 ```
 
 
-### `move_column_left`
+### `move-column-left`
 
-**KDL Action:** `move-column-left`
+**Nix Function:** `move_column_left`
 **Description:** Move column to the left
 
 **Usage:**
@@ -1229,9 +2346,9 @@ binds {
 ```
 
 
-### `move_column_left_or_to_monitor_left`
+### `move-column-left-or-to-monitor-left`
 
-**KDL Action:** `move-column-left-or-to-monitor-left`
+**Nix Function:** `move_column_left_or_to_monitor_left`
 **Description:** Move column left or to left monitor
 
 **Usage:**
@@ -1249,9 +2366,9 @@ binds {
 ```
 
 
-### `move_column_right`
+### `move-column-right`
 
-**KDL Action:** `move-column-right`
+**Nix Function:** `move_column_right`
 **Description:** Move column to the right
 
 **Usage:**
@@ -1269,9 +2386,9 @@ binds {
 ```
 
 
-### `move_column_right_or_to_monitor_right`
+### `move-column-right-or-to-monitor-right`
 
-**KDL Action:** `move-column-right-or-to-monitor-right`
+**Nix Function:** `move_column_right_or_to_monitor_right`
 **Description:** Move column right or to right monitor
 
 **Usage:**
@@ -1289,9 +2406,9 @@ binds {
 ```
 
 
-### `move_column_to_first`
+### `move-column-to-first`
 
-**KDL Action:** `move-column-to-first`
+**Nix Function:** `move_column_to_first`
 **Description:** Move column to first position
 
 **Usage:**
@@ -1309,9 +2426,9 @@ binds {
 ```
 
 
-### `move_column_to_index`
+### `move-column-to-index`
 
-**KDL Action:** `move-column-to-index`
+**Nix Function:** `move_column_to_index`
 **Description:** Move column to specific index
 
 **Usage:**
@@ -1329,9 +2446,9 @@ binds {
 ```
 
 
-### `move_column_to_last`
+### `move-column-to-last`
 
-**KDL Action:** `move-column-to-last`
+**Nix Function:** `move_column_to_last`
 **Description:** Move column to last position
 
 **Usage:**
@@ -1349,9 +2466,9 @@ binds {
 ```
 
 
-### `move_window_down`
+### `move-window-down`
 
-**KDL Action:** `move-window-down`
+**Nix Function:** `move_window_down`
 **Description:** Move window down in column
 
 **Usage:**
@@ -1369,9 +2486,9 @@ binds {
 ```
 
 
-### `move_window_down_or_to_workspace_down`
+### `move-window-down-or-to-workspace-down`
 
-**KDL Action:** `move-window-down-or-to-workspace-down`
+**Nix Function:** `move_window_down_or_to_workspace_down`
 **Description:** Move window down or to workspace below
 
 **Usage:**
@@ -1389,9 +2506,9 @@ binds {
 ```
 
 
-### `move_window_to_floating`
+### `move-window-to-floating`
 
-**KDL Action:** `move-window-to-floating`
+**Nix Function:** `move_window_to_floating`
 **Description:** Move window to floating layer
 
 **Usage:**
@@ -1409,9 +2526,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor`
+### `move-window-to-monitor`
 
-**KDL Action:** `move-window-to-monitor`
+**Nix Function:** `move_window_to_monitor`
 **Description:** Move window to specific monitor
 
 **Usage:**
@@ -1429,9 +2546,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor_down`
+### `move-window-to-monitor-down`
 
-**KDL Action:** `move-window-to-monitor-down`
+**Nix Function:** `move_window_to_monitor_down`
 **Description:** Move window to monitor below
 
 **Usage:**
@@ -1449,9 +2566,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor_left`
+### `move-window-to-monitor-left`
 
-**KDL Action:** `move-window-to-monitor-left`
+**Nix Function:** `move_window_to_monitor_left`
 **Description:** Move window to left monitor
 
 **Usage:**
@@ -1469,9 +2586,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor_next`
+### `move-window-to-monitor-next`
 
-**KDL Action:** `move-window-to-monitor-next`
+**Nix Function:** `move_window_to_monitor_next`
 **Description:** Move window to next monitor
 
 **Usage:**
@@ -1489,9 +2606,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor_previous`
+### `move-window-to-monitor-previous`
 
-**KDL Action:** `move-window-to-monitor-previous`
+**Nix Function:** `move_window_to_monitor_previous`
 **Description:** Move window to previous monitor
 
 **Usage:**
@@ -1509,9 +2626,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor_right`
+### `move-window-to-monitor-right`
 
-**KDL Action:** `move-window-to-monitor-right`
+**Nix Function:** `move_window_to_monitor_right`
 **Description:** Move window to right monitor
 
 **Usage:**
@@ -1529,9 +2646,9 @@ binds {
 ```
 
 
-### `move_window_to_monitor_up`
+### `move-window-to-monitor-up`
 
-**KDL Action:** `move-window-to-monitor-up`
+**Nix Function:** `move_window_to_monitor_up`
 **Description:** Move window to monitor above
 
 **Usage:**
@@ -1549,9 +2666,9 @@ binds {
 ```
 
 
-### `move_window_to_tiling`
+### `move-window-to-tiling`
 
-**KDL Action:** `move-window-to-tiling`
+**Nix Function:** `move_window_to_tiling`
 **Description:** Move window to tiling layer
 
 **Usage:**
@@ -1569,9 +2686,9 @@ binds {
 ```
 
 
-### `move_window_up`
+### `move-window-up`
 
-**KDL Action:** `move-window-up`
+**Nix Function:** `move_window_up`
 **Description:** Move window up in column
 
 **Usage:**
@@ -1589,9 +2706,9 @@ binds {
 ```
 
 
-### `move_window_up_or_to_workspace_up`
+### `move-window-up-or-to-workspace-up`
 
-**KDL Action:** `move-window-up-or-to-workspace-up`
+**Nix Function:** `move_window_up_or_to_workspace_up`
 **Description:** Move window up or to workspace above
 
 **Usage:**
@@ -1609,9 +2726,9 @@ binds {
 ```
 
 
-### `open_overview`
+### `open-overview`
 
-**KDL Action:** `open-overview`
+**Nix Function:** `open_overview`
 **Description:** Open overview mode
 
 **Usage:**
@@ -1629,9 +2746,9 @@ binds {
 ```
 
 
-### `power_off_monitors`
+### `power-off-monitors`
 
-**KDL Action:** `power-off-monitors`
+**Nix Function:** `power_off_monitors`
 **Description:** Turn off all monitors
 
 **Usage:**
@@ -1649,9 +2766,9 @@ binds {
 ```
 
 
-### `power_on_monitors`
+### `power-on-monitors`
 
-**KDL Action:** `power-on-monitors`
+**Nix Function:** `power_on_monitors`
 **Description:** Turn on all monitors
 
 **Usage:**
@@ -1671,7 +2788,7 @@ binds {
 
 ### `quit`
 
-**KDL Action:** `quit`
+**Nix Function:** `quit`
 **Description:** Quit niri compositor
 
 **Usage:**
@@ -1691,7 +2808,7 @@ binds {
 
 ### `screenshot`
 
-**KDL Action:** `screenshot`
+**Nix Function:** `screenshot`
 **Description:** Take a screenshot
 
 **Usage:**
@@ -1709,9 +2826,9 @@ binds {
 ```
 
 
-### `screenshot_screen`
+### `screenshot-screen`
 
-**KDL Action:** `screenshot-screen`
+**Nix Function:** `screenshot_screen`
 **Description:** Take a screenshot of entire screen
 
 **Usage:**
@@ -1729,9 +2846,9 @@ binds {
 ```
 
 
-### `screenshot_window`
+### `screenshot-window`
 
-**KDL Action:** `screenshot-window`
+**Nix Function:** `screenshot_window`
 **Description:** Take a screenshot of current window
 
 **Usage:**
@@ -1749,9 +2866,9 @@ binds {
 ```
 
 
-### `set_column_width`
+### `set-column-width`
 
-**KDL Action:** `set-column-width`
+**Nix Function:** `set_column_width`
 **Description:** Set column width
 
 **Usage:**
@@ -1769,9 +2886,9 @@ binds {
 ```
 
 
-### `show_hotkey_overlay`
+### `show-hotkey-overlay`
 
-**KDL Action:** `show-hotkey-overlay`
+**Nix Function:** `show_hotkey_overlay`
 **Description:** Show hotkey overlay
 
 **Usage:**
@@ -1791,7 +2908,7 @@ binds {
 
 ### `spawn`
 
-**KDL Action:** `spawn`
+**Nix Function:** `spawn`
 **Description:** Execute a command
 
 **Usage:**
@@ -1809,9 +2926,9 @@ binds {
 ```
 
 
-### `spawn_sh`
+### `spawn-sh`
 
-**KDL Action:** `spawn-sh`
+**Nix Function:** `spawn_sh`
 **Description:** Execute a shell command
 
 **Usage:**
@@ -1831,7 +2948,7 @@ binds {
 
 ### `suspend`
 
-**KDL Action:** `suspend`
+**Nix Function:** `suspend`
 **Description:** Suspend the system
 
 **Usage:**
@@ -1849,9 +2966,9 @@ binds {
 ```
 
 
-### `switch_focus_between_floating_and_tiling`
+### `switch-focus-between-floating-and-tiling`
 
-**KDL Action:** `switch-focus-between-floating-and-tiling`
+**Nix Function:** `switch_focus_between_floating_and_tiling`
 **Description:** Switch focus between floating and tiling
 
 **Usage:**
@@ -1869,9 +2986,9 @@ binds {
 ```
 
 
-### `toggle_debug_tint`
+### `toggle-debug-tint`
 
-**KDL Action:** `toggle-debug-tint`
+**Nix Function:** `toggle_debug_tint`
 **Description:** Toggle debug tint overlay
 
 **Usage:**
@@ -1889,9 +3006,9 @@ binds {
 ```
 
 
-### `toggle_keyboard_shortcuts_inhibit`
+### `toggle-keyboard-shortcuts-inhibit`
 
-**KDL Action:** `toggle-keyboard-shortcuts-inhibit`
+**Nix Function:** `toggle_keyboard_shortcuts_inhibit`
 **Description:** Toggle keyboard shortcuts inhibition
 
 **Usage:**
@@ -1909,9 +3026,9 @@ binds {
 ```
 
 
-### `toggle_overview`
+### `toggle-overview`
 
-**KDL Action:** `toggle-overview`
+**Nix Function:** `toggle_overview`
 **Description:** Toggle overview mode
 
 **Usage:**
@@ -1929,9 +3046,9 @@ binds {
 ```
 
 
-### `toggle_window_floating`
+### `toggle-window-floating`
 
-**KDL Action:** `toggle-window-floating`
+**Nix Function:** `toggle_window_floating`
 **Description:** Toggle window between floating and tiling
 
 **Usage:**
@@ -1949,9 +3066,9 @@ binds {
 ```
 
 
-### `toggle_windowed_fullscreen`
+### `toggle-windowed-fullscreen`
 
-**KDL Action:** `toggle-windowed-fullscreen`
+**Nix Function:** `toggle_windowed_fullscreen`
 **Description:** Toggle windowed fullscreen
 
 **Usage:**
@@ -2323,34 +3440,7 @@ When reporting issues, include:
 
 ---
 
-## Niri Version Information
-
-This module is generated from the niri Wayland compositor source code to ensure complete compatibility and feature coverage.
-
-### Current Integration
-
-**Niri Commit:** [\`dfcbbbb03071cadf3fd9bbb0903ead364a839412\`](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412)
-**Commit Message:** Merge branch 'YaLTeR:main' into main
-**Integration SHA256:** \`sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\`
-
-### Latest Niri Development
-
-**Latest Commit:** [\`dfcbbbb03071cadf3fd9bbb0903ead364a839412\`](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412)
-**Commit Date:** 2025-11-18T19:32:51Z
-
-### Automatic Updates
-
-This module is automatically updated when new niri commits are available. The GitHub Actions workflow:
-- Monitors the [niri repository](https://github.com/soulvice/niri) for changes
-- Automatically regenerates the module when new commits are detected
-- Updates documentation and examples
-- Creates pull requests for review and integration
-
-### Version Compatibility
-
-| Component | Version |
-|-----------|---------|
-| Niri Source | [\`dfcbbbb03071cadf3fd9bbb0903ead364a839412\`](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412) |
-| Module Generated | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
-| Documentation | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
-
+**Generation Info:**
+- Generated on: 2025-11-19 19:52:22 UTC
+- Niri commit: e0fe1a8b97c303da017906b18cbb53d3eacc354c
+- Workflow run: [\#6](https://github.com/soulvice/niri-flake/actions/runs/19514449325)
