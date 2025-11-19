@@ -65,6 +65,9 @@ EOF
             # Use shared actions library
             actionsLib = import ./generator/actions-lib.nix;
 
+            # Import the niri settings schema for comprehensive option documentation
+            schema = import ./generator/niri-settings-schema.nix { inherit (pkgs) lib; };
+
             # Extract niri version info
             niriInfo = {
               commit = "dfcbbbb03071cadf3fd9bbb0903ead364a839412";
@@ -73,7 +76,7 @@ EOF
             };
 
             docs = generator.generateComprehensiveDocs {
-              inherit nixTypes actionsLib;
+              inherit nixTypes actionsLib schema;
               moduleOptions = niriInfo;
             };
           in

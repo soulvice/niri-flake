@@ -49,13 +49,13 @@ let
       "`${toString defaultValue}`"
     else if builtins.isList defaultValue then
       if length defaultValue == 0 then "`[]` (empty list)"
-      else "`[ ${concatStringsSep ", " (map toString (builtins.take 3 defaultValue))}${if length defaultValue > 3 then ", ..." else ""} ]`"
+      else "`[ ${concatStringsSep ", " (map toString (lib.take 3 defaultValue))}${if length defaultValue > 3 then ", ..." else ""} ]`"
     else if builtins.isAttrs defaultValue then
       if defaultValue == {} then "`{}` (empty attribute set)"
       else
         let
           keys = attrNames defaultValue;
-          displayKeys = builtins.take 3 keys;
+          displayKeys = lib.take 3 keys;
           moreKeys = length keys > 3;
         in
         "`{ ${concatStringsSep ", " (map (k: "${k} = ...") displayKeys)}${if moreKeys then ", ..." else ""} }`"
@@ -97,15 +97,31 @@ let
       description = escapeMarkdown (option.description or "No description available.");
 
       # Check if this has sub-options
-      hasSubOptions = option ? options || option ? type.functor.wrapped.options;
+      hasSubOptions = option ? options ||
+                      option ? type.functor.wrapped.options ||
+                      (option ? type && option.type ? getSubOptions);
 
       subOptionsDoc =
         if hasSubOptions then
           let
-            subOptions = option.options or option.type.functor.wrapped.options or {};
+            subOptions =
+              if option ? options then option.options
+              else if option ? type.functor.wrapped.options then option.type.functor.wrapped.options
+              else if option ? type && option.type ? getSubOptions then
+                let
+                  extracted = option.type.getSubOptions [];
+                in
+                  # getSubOptions returns an attrset, but handle case where it might not
+                  if builtins.isAttrs extracted then extracted else {}
+              else {};
+            # Filter out internal module options (only if subOptions is an attrset)
+            filteredSubOptions = if builtins.isAttrs subOptions then
+              lib.filterAttrs (name: value: !lib.hasPrefix "_" name) subOptions
+            else
+              {};
             subOptionsList = mapAttrsToList (name: subOpt:
               generateOptionDoc fullPath name subOpt typeInfo (depth + 1)
-            ) subOptions;
+            ) filteredSubOptions;
           in
           if subOptionsList != [] then
             "\n\n" + concatStringsSep "\n\n" subOptionsList
@@ -294,10 +310,37 @@ let
       ${concatStringsSep "\n\n" (map formatAction sortedActions)}
     '';
 
+  # Extract options from Nix type definition recursively
+  extractOptionsFromType = type:
+    if type ? getSubOptions then
+      # This is a submodule type - use getSubOptions to get the options
+      type.getSubOptions []
+    else if type ? options then
+      type.options
+    else if type ? functor && type.functor ? wrapped then
+      extractOptionsFromType type.functor.wrapped
+    else if type ? type && type.type ? options then
+      type.type.options
+    else if type ? nestedTypes && type.nestedTypes ? elemType then
+      extractOptionsFromType type.nestedTypes.elemType
+    else
+      {};
+
   # Generate comprehensive module options documentation
-  generateModuleOptionsDoc = { nixTypes ? {}, moduleOptions ? {} }:
+  generateModuleOptionsDoc = { schema ? null, nixTypes ? {}, moduleOptions ? {} }:
     let
-      # Main niri settings structure based on actual niri configuration
+      # Extract settings options from schema if available
+      settingsOptions = if schema != null && schema ? niriSettingsType then
+        let
+          allOptions = extractOptionsFromType schema.niriSettingsType;
+          # Filter out internal module system options that start with _
+          filteredOptions = lib.filterAttrs (name: value: !lib.hasPrefix "_" name) allOptions;
+        in
+          filteredOptions
+      else
+        {};
+
+      # Main niri module options structure
       niriOptions = {
         enable = {
           type = lib.types.bool;
@@ -311,232 +354,6 @@ let
           description = "The niri package to use.";
         };
 
-        settings = {
-          type = lib.types.submodule {
-            options = {
-              input = {
-                type = lib.types.submodule {
-                  options = {
-                    keyboard = {
-                      type = lib.types.submodule {
-                        options = {
-                          xkb = {
-                            type = lib.types.submodule {
-                              options = {
-                                layout = { type = lib.types.str; default = "us"; description = "Keyboard layout"; };
-                                variant = { type = lib.types.str; default = ""; description = "Layout variant"; };
-                                options = { type = lib.types.str; default = ""; description = "XKB options"; };
-                                model = { type = lib.types.str; default = ""; description = "Keyboard model"; };
-                                rules = { type = lib.types.str; default = ""; description = "XKB rules"; };
-                              };
-                            };
-                            default = {};
-                            description = "XKB keyboard configuration";
-                          };
-                          repeat_delay = { type = lib.types.int; default = 600; description = "Key repeat delay in milliseconds"; };
-                          repeat_rate = { type = lib.types.int; default = 25; description = "Key repeat rate per second"; };
-                          track_layout = { type = lib.types.enum ["global" "window"]; default = "global"; description = "How to track keyboard layout"; };
-                        };
-                      };
-                      default = {};
-                      description = "Keyboard input configuration";
-                    };
-
-                    touchpad = {
-                      type = lib.types.submodule {
-                        options = {
-                          off = { type = lib.types.bool; default = false; description = "Disable touchpad"; };
-                          tap = { type = lib.types.bool; default = true; description = "Enable tap to click"; };
-                          dwt = { type = lib.types.bool; default = false; description = "Disable while typing"; };
-                          dwtp = { type = lib.types.bool; default = false; description = "Disable while trackpoint"; };
-                          natural_scroll = { type = lib.types.bool; default = true; description = "Natural scrolling"; };
-                          accel_speed = { type = lib.types.float; default = 0.0; description = "Acceleration speed"; };
-                          accel_profile = { type = lib.types.enum ["adaptive" "flat"]; default = "adaptive"; description = "Acceleration profile"; };
-                          scroll_method = { type = lib.types.enum ["no-scroll" "two-finger" "edge" "on-button-down"]; default = "two-finger"; description = "Scroll method"; };
-                          click_method = { type = lib.types.enum ["clickfinger" "button-areas"]; default = "clickfinger"; description = "Click method"; };
-                          tap_button_map = { type = lib.types.enum ["left-right-middle" "left-middle-right"]; default = "left-right-middle"; description = "Tap button mapping"; };
-                        };
-                      };
-                      default = {};
-                      description = "Touchpad input configuration";
-                    };
-
-                    mouse = {
-                      type = lib.types.submodule {
-                        options = {
-                          off = { type = lib.types.bool; default = false; description = "Disable mouse"; };
-                          natural_scroll = { type = lib.types.bool; default = false; description = "Natural scrolling"; };
-                          accel_speed = { type = lib.types.float; default = 0.0; description = "Acceleration speed"; };
-                          accel_profile = { type = lib.types.enum ["adaptive" "flat"]; default = "adaptive"; description = "Acceleration profile"; };
-                          scroll_method = { type = lib.types.enum ["no-scroll" "on-button-down"]; default = "no-scroll"; description = "Scroll method"; };
-                        };
-                      };
-                      default = {};
-                      description = "Mouse input configuration";
-                    };
-
-                    focus_follows_mouse = {
-                      type = lib.types.submodule {
-                        options = {
-                          enable = { type = lib.types.bool; default = false; description = "Enable focus follows mouse"; };
-                          max_scroll_amount = { type = lib.types.str; default = "0%"; description = "Maximum scroll amount"; };
-                        };
-                      };
-                      default = {};
-                      description = "Focus follows mouse configuration";
-                    };
-                  };
-                };
-                default = {};
-                description = "Input device configuration";
-              };
-
-              layout = {
-                type = lib.types.submodule {
-                  options = {
-                    gaps = { type = lib.types.int; default = 16; description = "Gaps around windows in logical pixels"; };
-                    center_focused_column = { type = lib.types.enum ["never" "always" "on-overflow"]; default = "never"; description = "When to center focused column"; };
-                    always_center_single_column = { type = lib.types.bool; default = false; description = "Always center single column"; };
-                    default_column_width = { type = lib.types.attrs; default = {}; description = "Default width for new columns"; };
-                    preset_column_widths = { type = lib.types.listOf lib.types.attrs; default = []; description = "Preset column widths"; };
-                    preset_window_heights = { type = lib.types.listOf lib.types.attrs; default = []; description = "Preset window heights"; };
-
-                    focus_ring = {
-                      type = lib.types.submodule {
-                        options = {
-                          off = { type = lib.types.bool; default = false; description = "Disable focus ring"; };
-                          enable = { type = lib.types.bool; default = true; description = "Enable focus ring"; };
-                          width = { type = lib.types.int; default = 4; description = "Focus ring width in pixels"; };
-                          active_color = { type = lib.types.str; default = "#7fc8ff"; description = "Active focus ring color"; };
-                          inactive_color = { type = lib.types.str; default = "#505050"; description = "Inactive focus ring color"; };
-                        };
-                      };
-                      default = {};
-                      description = "Focus ring configuration";
-                    };
-
-                    border = {
-                      type = lib.types.submodule {
-                        options = {
-                          off = { type = lib.types.bool; default = false; description = "Disable border"; };
-                          enable = { type = lib.types.bool; default = false; description = "Enable border"; };
-                          width = { type = lib.types.int; default = 4; description = "Border width in pixels"; };
-                          active_color = { type = lib.types.str; default = "#ffc87f"; description = "Active border color"; };
-                          inactive_color = { type = lib.types.str; default = "#505050"; description = "Inactive border color"; };
-                          urgent_color = { type = lib.types.str; default = "#9b0000"; description = "Urgent border color"; };
-                        };
-                      };
-                      default = {};
-                      description = "Border configuration";
-                    };
-                  };
-                };
-                default = {};
-                description = "Window layout configuration";
-              };
-
-              binds = {
-                type = lib.types.attrsOf (lib.types.submodule {
-                  options = {
-                    action = { type = lib.types.str; description = "The action to perform"; };
-                    repeat = { type = lib.types.bool; default = true; description = "Allow key repeat"; };
-                    cooldown_ms = { type = lib.types.nullOr lib.types.int; default = null; description = "Cooldown in milliseconds"; };
-                    allow_when_locked = { type = lib.types.bool; default = false; description = "Allow when session locked"; };
-                    allow_inhibiting = { type = lib.types.bool; default = true; description = "Allow inhibiting"; };
-                    hotkey_overlay_title = { type = lib.types.nullOr lib.types.str; default = null; description = "Title for hotkey overlay"; };
-                  };
-                });
-                default = {};
-                description = "Keyboard and mouse bindings. Key is the key combination (e.g., 'Mod+Return').";
-              };
-
-              outputs = {
-                type = lib.types.listOf (lib.types.submodule {
-                  options = {
-                    name = { type = lib.types.str; description = "Output name (e.g., 'DP-1')"; };
-                    scale = { type = lib.types.float; default = 1.0; description = "Output scaling factor"; };
-                    transform = { type = lib.types.enum ["normal" "90" "180" "270" "flipped" "flipped-90" "flipped-180" "flipped-270"]; default = "normal"; description = "Output transform"; };
-                    position = { type = lib.types.submodule {
-                      options = {
-                        x = { type = lib.types.int; description = "X coordinate"; };
-                        y = { type = lib.types.int; description = "Y coordinate"; };
-                      };
-                    }; description = "Output position"; };
-                    mode = { type = lib.types.submodule {
-                      options = {
-                        width = { type = lib.types.int; description = "Width in pixels"; };
-                        height = { type = lib.types.int; description = "Height in pixels"; };
-                        refresh_rate = { type = lib.types.float; description = "Refresh rate in Hz"; };
-                      };
-                    }; description = "Output mode"; };
-                  };
-                });
-                default = [];
-                description = "Output (monitor) configurations";
-              };
-
-              window_rules = {
-                type = lib.types.listOf (lib.types.submodule {
-                  options = {
-                    matches = { type = lib.types.listOf lib.types.attrs; description = "Window matching criteria"; };
-                    open_on_output = { type = lib.types.nullOr lib.types.str; default = null; description = "Output to open window on"; };
-                    open_on_workspace = { type = lib.types.nullOr lib.types.str; default = null; description = "Workspace to open window on"; };
-                    open_floating = { type = lib.types.nullOr lib.types.bool; default = null; description = "Open as floating window"; };
-                    open_fullscreen = { type = lib.types.nullOr lib.types.bool; default = null; description = "Open in fullscreen"; };
-                    open_maximized = { type = lib.types.nullOr lib.types.bool; default = null; description = "Open maximized"; };
-                    default_column_width = { type = lib.types.nullOr lib.types.attrs; default = null; description = "Default column width"; };
-                    min_width = { type = lib.types.nullOr lib.types.int; default = null; description = "Minimum width"; };
-                    min_height = { type = lib.types.nullOr lib.types.int; default = null; description = "Minimum height"; };
-                    max_width = { type = lib.types.nullOr lib.types.int; default = null; description = "Maximum width"; };
-                    max_height = { type = lib.types.nullOr lib.types.int; default = null; description = "Maximum height"; };
-                    exclude_from_screenshot = { type = lib.types.nullOr lib.types.bool; default = null; description = "Exclude from screenshots"; };
-                    block_out_from = { type = lib.types.nullOr lib.types.str; default = null; description = "Block out from screen capture"; };
-                  };
-                });
-                default = [];
-                description = "Window-specific rules";
-              };
-
-              animations = {
-                type = lib.types.submodule {
-                  options = {
-                    off = { type = lib.types.bool; default = false; description = "Disable all animations"; };
-                    slowdown = { type = lib.types.float; default = 1.0; description = "Animation slowdown factor"; };
-                    workspace_switch = { type = lib.types.attrs; default = {}; description = "Workspace switch animation"; };
-                    window_open = { type = lib.types.attrs; default = {}; description = "Window open animation"; };
-                    window_close = { type = lib.types.attrs; default = {}; description = "Window close animation"; };
-                    window_movement = { type = lib.types.attrs; default = {}; description = "Window movement animation"; };
-                    window_resize = { type = lib.types.attrs; default = {}; description = "Window resize animation"; };
-                    horizontal_view_movement = { type = lib.types.attrs; default = {}; description = "Horizontal view movement animation"; };
-                  };
-                };
-                default = {};
-                description = "Animation configuration";
-              };
-
-              spawn_at_startup = {
-                type = lib.types.listOf lib.types.str;
-                default = [];
-                description = "Commands to run at startup";
-              };
-
-              environment = {
-                type = lib.types.attrsOf lib.types.str;
-                default = {};
-                description = "Environment variables to set";
-              };
-
-              workspaces = {
-                type = lib.types.attrsOf lib.types.attrs;
-                default = {};
-                description = "Workspace definitions. Key is workspace name.";
-              };
-            };
-          };
-          default = {};
-          description = "Niri configuration settings";
-        };
-
         extraConfig = {
           type = lib.types.lines;
           default = "";
@@ -545,10 +362,22 @@ let
 
         finalConfigFile = {
           type = lib.types.path;
+          default = null;
           description = "Generated KDL configuration file (read-only)";
-          readOnly = true;
         };
-      };
+      } // (if settingsOptions != {} then {
+        settings = {
+          type = lib.types.submodule { options = settingsOptions; };
+          default = {};
+          description = "Niri configuration settings";
+        };
+      } else {
+        settings = {
+          type = lib.types.attrs;
+          default = {};
+          description = "Niri configuration settings";
+        };
+      });
 
       generateOptionsForObject = basePath: options: depth:
         let
@@ -576,7 +405,7 @@ let
     '';
 
   # Main documentation generator
-  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, moduleOptions ? {}, niriInfo ? {} }:
+  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, schema ? null, moduleOptions ? {}, niriInfo ? {} }:
     let
       timestamp = builtins.readFile (builtins.toFile "timestamp" "<!-- Generated at build time -->");
 
@@ -1143,7 +972,7 @@ let
 
       ${quickStart}
 
-      ${generateModuleOptionsDoc { inherit nixTypes moduleOptions; }}
+      ${generateModuleOptionsDoc { inherit schema nixTypes moduleOptions; }}
 
       ${generateActionsDoc actionsLib}
 

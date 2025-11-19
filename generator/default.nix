@@ -36,9 +36,9 @@ in {
     };
 
   # Generate comprehensive documentation
-  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, moduleOptions ? {} }:
+  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, schema ? null, moduleOptions ? {} }:
     enhancedDocsGenerator.generateComprehensiveDocs {
-      inherit nixTypes actionsLib moduleOptions;
+      inherit nixTypes actionsLib schema moduleOptions;
     };
 
   # Generate module file as string (for static file generation)
