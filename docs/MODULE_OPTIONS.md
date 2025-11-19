@@ -7,7 +7,7 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Complete Module Options Reference](#complete-module-options-reference)
+- [Module Options](#module-options)
 - [Actions Library Reference](#actions-library-reference)
 - [Configuration Examples](#configuration-examples)
 - [Type Reference](#type-reference)
@@ -25,7 +25,7 @@ The **niri-flake** provides a comprehensive, type-safe home-manager module for c
 ### Key Features
 
 - 🔒 **Type Safety** - Comprehensive validation catches errors at build time
-- 🎯 **Complete Coverage** - All 87 niri actions available
+- 🎯 **Complete Coverage** - All 72 niri actions available
 - 🔄 **Auto-Generated** - Always up-to-date with niri development
 - 📖 **Rich Documentation** - Detailed descriptions and examples
 - 🎨 **Flexible** - Structured Nix + raw KDL support
@@ -156,7 +156,7 @@ programs.niri = {
 ```
 
 
-## Complete Module Options Reference
+## Module Options
 
 This section documents all available configuration options for the niri home-manager module. Options are organized hierarchically and include type information, default values, and descriptions.
 
@@ -2323,34 +2323,7 @@ When reporting issues, include:
 
 ---
 
-## Niri Version Information
-
-This module is generated from the niri Wayland compositor source code to ensure complete compatibility and feature coverage.
-
-### Current Integration
-
-**Niri Commit:** [\`dfcbbbb03071cadf3fd9bbb0903ead364a839412\`](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412)
-**Commit Message:** Merge branch 'YaLTeR:main' into main
-**Integration SHA256:** \`sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\`
-
-### Latest Niri Development
-
-**Latest Commit:** [\`dfcbbbb03071cadf3fd9bbb0903ead364a839412\`](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412)
-**Commit Date:** 2025-11-18T19:32:51Z
-
-### Automatic Updates
-
-This module is automatically updated when new niri commits are available. The GitHub Actions workflow:
-- Monitors the [niri repository](https://github.com/soulvice/niri) for changes
-- Automatically regenerates the module when new commits are detected
-- Updates documentation and examples
-- Creates pull requests for review and integration
-
-### Version Compatibility
-
-| Component | Version |
-|-----------|---------|
-| Niri Source | [\`dfcbbbb03071cadf3fd9bbb0903ead364a839412\`](https://github.com/soulvice/niri/commit/dfcbbbb03071cadf3fd9bbb0903ead364a839412) |
-| Module Generated | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
-| Documentation | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
-
+**Generation Info:**
+- Generated on: 2025-11-19 13:30:31 UTC
+- Niri commit: 9358f2c1cfe61206749af3a3389971906da42c01
+- Workflow run: [\#4](https://github.com/soulvice/niri-flake/actions/runs/19503016415)
