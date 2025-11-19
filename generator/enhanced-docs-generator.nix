@@ -247,13 +247,13 @@ let
         close_overview = { kdl = "close-overview"; desc = "Close overview mode"; example = "close_overview"; };
       };
 
-      sortedActions = sort (a: b: a.name < b.name) (mapAttrsToList (name: action: { inherit name action; }) allActions);
+      sortedActions = sort (a: b: a.action.kdl < b.action.kdl) (mapAttrsToList (name: action: { inherit name action; }) allActions);
 
       formatAction = { name, action }:
         ''
-          ### `${name}`
+          ### `${action.kdl}`
 
-          **KDL Action:** `${action.kdl}`
+          **Nix Function:** `${name}`
           **Description:** ${action.desc}
 
           **Usage:**
