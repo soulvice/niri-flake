@@ -141,9 +141,41 @@ let
     close_overview = "close-overview";
   };
 
+  # Extract niri version information from flake.nix
+  flakeContents = builtins.readFile ./flake.nix;
+
+  # Extract commit hash from flake.nix
+  extractCommit = content:
+    let
+      lines = lib.splitString "\n" content;
+      revLine = lib.findFirst (line: lib.hasInfix "rev =" line) "" lines;
+      matches = builtins.match ".*rev = \"([^\"]*)\";.*" revLine;
+    in
+    if matches != null then builtins.head matches else null;
+
+  # Extract sha256 from flake.nix
+  extractSha256 = content:
+    let
+      lines = lib.splitString "\n" content;
+      shaLine = lib.findFirst (line: lib.hasInfix "sha256 =" line) "" lines;
+      matches = builtins.match ".*sha256 = \"([^\"]*)\";.*" shaLine;
+    in
+    if matches != null then builtins.head matches else null;
+
+  commit = extractCommit flakeContents;
+  sha256 = extractSha256 flakeContents;
+
+  # Niri version information
+  niriInfo = {
+    commit = commit;
+    sha256 = sha256;
+    commitMessage = "Latest integrated commit"; # Could be enhanced with API call
+    repository = "soulvice/niri";
+  };
+
   # Generate comprehensive documentation
   docs = generator.generateComprehensiveDocs {
-    inherit nixTypes actionsLib;
+    inherit nixTypes actionsLib niriInfo;
   };
 
 in pkgs.writeTextFile {

@@ -1,0 +1,211 @@
+name: External Repository Trigger
+
+# This workflow is triggered by external repositories via repository_dispatch
+# Currently configured to listen for updates from soulvice/niri
+
+on:
+  repository_dispatch:
+    types:
+      - niri-update      # New commit in niri main branch
+      - niri-push        # Any push to niri repository
+      - niri-release     # New release in niri repository
+      - niri-pr          # New PR in niri repository (for testing)
+
+  workflow_dispatch:
+    inputs:
+      event_type:
+        description: 'Type of event to simulate'
+        required: true
+        default: 'niri-update'
+        type: choice
+        options:
+          - niri-update
+          - niri-push
+          - niri-release
+          - niri-pr
+      niri_ref:
+        description: 'Niri commit/ref to process'
+        required: false
+        default: 'main'
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  process-external-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract event information
+        id: event-info
+        run: |
+          # Extract information from the repository_dispatch event
+          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            EVENT_TYPE="${{ github.event.action }}"
+            CLIENT_PAYLOAD='${{ toJson(github.event.client_payload) }}'
+
+            echo "Event type: $EVENT_TYPE"
+            echo "Client payload: $CLIENT_PAYLOAD"
+
+            # Parse client payload for niri-specific information
+            NIRI_REF=$(echo "$CLIENT_PAYLOAD" | jq -r '.ref // "main"')
+            NIRI_SHA=$(echo "$CLIENT_PAYLOAD" | jq -r '.sha // ""')
+            NIRI_REPO=$(echo "$CLIENT_PAYLOAD" | jq -r '.repository // "soulvice/niri"')
+            COMMIT_MESSAGE=$(echo "$CLIENT_PAYLOAD" | jq -r '.commit_message // ""')
+            PUSHER=$(echo "$CLIENT_PAYLOAD" | jq -r '.pusher // ""')
+
+          else
+            # Manual workflow dispatch
+            EVENT_TYPE="${{ github.event.inputs.event_type }}"
+            NIRI_REF="${{ github.event.inputs.niri_ref || 'main' }}"
+            NIRI_SHA=""
+            NIRI_REPO="soulvice/niri"
+            COMMIT_MESSAGE="Manual trigger"
+            PUSHER="${{ github.actor }}"
+          fi
+
+          echo "event_type=$EVENT_TYPE" >> $GITHUB_OUTPUT
+          echo "niri_ref=$NIRI_REF" >> $GITHUB_OUTPUT
+          echo "niri_sha=$NIRI_SHA" >> $GITHUB_OUTPUT
+          echo "niri_repo=$NIRI_REPO" >> $GITHUB_OUTPUT
+          echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          echo "pusher=$PUSHER" >> $GITHUB_OUTPUT
+
+          echo "Processed external trigger:"
+          echo "  Event: $EVENT_TYPE"
+          echo "  Niri ref: $NIRI_REF"
+          echo "  Niri SHA: $NIRI_SHA"
+          echo "  Repository: $NIRI_REPO"
+
+      - name: Validate trigger
+        id: validate
+        run: |
+          EVENT_TYPE="${{ steps.event-info.outputs.event_type }}"
+          NIRI_REPO="${{ steps.event-info.outputs.niri_repo }}"
+
+          # Only process triggers from the official niri repository
+          if [[ "$NIRI_REPO" != "soulvice/niri" ]]; then
+            echo "⚠️ Ignoring trigger from unrecognized repository: $NIRI_REPO"
+            echo "should_process=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Determine if we should process this event
+          SHOULD_PROCESS="true"
+          case "$EVENT_TYPE" in
+            "niri-update"|"niri-push")
+              echo "✅ Processing niri update/push trigger"
+              ;;
+            "niri-release")
+              echo "✅ Processing niri release trigger"
+              ;;
+            "niri-pr")
+              echo "ℹ️ Processing niri PR trigger (for testing)"
+              # You might want to set SHOULD_PROCESS="false" for PRs in production
+              ;;
+            *)
+              echo "❓ Unknown event type: $EVENT_TYPE"
+              ;;
+          esac
+
+          echo "should_process=$SHOULD_PROCESS" >> $GITHUB_OUTPUT
+
+      - name: Trigger niri module update
+        if: steps.validate.outputs.should_process == 'true'
+        run: |
+          # Trigger the main update workflow
+          EVENT_TYPE="${{ steps.event-info.outputs.event_type }}"
+          NIRI_REF="${{ steps.event-info.outputs.niri_ref }}"
+          COMMIT_MESSAGE="${{ steps.event-info.outputs.commit_message }}"
+          PUSHER="${{ steps.event-info.outputs.pusher }}"
+
+          echo "🚀 Triggering niri module update workflow..."
+
+          # Create a more descriptive trigger message
+          TRIGGER_MESSAGE="External trigger: $EVENT_TYPE"
+          if [[ -n "$COMMIT_MESSAGE" && "$COMMIT_MESSAGE" != "null" ]]; then
+            TRIGGER_MESSAGE="$TRIGGER_MESSAGE - $COMMIT_MESSAGE"
+          fi
+
+          # Trigger the update workflow with the niri ref
+          gh workflow run "Update Niri Module" \
+            --field force_update=true \
+            --field niri_ref="$NIRI_REF" \
+            --field trigger_source="external:$EVENT_TYPE" 2>/dev/null || {
+              echo "Failed to trigger via GitHub CLI, trying curl..."
+
+              # Fallback to curl if gh CLI fails
+              curl -X POST \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-niri-module.yml/dispatches \
+                -d "{\"ref\":\"main\",\"inputs\":{\"force_update\":\"true\",\"niri_ref\":\"$NIRI_REF\",\"trigger_source\":\"external:$EVENT_TYPE\"}}"
+            }
+
+          echo "✅ Update workflow triggered"
+          echo "   Event: $EVENT_TYPE"
+          echo "   Niri ref: $NIRI_REF"
+          echo "   Triggered by: $PUSHER"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create issue on failure
+        if: failure()
+        run: |
+          # Create an issue if the external trigger processing fails
+          EVENT_TYPE="${{ steps.event-info.outputs.event_type }}"
+          NIRI_REF="${{ steps.event-info.outputs.niri_ref }}"
+
+          ISSUE_TITLE="External trigger processing failed: $EVENT_TYPE"
+          ISSUE_BODY="## External Trigger Processing Failure
+
+          **Event Type:** $EVENT_TYPE
+          **Niri Ref:** $NIRI_REF
+          **Triggered At:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          **Run ID:** ${{ github.run_id }}
+
+          ### Event Details
+
+          \`\`\`json
+          ${{ toJson(github.event) }}
+          \`\`\`
+
+          ### Action Required
+
+          Please investigate the failure and ensure external triggers are working correctly.
+
+          **Workflow Run:** [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          "
+
+          gh issue create \
+            --title "$ISSUE_TITLE" \
+            --body "$ISSUE_BODY" \
+            --label "bug,automation,external-trigger" || echo "Failed to create issue"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  log-event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log external event
+        run: |
+          echo "=== External Repository Event Log ==="
+          echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "Event Name: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+
+          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            echo "Action: ${{ github.event.action }}"
+            echo "Client Payload:"
+            echo '${{ toJson(github.event.client_payload) }}' | jq .
+          fi
+
+          echo "==================================="

@@ -85,8 +85,15 @@ EOF
               quit = "quit";
             };
 
+            # Extract niri version info
+            niriInfo = {
+              commit = "dfcbbbb03071cadf3fd9bbb0903ead364a839412";
+              sha256 = "0ad642z34vfvdv22bzl7m9c13f1m45va43whmjhvyxkqf72nssj5";
+              repository = "soulvice/niri";
+            };
+
             docs = generator.generateComprehensiveDocs {
-              inherit nixTypes actionsLib;
+              inherit nixTypes actionsLib niriInfo;
             };
           in
           pkgs.writeText "niri-module-docs.md" docs;

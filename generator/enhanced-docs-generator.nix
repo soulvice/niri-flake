@@ -589,7 +589,7 @@ let
     '';
 
   # Main documentation generator
-  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, moduleOptions ? {} }:
+  generateComprehensiveDocs = { nixTypes ? {}, actionsLib ? {}, moduleOptions ? {}, niriInfo ? {} }:
     let
       timestamp = builtins.readFile (builtins.toFile "timestamp" "<!-- Generated at build time -->");
 
@@ -605,6 +605,7 @@ let
         - [Type Reference](#type-reference)
         - [Validation](#validation)
         - [Advanced Usage](#advanced-usage)
+        - [Niri Version Information](#niri-version-information)
         - [Troubleshooting](#troubleshooting)
         - [Contributing](#contributing)
       '';
@@ -1051,6 +1052,52 @@ let
            - Module-specific: [niri-flake repository](https://github.com/your-username/niri-flake/issues)
       '';
 
+      # Generate niri version information section
+      niriVersionInfo =
+        if niriInfo != {} then ''
+          ## Niri Version Information
+
+          This module is automatically generated from the niri Wayland compositor source code to ensure complete compatibility and feature coverage.
+
+          ### Current Integration
+
+          **Niri Repository:** [soulvice/niri](https://github.com/soulvice/niri)
+          ${if niriInfo ? commit then "**Niri Commit:** [`${niriInfo.commit}`](https://github.com/soulvice/niri/commit/${niriInfo.commit})" else ""}
+          ${if niriInfo ? commitMessage then "**Commit Message:** ${niriInfo.commitMessage}" else ""}
+          ${if niriInfo ? sha256 then "**Integration SHA256:** `${niriInfo.sha256}`" else ""}
+          ${if niriInfo ? commitDate then "**Commit Date:** ${niriInfo.commitDate}" else ""}
+
+          ### Version Compatibility
+
+          | Component | Version |
+          |-----------|---------|
+          ${if niriInfo ? commit then "| Niri Source | [`${builtins.substring 0 8 niriInfo.commit}`](https://github.com/soulvice/niri/commit/${niriInfo.commit}) |" else ""}
+          | Module Generated | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
+          | Documentation | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |
+
+          ### Automatic Updates
+
+          This module is automatically updated when new niri commits are available. The GitHub Actions workflow:
+          - Monitors the [niri repository](https://github.com/soulvice/niri) for changes
+          - Automatically regenerates the module when new commits are detected
+          - Updates documentation and examples
+          - Creates pull requests for review and integration
+
+          To check for the latest niri development:
+          ```bash
+          # Check latest niri commits
+          curl -s "https://api.github.com/repos/soulvice/niri/commits/main" | jq -r '.sha, .commit.message'
+
+          # Force update this module
+          gh workflow run "Update Niri Module" --field force_update=true
+          ```
+        '' else ''
+          ## Niri Version Information
+
+          This module is automatically generated from the niri Wayland compositor source code.
+          Version information will be displayed here when the module is built with proper niri source integration.
+        '';
+
       contributing = ''
         ## Contributing
 
@@ -1060,21 +1107,31 @@ let
 
         1. **Parser improvements** (`generator/parser.nix`)
         2. **Type mapping** (`generator/type-mapper.nix`)
-        3. **Documentation** (`generator/docs-generator.nix`)
+        3. **Documentation** (`generator/enhanced-docs-generator.nix`)
         4. **Validation** (`generator/validation.nix`)
 
         ### Testing
 
         ```bash
         # Run test suite
-        nix build .#test
+        nix build .#check
 
         # Test specific configuration
         nix build .#examples.basic-config
 
         # Generate documentation
-        nix build .#docs
+        ./build-docs.sh
+
+        # Run all workflows locally
+        nix build .#module-test
         ```
+
+        ### Automated Updates
+
+        The module automatically updates when:
+        - New niri commits are available (daily check at 2 AM UTC)
+        - Generator code changes are pushed
+        - Manual workflow dispatch is triggered
 
         ### Reporting Issues
 
@@ -1082,7 +1139,8 @@ let
         - Your Nix configuration
         - Generated KDL file (`~/.config/niri/config.kdl`)
         - Error messages
-        - niri version and commit hash
+        - Niri version and commit hash (shown above)
+        - Steps to reproduce the issue
       '';
 
     in ''
@@ -1108,13 +1166,15 @@ let
 
       ${advancedUsage}
 
+      ${niriVersionInfo}
+
       ${troubleshooting}
 
       ${contributing}
 
       ---
 
-      *This documentation is automatically generated from the niri source code. Last updated: $(date)*
+      *This documentation is automatically generated from the niri source code. Last updated: $(date -u +'%Y-%m-%d %H:%M:%S UTC')*
     '';
 
 in {
