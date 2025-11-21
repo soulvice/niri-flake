@@ -14,7 +14,7 @@ The niri module allows you to configure the niri Wayland compositor through Home
 **Module Information:**
 - Niri commit: `dfcbbbb03071cadf3fd9bbb0903ead364a839412`
 - Repository: `soulvice/niri`
-- SHA256: `sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=`
+- SHA256: `1j41qxdg9yr5pkmb9slvgq36n2y5pcy01xs1sw265b63nmsazdx4`
 
 ## Module Options
 
@@ -3540,1446 +3540,1166 @@ Must reference an output defined in the outputs section.
 
 ## Actions Library
 
-The niri module provides 87 built-in actions for window management, workspace navigation, and system control. All actions are available through `config.lib.niri.actions`.
+The niri module provides 72 built-in actions for window management, workspace navigation, and system control. All actions are available through `config.lib.niri.actions`.
 
-### Available Actions (87 total)
+### Available Actions (72 total)
 
-### `center_column`
+### `center-window`
 
-**Nix Function:** `center_column`
+**Nix Function:** `center-window`
 **Description:** Niri action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = center_column;
+  "Mod+Key".action = center-window;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="center_column"
+    bind "Mod+Key" action="center-window"
 }
 ```
 
 
-### `center_visible_columns`
+### `close-overview`
 
-**Nix Function:** `center_visible_columns`
-**Description:** Niri action
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = center_visible_columns;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="center_visible_columns"
-}
-```
-
-
-### `center_window`
-
-**Nix Function:** `center_window`
-**Description:** Niri action
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = center_window;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="center_window"
-}
-```
-
-
-### `close_overview`
-
-**Nix Function:** `close_overview`
+**Nix Function:** `close-overview`
 **Description:** Close the focused window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = close_overview;
+  "Mod+Key".action = close-overview;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="close_overview"
+    bind "Mod+Key" action="close-overview"
 }
 ```
 
 
-### `close_window`
+### `close-window`
 
-**Nix Function:** `close_window`
+**Nix Function:** `close-window`
 **Description:** Close the focused window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = close_window;
+  "Mod+Key".action = close-window;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="close_window"
+    bind "Mod+Key" action="close-window"
 }
 ```
 
 
-### `debug_toggle_damage`
+### `debug-toggle-damage`
 
-**Nix Function:** `debug_toggle_damage`
+**Nix Function:** `debug-toggle-damage`
 **Description:** Debug and development action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = debug_toggle_damage;
+  "Mod+Key".action = debug-toggle-damage;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="debug_toggle_damage"
+    bind "Mod+Key" action="debug-toggle-damage"
 }
 ```
 
 
-### `debug_toggle_opaque_regions`
+### `debug-toggle-opaque-regions`
 
-**Nix Function:** `debug_toggle_opaque_regions`
+**Nix Function:** `debug-toggle-opaque-regions`
 **Description:** Debug and development action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = debug_toggle_opaque_regions;
+  "Mod+Key".action = debug-toggle-opaque-regions;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="debug_toggle_opaque_regions"
+    bind "Mod+Key" action="debug-toggle-opaque-regions"
 }
 ```
 
 
-### `do_screen_transition`
+### `do-screen-transition`
 
-**Nix Function:** `do_screen_transition`
+**Nix Function:** `do-screen-transition`
 **Description:** Niri action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = do_screen_transition;
+  "Mod+Key".action = do-screen-transition;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="do_screen_transition"
+    bind "Mod+Key" action="do-screen-transition"
 }
 ```
 
 
-### `expand_column_to_available_width`
+### `focus-column`
 
-**Nix Function:** `expand_column_to_available_width`
-**Description:** Niri action
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = expand_column_to_available_width;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="expand_column_to_available_width"
-}
-```
-
-
-### `focus_column`
-
-**Nix Function:** `focus_column`
+**Nix Function:** `focus-column`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column;
+  "Mod+Key".action = focus-column;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column"
+    bind "Mod+Key" action="focus-column"
 }
 ```
 
 
-### `focus_column_first`
+### `focus-column-first`
 
-**Nix Function:** `focus_column_first`
+**Nix Function:** `focus-column-first`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_first;
+  "Mod+Key".action = focus-column-first;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column_first"
+    bind "Mod+Key" action="focus-column-first"
 }
 ```
 
 
-### `focus_column_last`
+### `focus-column-last`
 
-**Nix Function:** `focus_column_last`
+**Nix Function:** `focus-column-last`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_last;
+  "Mod+Key".action = focus-column-last;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column_last"
+    bind "Mod+Key" action="focus-column-last"
 }
 ```
 
 
-### `focus_column_left`
+### `focus-column-left`
 
-**Nix Function:** `focus_column_left`
+**Nix Function:** `focus-column-left`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_left;
+  "Mod+Key".action = focus-column-left;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column_left"
+    bind "Mod+Key" action="focus-column-left"
 }
 ```
 
 
-### `focus_column_left_or_last`
+### `focus-column-left-or-last`
 
-**Nix Function:** `focus_column_left_or_last`
+**Nix Function:** `focus-column-left-or-last`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_left_or_last;
+  "Mod+Key".action = focus-column-left-or-last;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column_left_or_last"
+    bind "Mod+Key" action="focus-column-left-or-last"
 }
 ```
 
 
-### `focus_column_or_monitor_left`
+### `focus-column-right`
 
-**Nix Function:** `focus_column_or_monitor_left`
-**Description:** Focus monitor navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_or_monitor_left;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_column_or_monitor_left"
-}
-```
-
-
-### `focus_column_or_monitor_right`
-
-**Nix Function:** `focus_column_or_monitor_right`
-**Description:** Focus monitor navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_or_monitor_right;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_column_or_monitor_right"
-}
-```
-
-
-### `focus_column_right`
-
-**Nix Function:** `focus_column_right`
+**Nix Function:** `focus-column-right`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_right;
+  "Mod+Key".action = focus-column-right;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column_right"
+    bind "Mod+Key" action="focus-column-right"
 }
 ```
 
 
-### `focus_column_right_or_first`
+### `focus-column-right-or-first`
 
-**Nix Function:** `focus_column_right_or_first`
+**Nix Function:** `focus-column-right-or-first`
 **Description:** Focus column navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_column_right_or_first;
+  "Mod+Key".action = focus-column-right-or-first;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_column_right_or_first"
+    bind "Mod+Key" action="focus-column-right-or-first"
 }
 ```
 
 
-### `focus_floating`
+### `focus-floating`
 
-**Nix Function:** `focus_floating`
+**Nix Function:** `focus-floating`
 **Description:** Focus navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_floating;
+  "Mod+Key".action = focus-floating;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_floating"
+    bind "Mod+Key" action="focus-floating"
 }
 ```
 
 
-### `focus_monitor`
+### `focus-monitor`
 
-**Nix Function:** `focus_monitor`
+**Nix Function:** `focus-monitor`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor;
+  "Mod+Key".action = focus-monitor;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor"
+    bind "Mod+Key" action="focus-monitor"
 }
 ```
 
 
-### `focus_monitor_down`
+### `focus-monitor-down`
 
-**Nix Function:** `focus_monitor_down`
+**Nix Function:** `focus-monitor-down`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor_down;
+  "Mod+Key".action = focus-monitor-down;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor_down"
+    bind "Mod+Key" action="focus-monitor-down"
 }
 ```
 
 
-### `focus_monitor_left`
+### `focus-monitor-left`
 
-**Nix Function:** `focus_monitor_left`
+**Nix Function:** `focus-monitor-left`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor_left;
+  "Mod+Key".action = focus-monitor-left;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor_left"
+    bind "Mod+Key" action="focus-monitor-left"
 }
 ```
 
 
-### `focus_monitor_next`
+### `focus-monitor-next`
 
-**Nix Function:** `focus_monitor_next`
+**Nix Function:** `focus-monitor-next`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor_next;
+  "Mod+Key".action = focus-monitor-next;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor_next"
+    bind "Mod+Key" action="focus-monitor-next"
 }
 ```
 
 
-### `focus_monitor_previous`
+### `focus-monitor-previous`
 
-**Nix Function:** `focus_monitor_previous`
+**Nix Function:** `focus-monitor-previous`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor_previous;
+  "Mod+Key".action = focus-monitor-previous;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor_previous"
+    bind "Mod+Key" action="focus-monitor-previous"
 }
 ```
 
 
-### `focus_monitor_right`
+### `focus-monitor-right`
 
-**Nix Function:** `focus_monitor_right`
+**Nix Function:** `focus-monitor-right`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor_right;
+  "Mod+Key".action = focus-monitor-right;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor_right"
+    bind "Mod+Key" action="focus-monitor-right"
 }
 ```
 
 
-### `focus_monitor_up`
+### `focus-monitor-up`
 
-**Nix Function:** `focus_monitor_up`
+**Nix Function:** `focus-monitor-up`
 **Description:** Focus monitor navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_monitor_up;
+  "Mod+Key".action = focus-monitor-up;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_monitor_up"
+    bind "Mod+Key" action="focus-monitor-up"
 }
 ```
 
 
-### `focus_tiling`
+### `focus-tiling`
 
-**Nix Function:** `focus_tiling`
+**Nix Function:** `focus-tiling`
 **Description:** Focus navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_tiling;
+  "Mod+Key".action = focus-tiling;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_tiling"
+    bind "Mod+Key" action="focus-tiling"
 }
 ```
 
 
-### `focus_window_bottom`
+### `focus-window-bottom`
 
-**Nix Function:** `focus_window_bottom`
+**Nix Function:** `focus-window-bottom`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_bottom;
+  "Mod+Key".action = focus-window-bottom;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_bottom"
+    bind "Mod+Key" action="focus-window-bottom"
 }
 ```
 
 
-### `focus_window_down`
+### `focus-window-down`
 
-**Nix Function:** `focus_window_down`
+**Nix Function:** `focus-window-down`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_down;
+  "Mod+Key".action = focus-window-down;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_down"
+    bind "Mod+Key" action="focus-window-down"
 }
 ```
 
 
-### `focus_window_down_or_column_left`
+### `focus-window-down-or-top`
 
-**Nix Function:** `focus_window_down_or_column_left`
+**Nix Function:** `focus-window-down-or-top`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_down_or_column_left;
+  "Mod+Key".action = focus-window-down-or-top;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_down_or_column_left"
+    bind "Mod+Key" action="focus-window-down-or-top"
 }
 ```
 
 
-### `focus_window_down_or_column_right`
+### `focus-window-previous`
 
-**Nix Function:** `focus_window_down_or_column_right`
+**Nix Function:** `focus-window-previous`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_down_or_column_right;
+  "Mod+Key".action = focus-window-previous;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_down_or_column_right"
+    bind "Mod+Key" action="focus-window-previous"
 }
 ```
 
 
-### `focus_window_down_or_top`
+### `focus-window-top`
 
-**Nix Function:** `focus_window_down_or_top`
+**Nix Function:** `focus-window-top`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_down_or_top;
+  "Mod+Key".action = focus-window-top;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_down_or_top"
+    bind "Mod+Key" action="focus-window-top"
 }
 ```
 
 
-### `focus_window_or_monitor_down`
+### `focus-window-up`
 
-**Nix Function:** `focus_window_or_monitor_down`
+**Nix Function:** `focus-window-up`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_or_monitor_down;
+  "Mod+Key".action = focus-window-up;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_or_monitor_down"
+    bind "Mod+Key" action="focus-window-up"
 }
 ```
 
 
-### `focus_window_or_monitor_up`
+### `focus-window-up-or-bottom`
 
-**Nix Function:** `focus_window_or_monitor_up`
+**Nix Function:** `focus-window-up-or-bottom`
 **Description:** Focus window navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_or_monitor_up;
+  "Mod+Key".action = focus-window-up-or-bottom;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_or_monitor_up"
+    bind "Mod+Key" action="focus-window-up-or-bottom"
 }
 ```
 
 
-### `focus_window_or_workspace_down`
+### `focus-workspace`
 
-**Nix Function:** `focus_window_or_workspace_down`
+**Nix Function:** `focus-workspace`
 **Description:** Focus workspace navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_or_workspace_down;
+  "Mod+Key".action = focus-workspace;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_or_workspace_down"
+    bind "Mod+Key" action="focus-workspace"
 }
 ```
 
 
-### `focus_window_or_workspace_up`
+### `focus-workspace-down`
 
-**Nix Function:** `focus_window_or_workspace_up`
+**Nix Function:** `focus-workspace-down`
 **Description:** Focus workspace navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_or_workspace_up;
+  "Mod+Key".action = focus-workspace-down;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_window_or_workspace_up"
+    bind "Mod+Key" action="focus-workspace-down"
 }
 ```
 
 
-### `focus_window_previous`
+### `focus-workspace-previous`
 
-**Nix Function:** `focus_window_previous`
-**Description:** Focus window navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_previous;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_window_previous"
-}
-```
-
-
-### `focus_window_top`
-
-**Nix Function:** `focus_window_top`
-**Description:** Focus window navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_top;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_window_top"
-}
-```
-
-
-### `focus_window_up`
-
-**Nix Function:** `focus_window_up`
-**Description:** Focus window navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_up;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_window_up"
-}
-```
-
-
-### `focus_window_up_or_bottom`
-
-**Nix Function:** `focus_window_up_or_bottom`
-**Description:** Focus window navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_up_or_bottom;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_window_up_or_bottom"
-}
-```
-
-
-### `focus_window_up_or_column_left`
-
-**Nix Function:** `focus_window_up_or_column_left`
-**Description:** Focus window navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_up_or_column_left;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_window_up_or_column_left"
-}
-```
-
-
-### `focus_window_up_or_column_right`
-
-**Nix Function:** `focus_window_up_or_column_right`
-**Description:** Focus window navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_window_up_or_column_right;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_window_up_or_column_right"
-}
-```
-
-
-### `focus_workspace`
-
-**Nix Function:** `focus_workspace`
+**Nix Function:** `focus-workspace-previous`
 **Description:** Focus workspace navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_workspace;
+  "Mod+Key".action = focus-workspace-previous;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_workspace"
+    bind "Mod+Key" action="focus-workspace-previous"
 }
 ```
 
 
-### `focus_workspace_down`
+### `focus-workspace-up`
 
-**Nix Function:** `focus_workspace_down`
+**Nix Function:** `focus-workspace-up`
 **Description:** Focus workspace navigation
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_workspace_down;
+  "Mod+Key".action = focus-workspace-up;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="focus_workspace_down"
+    bind "Mod+Key" action="focus-workspace-up"
 }
 ```
 
 
-### `focus_workspace_previous`
+### `fullscreen-window`
 
-**Nix Function:** `focus_workspace_previous`
-**Description:** Focus workspace navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_workspace_previous;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_workspace_previous"
-}
-```
-
-
-### `focus_workspace_up`
-
-**Nix Function:** `focus_workspace_up`
-**Description:** Focus workspace navigation
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = focus_workspace_up;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="focus_workspace_up"
-}
-```
-
-
-### `fullscreen_window`
-
-**Nix Function:** `fullscreen_window`
+**Nix Function:** `fullscreen-window`
 **Description:** Toggle window fullscreen
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = fullscreen_window;
+  "Mod+Key".action = fullscreen-window;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="fullscreen_window"
+    bind "Mod+Key" action="fullscreen-window"
 }
 ```
 
 
-### `maximize_column`
+### `maximize-window-to-edges`
 
-**Nix Function:** `maximize_column`
+**Nix Function:** `maximize-window-to-edges`
 **Description:** Niri action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = maximize_column;
+  "Mod+Key".action = maximize-window-to-edges;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="maximize_column"
+    bind "Mod+Key" action="maximize-window-to-edges"
 }
 ```
 
 
-### `maximize_window_to_edges`
+### `move-column-left`
 
-**Nix Function:** `maximize_window_to_edges`
-**Description:** Niri action
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = maximize_window_to_edges;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="maximize_window_to_edges"
-}
-```
-
-
-### `move_column_left`
-
-**Nix Function:** `move_column_left`
+**Nix Function:** `move-column-left`
 **Description:** Move column
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_left;
+  "Mod+Key".action = move-column-left;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_left"
+    bind "Mod+Key" action="move-column-left"
 }
 ```
 
 
-### `move_column_left_or_to_monitor_left`
+### `move-column-left-or-to-monitor-left`
 
-**Nix Function:** `move_column_left_or_to_monitor_left`
+**Nix Function:** `move-column-left-or-to-monitor-left`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_left_or_to_monitor_left;
+  "Mod+Key".action = move-column-left-or-to-monitor-left;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_left_or_to_monitor_left"
+    bind "Mod+Key" action="move-column-left-or-to-monitor-left"
 }
 ```
 
 
-### `move_column_right`
+### `move-column-right`
 
-**Nix Function:** `move_column_right`
+**Nix Function:** `move-column-right`
 **Description:** Move column
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_right;
+  "Mod+Key".action = move-column-right;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_right"
+    bind "Mod+Key" action="move-column-right"
 }
 ```
 
 
-### `move_column_right_or_to_monitor_right`
+### `move-column-right-or-to-monitor-right`
 
-**Nix Function:** `move_column_right_or_to_monitor_right`
+**Nix Function:** `move-column-right-or-to-monitor-right`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_right_or_to_monitor_right;
+  "Mod+Key".action = move-column-right-or-to-monitor-right;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_right_or_to_monitor_right"
+    bind "Mod+Key" action="move-column-right-or-to-monitor-right"
 }
 ```
 
 
-### `move_column_to_first`
+### `move-column-to-first`
 
-**Nix Function:** `move_column_to_first`
+**Nix Function:** `move-column-to-first`
 **Description:** Move column
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_to_first;
+  "Mod+Key".action = move-column-to-first;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_to_first"
+    bind "Mod+Key" action="move-column-to-first"
 }
 ```
 
 
-### `move_column_to_index`
+### `move-column-to-index`
 
-**Nix Function:** `move_column_to_index`
+**Nix Function:** `move-column-to-index`
 **Description:** Move column
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_to_index;
+  "Mod+Key".action = move-column-to-index;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_to_index"
+    bind "Mod+Key" action="move-column-to-index"
 }
 ```
 
 
-### `move_column_to_last`
+### `move-column-to-last`
 
-**Nix Function:** `move_column_to_last`
+**Nix Function:** `move-column-to-last`
 **Description:** Move column
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_column_to_last;
+  "Mod+Key".action = move-column-to-last;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_column_to_last"
+    bind "Mod+Key" action="move-column-to-last"
 }
 ```
 
 
-### `move_window_down`
+### `move-window-down`
 
-**Nix Function:** `move_window_down`
+**Nix Function:** `move-window-down`
 **Description:** Move window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_down;
+  "Mod+Key".action = move-window-down;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_down"
+    bind "Mod+Key" action="move-window-down"
 }
 ```
 
 
-### `move_window_down_or_to_workspace_down`
+### `move-window-down-or-to-workspace-down`
 
-**Nix Function:** `move_window_down_or_to_workspace_down`
+**Nix Function:** `move-window-down-or-to-workspace-down`
 **Description:** Move to workspace
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_down_or_to_workspace_down;
+  "Mod+Key".action = move-window-down-or-to-workspace-down;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_down_or_to_workspace_down"
+    bind "Mod+Key" action="move-window-down-or-to-workspace-down"
 }
 ```
 
 
-### `move_window_to_floating`
+### `move-window-to-floating`
 
-**Nix Function:** `move_window_to_floating`
+**Nix Function:** `move-window-to-floating`
 **Description:** Move window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_floating;
+  "Mod+Key".action = move-window-to-floating;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_floating"
+    bind "Mod+Key" action="move-window-to-floating"
 }
 ```
 
 
-### `move_window_to_monitor`
+### `move-window-to-monitor`
 
-**Nix Function:** `move_window_to_monitor`
+**Nix Function:** `move-window-to-monitor`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor;
+  "Mod+Key".action = move-window-to-monitor;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor"
+    bind "Mod+Key" action="move-window-to-monitor"
 }
 ```
 
 
-### `move_window_to_monitor_down`
+### `move-window-to-monitor-down`
 
-**Nix Function:** `move_window_to_monitor_down`
+**Nix Function:** `move-window-to-monitor-down`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor_down;
+  "Mod+Key".action = move-window-to-monitor-down;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor_down"
+    bind "Mod+Key" action="move-window-to-monitor-down"
 }
 ```
 
 
-### `move_window_to_monitor_left`
+### `move-window-to-monitor-left`
 
-**Nix Function:** `move_window_to_monitor_left`
+**Nix Function:** `move-window-to-monitor-left`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor_left;
+  "Mod+Key".action = move-window-to-monitor-left;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor_left"
+    bind "Mod+Key" action="move-window-to-monitor-left"
 }
 ```
 
 
-### `move_window_to_monitor_next`
+### `move-window-to-monitor-next`
 
-**Nix Function:** `move_window_to_monitor_next`
+**Nix Function:** `move-window-to-monitor-next`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor_next;
+  "Mod+Key".action = move-window-to-monitor-next;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor_next"
+    bind "Mod+Key" action="move-window-to-monitor-next"
 }
 ```
 
 
-### `move_window_to_monitor_previous`
+### `move-window-to-monitor-previous`
 
-**Nix Function:** `move_window_to_monitor_previous`
+**Nix Function:** `move-window-to-monitor-previous`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor_previous;
+  "Mod+Key".action = move-window-to-monitor-previous;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor_previous"
+    bind "Mod+Key" action="move-window-to-monitor-previous"
 }
 ```
 
 
-### `move_window_to_monitor_right`
+### `move-window-to-monitor-right`
 
-**Nix Function:** `move_window_to_monitor_right`
+**Nix Function:** `move-window-to-monitor-right`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor_right;
+  "Mod+Key".action = move-window-to-monitor-right;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor_right"
+    bind "Mod+Key" action="move-window-to-monitor-right"
 }
 ```
 
 
-### `move_window_to_monitor_up`
+### `move-window-to-monitor-up`
 
-**Nix Function:** `move_window_to_monitor_up`
+**Nix Function:** `move-window-to-monitor-up`
 **Description:** Move to monitor
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_monitor_up;
+  "Mod+Key".action = move-window-to-monitor-up;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_monitor_up"
+    bind "Mod+Key" action="move-window-to-monitor-up"
 }
 ```
 
 
-### `move_window_to_tiling`
+### `move-window-to-tiling`
 
-**Nix Function:** `move_window_to_tiling`
+**Nix Function:** `move-window-to-tiling`
 **Description:** Move window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_to_tiling;
+  "Mod+Key".action = move-window-to-tiling;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_to_tiling"
+    bind "Mod+Key" action="move-window-to-tiling"
 }
 ```
 
 
-### `move_window_up`
+### `move-window-up`
 
-**Nix Function:** `move_window_up`
+**Nix Function:** `move-window-up`
 **Description:** Move window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_up;
+  "Mod+Key".action = move-window-up;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_up"
+    bind "Mod+Key" action="move-window-up"
 }
 ```
 
 
-### `move_window_up_or_to_workspace_up`
+### `move-window-up-or-to-workspace-up`
 
-**Nix Function:** `move_window_up_or_to_workspace_up`
+**Nix Function:** `move-window-up-or-to-workspace-up`
 **Description:** Move to workspace
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = move_window_up_or_to_workspace_up;
+  "Mod+Key".action = move-window-up-or-to-workspace-up;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="move_window_up_or_to_workspace_up"
+    bind "Mod+Key" action="move-window-up-or-to-workspace-up"
 }
 ```
 
 
-### `open_overview`
+### `open-overview`
 
-**Nix Function:** `open_overview`
+**Nix Function:** `open-overview`
 **Description:** Open overview mode
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = open_overview;
+  "Mod+Key".action = open-overview;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="open_overview"
+    bind "Mod+Key" action="open-overview"
 }
 ```
 
 
-### `power_off_monitors`
+### `power-off-monitors`
 
-**Nix Function:** `power_off_monitors`
-**Description:** Niri action
+**Nix Function:** `power-off-monitors`
+**Description:** Turn off all monitors
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = power_off_monitors;
+  "Mod+Key".action = power-off-monitors;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="power_off_monitors"
+    bind "Mod+Key" action="power-off-monitors"
 }
 ```
 
 
-### `power_on_monitors`
+### `power-on-monitors`
 
-**Nix Function:** `power_on_monitors`
-**Description:** Niri action
+**Nix Function:** `power-on-monitors`
+**Description:** Turn on all monitors
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = power_on_monitors;
+  "Mod+Key".action = power-on-monitors;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="power_on_monitors"
+    bind "Mod+Key" action="power-on-monitors"
 }
 ```
 
@@ -5024,82 +4744,62 @@ binds {
 ```
 
 
-### `screenshot_screen`
+### `screenshot-screen`
 
-**Nix Function:** `screenshot_screen`
-**Description:** Take a screenshot
+**Nix Function:** `screenshot-screen`
+**Description:** Take a screenshot of entire screen
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = screenshot_screen;
+  "Mod+Key".action = screenshot-screen;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="screenshot_screen"
+    bind "Mod+Key" action="screenshot-screen"
 }
 ```
 
 
-### `screenshot_window`
+### `screenshot-window`
 
-**Nix Function:** `screenshot_window`
-**Description:** Take a screenshot
+**Nix Function:** `screenshot-window`
+**Description:** Take a screenshot of current window
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = screenshot_window;
+  "Mod+Key".action = screenshot-window;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="screenshot_window"
+    bind "Mod+Key" action="screenshot-window"
 }
 ```
 
 
-### `set_column_width`
+### `show-hotkey-overlay`
 
-**Nix Function:** `set_column_width`
+**Nix Function:** `show-hotkey-overlay`
 **Description:** Niri action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = set_column_width;
+  "Mod+Key".action = show-hotkey-overlay;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="set_column_width"
-}
-```
-
-
-### `show_hotkey_overlay`
-
-**Nix Function:** `show_hotkey_overlay`
-**Description:** Niri action
-
-**Usage:**
-```nix
-binds = with config.lib.niri.actions; {
-  "Mod+Key".action = show_hotkey_overlay;
-};
-```
-
-**KDL Format:**
-```kdl
-binds {
-    bind "Mod+Key" action="show_hotkey_overlay"
+    bind "Mod+Key" action="show-hotkey-overlay"
 }
 ```
 
@@ -5112,34 +4812,34 @@ binds {
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = spawn;
+  "Mod+Key".action = spawn "argument";
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="spawn"
+    bind "Mod+Key" action="spawn "argument""
 }
 ```
 
 
-### `spawn_sh`
+### `spawn-sh`
 
-**Nix Function:** `spawn_sh`
-**Description:** Execute a command
+**Nix Function:** `spawn-sh`
+**Description:** Execute a shell command
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = spawn_sh;
+  "Mod+Key".action = spawn-sh "argument";
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="spawn_sh"
+    bind "Mod+Key" action="spawn-sh "argument""
 }
 ```
 
@@ -5164,122 +4864,129 @@ binds {
 ```
 
 
-### `switch_focus_between_floating_and_tiling`
+### `switch-focus-between-floating-and-tiling`
 
-**Nix Function:** `switch_focus_between_floating_and_tiling`
+**Nix Function:** `switch-focus-between-floating-and-tiling`
 **Description:** Toggle window floating
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = switch_focus_between_floating_and_tiling;
+  "Mod+Key".action = switch-focus-between-floating-and-tiling;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="switch_focus_between_floating_and_tiling"
+    bind "Mod+Key" action="switch-focus-between-floating-and-tiling"
 }
 ```
 
 
-### `toggle_debug_tint`
+### `toggle-debug-tint`
 
-**Nix Function:** `toggle_debug_tint`
+**Nix Function:** `toggle-debug-tint`
 **Description:** Debug and development action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = toggle_debug_tint;
+  "Mod+Key".action = toggle-debug-tint;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="toggle_debug_tint"
+    bind "Mod+Key" action="toggle-debug-tint"
 }
 ```
 
 
-### `toggle_keyboard_shortcuts_inhibit`
+### `toggle-keyboard-shortcuts-inhibit`
 
-**Nix Function:** `toggle_keyboard_shortcuts_inhibit`
+**Nix Function:** `toggle-keyboard-shortcuts-inhibit`
 **Description:** Niri action
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = toggle_keyboard_shortcuts_inhibit;
+  "Mod+Key".action = toggle-keyboard-shortcuts-inhibit;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="toggle_keyboard_shortcuts_inhibit"
+    bind "Mod+Key" action="toggle-keyboard-shortcuts-inhibit"
 }
 ```
 
 
-### `toggle_overview`
+### `toggle-overview`
 
-**Nix Function:** `toggle_overview`
+**Nix Function:** `toggle-overview`
 **Description:** Toggle overview mode
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = toggle_overview;
+  "Mod+Key".action = toggle-overview;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="toggle_overview"
+    bind "Mod+Key" action="toggle-overview"
 }
 ```
 
 
-### `toggle_window_floating`
+### `toggle-window-floating`
 
-**Nix Function:** `toggle_window_floating`
+**Nix Function:** `toggle-window-floating`
 **Description:** Toggle window floating
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = toggle_window_floating;
+  "Mod+Key".action = toggle-window-floating;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="toggle_window_floating"
+    bind "Mod+Key" action="toggle-window-floating"
 }
 ```
 
 
-### `toggle_windowed_fullscreen`
+### `toggle-windowed-fullscreen`
 
-**Nix Function:** `toggle_windowed_fullscreen`
+**Nix Function:** `toggle-windowed-fullscreen`
 **Description:** Toggle window fullscreen
 
 **Usage:**
 ```nix
 binds = with config.lib.niri.actions; {
-  "Mod+Key".action = toggle_windowed_fullscreen;
+  "Mod+Key".action = toggle-windowed-fullscreen;
 };
 ```
 
 **KDL Format:**
 ```kdl
 binds {
-    bind "Mod+Key" action="toggle_windowed_fullscreen"
+    bind "Mod+Key" action="toggle-windowed-fullscreen"
 }
 ```
 
+
+---
+
+**Generation Info:**
+- Generated on: 2025-11-21 03:04:57 UTC
+- Niri commit: e0fe1a8b97c303da017906b18cbb53d3eacc354c
+- Workflow run: [\#10](https://github.com/soulvice/niri-flake/actions/runs/19558544205)
