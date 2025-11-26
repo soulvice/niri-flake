@@ -49,7 +49,7 @@ jobs:
 
 
       - name: Build niri-unstable ahead of time
-        run: nix-store --query --requisites $(nix-store --query --deriver $(nix build --print-out-paths .#niri-unstable)) | cachix push niri
+        run: nix-store --query --requisites $(nix-store --query --deriver $(nix build --print-out-paths .#niri-unstable)) | cachix push soulvice
         if: ${{ steps.update.outputs.pull-request-number }}
 
       - name: Amend commit with human committer; ensure CI will run
