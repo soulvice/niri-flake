@@ -11,7 +11,7 @@
 #
 # Scalars are strings, integers, floats, booleans, or null.
 #
-# This default config uses the kdl library from https://github.com/sodiboo/niri-flake/blob/main/kdl.nix.
+# This default config uses the kdl library from https://github.com/soulvice/niri-flake/blob/main/kdl.nix.
 # It provides a set of functions to declare KDL documents.
 #
 # The fundamental function is `kdl.node`, which takes a name, a list of arguments, and a list of children.
@@ -26,7 +26,7 @@
 # - The children are flattened, and any nulls are removed.
 #   - This means that you can call functions directly in the children list.
 #   - You can also create "conditional" nodes by setting them to null.
-#   - You can see this feature used to the fullest at https://github.com/sodiboo/niri-flake/blob/main/settings.nix
+#   - You can see this feature used to the fullest at https://github.com/soulvice/niri-flake/blob/main/settings.nix
 #   - This transformation is also applied at the top-level.
 #
 # Additionally, kdl.nix provides some shorthand functions to omit the arguments list, children list, or both:
@@ -36,7 +36,7 @@
 #
 # With that out of the way, here's the nixfied default config for niri.
 
-inputs: # This is your flake inputs. It contains the `niri` flake (github:sodiboo/niri)
+inputs: # This is your flake inputs. It contains the `niri` flake (github:soulvice/niri)
 
 # This is a home-manager module.
 {

@@ -38,7 +38,7 @@ jobs:
         # This is workaround to force the cachix action to run after the update-flake-lock action.
         # Normally, it does not occur because the PR is created by github-actions[bot]
         # But here, we force push it with my own token, so the action runs after a push "by me".
-      - name: Checkout repository as sodiboo
+      - name: Checkout repository as soulvice
         if: ${{ steps.update.outputs.pull-request-number }}
         uses: actions/checkout@v4
         with:

@@ -1,16 +1,16 @@
-This flake contains nix packages for [niri](https://github.com/soulvice/niri), a scrollable-tiling Wayland compositor. You can try it right now: add the binary cache with `cachix use niri` and then `nix run github:sodiboo/niri-flake`. You can also try the latest commit to the `main` branch with `nix run github:sodiboo/niri-flake#niri-unstable`.
+This flake contains nix packages for [niri](https://github.com/soulvice/niri), a scrollable-tiling Wayland compositor. You can try it right now: add the binary cache with `cachix use niri` and then `nix run github:soulvice/niri-flake`. You can also try the latest commit to the `main` branch with `nix run github:soulvice/niri-flake#niri-unstable`.
 
 This flake also contains NixOS and home-manager modules to install all necessary components of a working Wayland environment, and to let you manage your configuration declaratively, validating it at build-time. This ensures that your config's schema is always in sync with the installed version of niri.
 
-**The main location for documentation is [`docs.md`](./docs.md)**. The most important outputs are `overlays.niri` and `nixosModules.niri`. You may also use my configuration as a reference at [`github:sodiboo/system`](https://github.com/sodiboo/system/blob/main/personal/niri.mod.nix)
+**The main location for documentation is [`docs.md`](./docs.md)**. The most important outputs are `overlays.niri` and `nixosModules.niri`. You may also use my configuration as a reference at [`github:soulvice/system`](https://github.com/soulvice/system/blob/main/personal/niri.mod.nix)
 
 The rest of this README covers miscellaneous topics related to this flake or repo as a whole.
 
-Feel free to contact me at [`@sodiboo:gaysex.cloud`](https://matrix.to/#/@sodiboo:gaysex.cloud) in the [`#niri:matrix.org`](https://matrix.to/#/#niri:matrix.org) channel or through GitHub issues if you have any questions or concerns.
+Feel free to contact me at [`@soulvice:gaysex.cloud`](https://matrix.to/#/@soulvice:gaysex.cloud) in the [`#niri:matrix.org`](https://matrix.to/#/#niri:matrix.org) channel or through GitHub issues if you have any questions or concerns.
 
 # A note on the automated pull requests in this repository
 
-This repository uses automated pull requests extensively in order to automatically update the lockfile. If you wish to view pull requests made by humans, you can filter for [`is:pr -label:automated`](https://github.com/sodiboo/niri-flake/pulls?q=is%3Apr+-label%3Aautomated).
+This repository uses automated pull requests extensively in order to automatically update the lockfile. If you wish to view pull requests made by humans, you can filter for [`is:pr -label:automated`](https://github.com/soulvice/niri-flake/pulls?q=is%3Apr+-label%3Aautomated).
 
 This is done in order to keep the `niri-unstable` version up-to-date. Niri doesn't have an inherent "unstable" versioning scheme (like e.g. Rust or NixOS does) and that terminology is specific to this flake. It is just the latest commit to main. It's equivalent to `niri-git` on the AUR.
 
@@ -31,7 +31,7 @@ Currently, there is no `home-manager` input to this flake since i felt it was un
 I have a binary cache for this flake's outputs. `soulvice.cachix.org` hosts builds of `niri-stable` and `niri-unstable` for `nixos-unstable` and `nixos-25.05`. It only contains builds for `x86_64-linux` for the time being, mainly because GitHub Actions doesn't support other platforms. (and i do not wish to use qemu for this)
 
 > [!note]
-> This binary cache is managed by me, sodiboo. By using it, you are trusting me to not serve you malicious software. Using a binary cache is entirely optional.
+> This binary cache is managed by me, soulvice. By using it, you are trusting me to not serve you malicious software. Using a binary cache is entirely optional.
 >
 > If you do not wish to use my binary cache, but still want the convenience of one, you could set `programs.niri.package = pkgs.niri;`, which is provided by nixpkgs. This package will receive updates slower.
 

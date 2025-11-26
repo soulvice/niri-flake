@@ -116,7 +116,7 @@ let
   link-stylix-opt = opt: "[`${opt}`](https://danth.github.io/stylix/options/hm.html#${anchor opt})";
 
   link-this-github =
-    path: "https://github.com/sodiboo/niri-flake/blob/${inputs.self.rev or "main"}/${path}";
+    path: "https://github.com/soulvice/niri-flake/blob/${inputs.self.rev or "main"}/${path}";
 
   test = pat: str: lib.strings.match pat str != null;
 
