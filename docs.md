@@ -206,9 +206,18 @@ The niri config file.
 
 - When this is null, no config file is generated.
 - When this is a string, it is assumed to be the config file contents.
-- When this is kdl document, it is serialized to a string before being used as the config file contents.
+- When this is kdl a document, it is serialized to a string before being used as the config file contents.
+By default, this is a KDL document that reflects the settings in [`programs.niri.settings`](#programsnirisettings) plus [`programs.niri.extraConfig`](#programsniriextraconfig).
 
-By default, this is a KDL document that reflects the settings in [`programs.niri.settings`](#programsnirisettings).
+
+## `programs.niri.extraConfig`
+- type: `null or string or kdl document`
+- default: `null`
+
+A verbatim section to be appended to the niri config file.
+- When this is null, nothing will be appended.
+- When this is a string, it is assumed to be literal config file contents.
+- When this is a kdl document, it is serialized to a string before being appended to the config file.
 
 
 ## `programs.niri.finalConfig`
