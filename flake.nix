@@ -5,8 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    niri-stable.url = "github:YaLTeR/niri/v25.08";
-    niri-unstable.url = "github:YaLTeR/niri";
+    niri-stable.url = "github:soulvice/niri/v25.08";
+    niri-unstable.url = "github:soulvice/niri";
 
     xwayland-satellite-stable.url = "github:Supreeeme/xwayland-satellite/v0.7";
     xwayland-satellite-unstable.url = "github:Supreeeme/xwayland-satellite";
@@ -211,7 +211,7 @@
 
           meta = {
             description = "Scrollable-tiling Wayland compositor";
-            homepage = "https://github.com/YaLTeR/niri";
+            homepage = "https://github.com/soulvice/niri";
             license = nixpkgs.lib.licenses.gpl3Only;
             maintainers = with nixpkgs.lib.maintainers; [ sodiboo ];
             mainProgram = "niri";
@@ -466,8 +466,8 @@
           config = nixpkgs.lib.mkMerge [
             (nixpkgs.lib.mkIf config.niri-flake.cache.enable {
               nix.settings = {
-                substituters = [ "https://niri.cachix.org" ];
-                trusted-public-keys = [ "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964=" ];
+                substituters = [ "https://soulvice.cachix.org" ];
+                trusted-public-keys = [ "soulvice.cachix.org-1:fncdt9Eh48HqTGvBCBd+FfNba/EmYUKgaiiu3kQEwkU=" ];
               };
             })
             (nixpkgs.lib.mkIf cfg.enable {

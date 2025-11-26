@@ -1,4 +1,4 @@
-This flake contains nix packages for [niri](https://github.com/YaLTeR/niri), a scrollable-tiling Wayland compositor. You can try it right now: add the binary cache with `cachix use niri` and then `nix run github:sodiboo/niri-flake`. You can also try the latest commit to the `main` branch with `nix run github:sodiboo/niri-flake#niri-unstable`.
+This flake contains nix packages for [niri](https://github.com/soulvice/niri), a scrollable-tiling Wayland compositor. You can try it right now: add the binary cache with `cachix use niri` and then `nix run github:sodiboo/niri-flake`. You can also try the latest commit to the `main` branch with `nix run github:sodiboo/niri-flake#niri-unstable`.
 
 This flake also contains NixOS and home-manager modules to install all necessary components of a working Wayland environment, and to let you manage your configuration declaratively, validating it at build-time. This ensures that your config's schema is always in sync with the installed version of niri.
 
@@ -28,7 +28,7 @@ Currently, there is no `home-manager` input to this flake since i felt it was un
 
 # Binary Cache
 
-I have a binary cache for this flake's outputs. `niri.cachix.org` hosts builds of `niri-stable` and `niri-unstable` for `nixos-unstable` and `nixos-25.05`. It only contains builds for `x86_64-linux` for the time being, mainly because GitHub Actions doesn't support other platforms. (and i do not wish to use qemu for this)
+I have a binary cache for this flake's outputs. `soulvice.cachix.org` hosts builds of `niri-stable` and `niri-unstable` for `nixos-unstable` and `nixos-25.05`. It only contains builds for `x86_64-linux` for the time being, mainly because GitHub Actions doesn't support other platforms. (and i do not wish to use qemu for this)
 
 > [!note]
 > This binary cache is managed by me, sodiboo. By using it, you are trusting me to not serve you malicious software. Using a binary cache is entirely optional.

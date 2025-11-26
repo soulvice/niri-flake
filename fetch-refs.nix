@@ -45,7 +45,7 @@ in
   # This is because commit hashes are globally unique.
   {
     # niri
-    ${fetch "YaLTeR/niri"}
+    ${fetch "soulvice/niri"}
     # xwayland-satellite
     ${fetch "Supreeeme/xwayland-satellite"}
   }

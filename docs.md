@@ -15,7 +15,7 @@ You should preferably not be using these outputs directly. Instead, you should u
 
 The latest stable tagged version of niri, along with potential patches.
 
-Currently, this is release [`25.08`](https://github.com/YaLTeR/niri/releases/tag/25.08) with no additional patches.
+Currently, this is release [`25.08`](https://github.com/soulvice/niri/releases/tag/25.08) with no additional patches.
 
 
 
@@ -28,7 +28,7 @@ To access this package under `pkgs.niri-stable`, you should use [`overlays.niri`
 
 The latest commit to the development branch of niri.
 
-Currently, this is exactly commit [`54c7fdc`](https://github.com/YaLTeR/niri/tree/54c7fdcd1adcfade596aca1070062f3f0fb5d4d0) which was authored on `2025-11-25 05:00:29`.
+Currently, this is exactly commit [`918db82`](https://github.com/soulvice/niri/tree/918db8225e245c5e597b70a0b65d35458791d2a8) which was authored on `2025-11-26 10:21:31`.
 
 > [!warning]
 > `niri-unstable` is not a released version, there are no stability guarantees, and it may break your workflow from itme to time.
@@ -101,7 +101,7 @@ You may wish to set it to the following values:
 - type: `boolean`
 - default: `true`
 
-Whether or not to enable the binary cache [`niri.cachix.org`](https://niri.cachix.org/) in your nix configuration.
+Whether or not to enable the binary cache [`soulvice.cachix.org`](https://soulvice.cachix.org/) in your nix configuration.
 
 Using a binary cache can save you time, by avoiding redundant rebuilds.
 
@@ -1932,7 +1932,7 @@ the bottom edge of the big window is almost entirely yellow, and the top edge of
 ](/assets/relative-to-workspace-view.png "behaviour of relative-to=\"workspace-view\"")
 
 
-these beautiful images are sourced from the release notes for [`v0.1.3`](https://github.com/YaLTeR/niri/releases/tag/v0.1.3)
+these beautiful images are sourced from the release notes for [`v0.1.3`](https://github.com/soulvice/niri/releases/tag/v0.1.3)
 
 
 ## `<decoration>.gradient.to`
@@ -2279,7 +2279,7 @@ Source code for a GLSL shader to use for this animation.
 
 For example, set it to `builtins.readFile ./window-close.glsl` to use a shader from the same directory as your configuration file.
 
-See: https://github.com/YaLTeR/niri/wiki/Configuration:-Animations#custom-shader
+See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shader
 
 
 ## `programs.niri.settings.animations.window-close.enable`
@@ -2314,7 +2314,7 @@ Source code for a GLSL shader to use for this animation.
 
 For example, set it to `builtins.readFile ./window-open.glsl` to use a shader from the same directory as your configuration file.
 
-See: https://github.com/YaLTeR/niri/wiki/Configuration:-Animations#custom-shader
+See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shader
 
 
 ## `programs.niri.settings.animations.window-open.enable`
@@ -2337,7 +2337,7 @@ Source code for a GLSL shader to use for this animation.
 
 For example, set it to `builtins.readFile ./window-resize.glsl` to use a shader from the same directory as your configuration file.
 
-See: https://github.com/YaLTeR/niri/wiki/Configuration:-Animations#custom-shader
+See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shader
 
 
 ## `programs.niri.settings.animations.window-resize.enable`
