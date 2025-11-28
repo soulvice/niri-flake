@@ -28,7 +28,7 @@ To access this package under `pkgs.niri-stable`, you should use [`overlays.niri`
 
 The latest commit to the development branch of niri.
 
-Currently, this is exactly commit [`9b636b7`](https://github.com/soulvice/niri/tree/9b636b76891ab78386f9c5cbf85b6d746935cf78) which was authored on `2025-11-27 19:37:35`.
+Currently, this is exactly commit [`6341ad8`](https://github.com/soulvice/niri/tree/6341ad8b104c434cf213dae4d9c7d83bf1f1dd6d) which was authored on `2025-11-28 05:23:34`.
 
 > [!warning]
 > `niri-unstable` is not a released version, there are no stability guarantees, and it may break your workflow from itme to time.
@@ -506,7 +506,7 @@ This is mostly useful for binds on the mouse wheel, where you might not want to 
 
 
 ## `programs.niri.settings.binds.<name>.hotkey-overlay`
-- type: `attribute-tagged union`
+- type: `attribute-tagged union with choices: hidden, title`
 - default:
   ```nix
   {
@@ -650,7 +650,7 @@ Whether to prefer server-side decorations (SSD) over client-side decorations (CS
 
 
 ## `programs.niri.settings.spawn-at-startup`
-- type: `list of attribute-tagged union`
+- type: `list of attribute-tagged union with choices: argv, command, sh`
 
 A list of commands to run when niri starts.
 
@@ -1855,7 +1855,7 @@ The color of the insert hint.
 
 
 ## `<decoration>`
-- type: `attribute-tagged union`
+- type: `attribute-tagged union with choices: color, gradient`
 
 A decoration is drawn around a surface, adding additional elements that are not necessarily part of an application, but are part of what we think of as a "window".
 
@@ -1951,7 +1951,7 @@ The default background color that niri draws for workspaces. This is visible whe
 
 
 ## `programs.niri.settings.layout.preset-column-widths`
-- type: `list of attribute-tagged union`
+- type: `list of attribute-tagged union with choices: fixed, proportion`
 
 The widths that `switch-preset-column-width` will cycle through.
 
@@ -1986,7 +1986,7 @@ The width of the column as a proportion of the screen's width
 
 
 ## `programs.niri.settings.layout.preset-window-heights`
-- type: `list of attribute-tagged union`
+- type: `list of attribute-tagged union with choices: fixed, proportion`
 
 The heights that `switch-preset-window-height` will cycle through.
 
@@ -2055,7 +2055,7 @@ Also, since a newly created column always contains a single window, you can over
 
 
 ## `programs.niri.settings.layout.default-column-width`
-- type: `{} or attribute-tagged union`
+- type: `{} or attribute-tagged union with choices: fixed, proportion`
 
 The default width for new columns.
 
@@ -2363,7 +2363,7 @@ See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shad
 
 
 ## `<animation-kind>`
-- type: `attribute-tagged union`
+- type: `attribute-tagged union with choices: easing, spring`
 
 
 <!-- <animation-kind>.easing -->
@@ -2712,7 +2712,7 @@ If the final value of this field is null, then the default display mode is taken
 
 
 ## `programs.niri.settings.window-rules.*.default-column-width`
-- type: `null or {} or attribute-tagged union`
+- type: `null or {} or attribute-tagged union with choices: fixed, proportion`
 - default: `null`
 
 The default width for new columns.
@@ -2738,7 +2738,7 @@ The width of the column as a proportion of the screen's width
 
 
 ## `programs.niri.settings.window-rules.*.default-window-height`
-- type: `null or {} or attribute-tagged union`
+- type: `null or {} or attribute-tagged union with choices: fixed, proportion`
 - default: `null`
 
 The default height for new floating windows.
