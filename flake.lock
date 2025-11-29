@@ -3,16 +3,16 @@
     "niri-stable": {
       "flake": false,
       "locked": {
-        "lastModified": 1756556321,
-        "narHash": "sha256-RLD89dfjN0RVO86C/Mot0T7aduCygPGaYbog566F0Qo=",
+        "lastModified": 1764424778,
+        "narHash": "sha256-tCchf2VyYpINHPGpXz9+4x11A9I4nswXGGerJSapqa4=",
         "owner": "soulvice",
         "repo": "niri",
-        "rev": "01be0e65f4eb91a9cd624ac0b76aaeab765c7294",
+        "rev": "ec9d9178b950a072e33297017aae7501b9f3a667",
         "type": "github"
       },
       "original": {
         "owner": "soulvice",
-        "ref": "v25.08",
+        "ref": "25.11",
         "repo": "niri",
         "type": "github"
       }
@@ -20,11 +20,11 @@
     "niri-unstable": {
       "flake": false,
       "locked": {
-        "lastModified": 1764307414,
-        "narHash": "sha256-B1JjX7ThipY38lzcWxoCMXP6qk6u33OTRLGKsA45IZ0=",
+        "lastModified": 1764424778,
+        "narHash": "sha256-tCchf2VyYpINHPGpXz9+4x11A9I4nswXGGerJSapqa4=",
         "owner": "soulvice",
         "repo": "niri",
-        "rev": "6341ad8b104c434cf213dae4d9c7d83bf1f1dd6d",
+        "rev": "ec9d9178b950a072e33297017aae7501b9f3a667",
         "type": "github"
       },
       "original": {
