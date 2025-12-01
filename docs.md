@@ -15,7 +15,7 @@ You should preferably not be using these outputs directly. Instead, you should u
 
 The latest stable tagged version of niri, along with potential patches.
 
-Currently, this is release [`25.08`](https://github.com/soulvice/niri/releases/tag/25.08) with no additional patches.
+Currently, this is release [`unstable-2025-11-29-ec9d917`](https://github.com/soulvice/niri/releases/tag/unstable-2025-11-29-ec9d917) with no additional patches.
 
 
 
@@ -28,7 +28,7 @@ To access this package under `pkgs.niri-stable`, you should use [`overlays.niri`
 
 The latest commit to the development branch of niri.
 
-Currently, this is exactly commit [`6341ad8`](https://github.com/soulvice/niri/tree/6341ad8b104c434cf213dae4d9c7d83bf1f1dd6d) which was authored on `2025-11-28 05:23:34`.
+Currently, this is exactly commit [`78b3264`](https://github.com/soulvice/niri/tree/78b3264ba1a8c4d3c52366a4cef5b60fc147d6d2) which was authored on `2025-11-30 19:36:57`.
 
 > [!warning]
 > `niri-unstable` is not a released version, there are no stability guarantees, and it may break your workflow from itme to time.
@@ -334,8 +334,6 @@ For actions that don't take any arguments, just use the corresponding attribute 
 > ```
 
 
-- `λ screenshot :: { show-pointer :: bool }` (only on niri-stable)
-- `λ screenshot-window :: { write-to-disk :: bool }` (only on niri-stable)
 - `λ quit :: { skip-confirmation :: bool }`
 - `suspend`
 - `power-off-monitors`
@@ -442,7 +440,7 @@ For actions that don't take any arguments, just use the corresponding attribute 
 - `switch-preset-window-height`
 - `switch-preset-window-height-back`
 - `maximize-column`
-- `maximize-window-to-edges` (only on niri-unstable)
+- `maximize-window-to-edges`
 - `λ set-column-width :: size-change`
 - `expand-column-to-available-width`
 - `λ switch-layout :: "next" | "prev"`
