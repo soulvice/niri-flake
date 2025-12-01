@@ -5,6 +5,7 @@
 # This is because commit hashes are globally unique.
 {
   # niri
+  "ec9d9178b950a072e33297017aae7501b9f3a667" = "25.11";
   "dd967554d10ea289ef480b142953f9a3d44fe4cf" = "v0.1.0";
   "69e7afc538eecdbb0d34a24147f12d671e48ab51" = "v0.1.0-alpha.1";
   "57f267454fa0c746707c430baa1fbd12124f636c" = "v0.1.0-alpha.2";
@@ -36,4 +37,5 @@
   "44590a416d4a3e8220e19e29e0b6efe64a80315d" = "v0.5.1";
   "3ba30b149f9eb2bbf42cf4758d2158ca8cceef73" = "v0.6";
   "388d291e82ffbc73be18169d39470f340707edaa" = "v0.7";
+  "9a71e77b1e06dbad4a472265e59b52ac83cbe00c" = "v0.8";
 }
