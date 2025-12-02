@@ -15,7 +15,7 @@ You should preferably not be using these outputs directly. Instead, you should u
 
 The latest stable tagged version of niri, along with potential patches.
 
-Currently, this is release [`unstable-2025-11-29-ec9d917`](https://github.com/soulvice/niri/releases/tag/unstable-2025-11-29-ec9d917) with no additional patches.
+Currently, this is release [`25.11`](https://github.com/soulvice/niri/releases/tag/25.11) with no additional patches.
 
 
 
