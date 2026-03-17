@@ -15,7 +15,7 @@ You should preferably not be using these outputs directly. Instead, you should u
 
 The latest stable tagged version of niri, along with potential patches.
 
-Currently, this is release [`25.11`](https://github.com/soulvice/niri/releases/tag/25.11) with no additional patches.
+Currently, this is release [`25.08`](https://github.com/soulvice/niri/releases/tag/25.08) with no additional patches.
 
 
 
@@ -28,7 +28,7 @@ To access this package under `pkgs.niri-stable`, you should use [`overlays.niri`
 
 The latest commit to the development branch of niri.
 
-Currently, this is exactly commit [`16df226`](https://github.com/soulvice/niri/tree/16df226932206b9de87a6f5976dd27d06c67508b) which was authored on `2025-12-25 07:18:26`.
+Currently, this is exactly commit [`310d042`](https://github.com/soulvice/niri/tree/310d0424c957a1191a785a94f5c49df00026167b) which was authored on `2026-03-11 20:59:46`.
 
 > [!warning]
 > `niri-unstable` is not a released version, there are no stability guarantees, and it may break your workflow from itme to time.
@@ -64,7 +64,7 @@ The full NixOS module for niri.
 
 By default, this module does the following:
 
-- It will enable a binary cache managed by me, soulvice. This helps you avoid building niri from source, which can take a long time in release mode.
+- It will enable a binary cache managed by me, sodiboo. This helps you avoid building niri from source, which can take a long time in release mode.
 - If you have home-manager installed in your NixOS configuration (rather than as a standalone program), this module will automatically import [`homeModules.config`](#homemodulesconfig) for all users and give it the correct package to use for validation.
 - If you have home-manager and stylix installed in your NixOS configuration, this module will also automatically import [`homeModules.stylix`](#homemodulesstylix) for all users.
 
@@ -101,11 +101,11 @@ You may wish to set it to the following values:
 - type: `boolean`
 - default: `true`
 
-Whether or not to enable the binary cache [`soulvice.cachix.org`](https://soulvice.cachix.org/) in your nix configuration.
+Whether or not to enable the binary cache [`niri.cachix.org`](https://niri.cachix.org/) in your nix configuration.
 
 Using a binary cache can save you time, by avoiding redundant rebuilds.
 
-This cache is managed by me, soulvice, and i use GitHub Actions to automaticaly upload builds of [`pkgs.niri-stable`](#packagessystemniri-stable) and [`pkgs.niri-unstable`](#packagessystemniri-unstable) (for nixpkgs unstable and stable). By using it, you are trusting me to not upload malicious builds, and as such you may disable it.
+This cache is managed by me, sodiboo, and i use GitHub Actions to automaticaly upload builds of [`pkgs.niri-stable`](#packagessystemniri-stable) and [`pkgs.niri-unstable`](#packagessystemniri-unstable) (for nixpkgs unstable and stable). By using it, you are trusting me to not upload malicious builds, and as such you may disable it.
 
 If you do not wish to use this cache, then you may wish to set [`programs.niri.package`](#programsniripackage) to [`pkgs.niri`](https://search.nixos.org/packages?channel=unstable&show=niri), in order to take advantage of the NixOS cache.
 
@@ -206,18 +206,9 @@ The niri config file.
 
 - When this is null, no config file is generated.
 - When this is a string, it is assumed to be the config file contents.
-- When this is kdl a document, it is serialized to a string before being used as the config file contents.
-By default, this is a KDL document that reflects the settings in [`programs.niri.settings`](#programsnirisettings) plus [`programs.niri.extraConfig`](#programsniriextraconfig).
+- When this is kdl document, it is serialized to a string before being used as the config file contents.
 
-
-## `programs.niri.extraConfig`
-- type: `null or string or kdl document`
-- default: `null`
-
-A verbatim section to be appended to the niri config file.
-- When this is null, nothing will be appended.
-- When this is a string, it is assumed to be literal config file contents.
-- When this is a kdl document, it is serialized to a string before being appended to the config file.
+By default, this is a KDL document that reflects the settings in [`programs.niri.settings`](#programsnirisettings).
 
 
 ## `programs.niri.finalConfig`
@@ -278,197 +269,21 @@ For actions taking properties (named arguments), you can pass an attrset.
 {
   programs.niri.settings.binds = {
     "Mod+Shift+E".action.quit.skip-confirmation = true;
+    "Mod+Print".action.screenshot-screen = { show-pointer = false; };
   };
 }
 ```
 
 
-There is also a set of functions available under `config.lib.niri.actions`.
-
-Usage is like so:
+If an action takes properties and positional arguments, you can write it like this:
 
 ```nix
 {
-  programs.niri.settings.binds = with config.lib.niri.actions; {
-    "XF86AudioRaiseVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
-    "XF86AudioLowerVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-";
-
-    "Mod+D".action = spawn "fuzzel";
-    "Mod+1".action = focus-workspace 1;
-
-    "Mod+Shift+E".action = quit;
-    "Mod+Ctrl+Shift+E".action = quit { skip-confirmation=true; };
-
-    "Mod+Plus".action = set-column-width "+10%";
-  }
+  programs.niri.settings.binds = {
+    "Mod+Ctrl+1".action.move-window-to-workspace = [ { focus = false; } "chat-apps" ];
+  };
 }
 ```
-
-
-Keep in mind that each one of these attributes (i.e. the nix bindings) are actually identical functions with different node names, and they can take arbitrarily many arguments. The documentation here is based on the *real* acceptable arguments for these actions, but the nix bindings do not enforce this. If you pass the wrong arguments, niri will reject the config file, but evaluation will proceed without problems.
-
-For actions that don't take any arguments, just use the corresponding attribute from `config.lib.niri.actions`. They are listed as `action-name`. For actions that *do* take arguments, they are notated like so: `λ action-name :: <args>`, to clarify that they "should" be used as functions. Hopefully, `<args>` will be clear enough in most cases, but it's worth noting some nontrivial kinds of arguments:
-
-- `size-change`: This is a special argument type used for some actions by niri. It's a string. \
-  It can take either a fixed size as an integer number of logical pixels (`"480"`, `"1200"`) or a proportion of your screen as a percentage (`"30%"`, `"70%"`) \
-  Additionally, it can either be an absolute change (setting the new size of the window), or a relative change (adding or subtracting from its size). \
-  Relative size changes are written with a `+`/`-` prefix, and absolute size changes have no prefix.
-- `{ field :: type }`: This means that the action takes a named argument (in kdl, we call it a property). \
-  To pass such an argument, you should pass an attrset with the key and value. You can pass many properties in one attrset, or you can pass several attrsets with different properties. \
-  Required fields are marked with `*` before their name, and if no fields are required, you can use the action without any arguments too (see `quit` in the example above). \
-  If a field is marked with `?`, then omitting it is meaningful. (without `?`, it will have a default value)
-- `[type]`: This means that the action takes several arguments as a list. Although you can pass a list directly, it's more common to pass them as separate arguments. \
-  `spawn ["foo" "bar" "baz"]` is equivalent to `spawn "foo" "bar" "baz"`.
-
-
-> [!tip]
-> You can use partial application to create a spawn command with full support for shell syntax:
-> ```nix
-> {
->   programs.niri.settings.binds = with config.lib.niri.actions; let
->     sh = spawn "sh" "-c";
->   in {
->     "Print".action = sh ''grim -g "$(slurp)" - | wl-copy'';
->   };
-> }
-> ```
-
-
-- `λ quit :: { skip-confirmation :: bool }`
-- `suspend`
-- `power-off-monitors`
-- `power-on-monitors`
-- `toggle-debug-tint`
-- `debug-toggle-opaque-regions`
-- `debug-toggle-damage`
-- `λ spawn :: [string]`
-- `λ spawn-sh :: string`
-- `λ do-screen-transition :: { delay-ms? :: u16 }`
-- `toggle-keyboard-shortcuts-inhibit`
-- `close-window`
-- `fullscreen-window`
-- `toggle-windowed-fullscreen`
-- `λ focus-window-in-column :: u8`
-- `focus-window-previous`
-- `focus-column-left`
-- `focus-column-right`
-- `focus-column-first`
-- `focus-column-last`
-- `focus-column-right-or-first`
-- `focus-column-left-or-last`
-- `λ focus-column :: usize`
-- `focus-window-or-monitor-up`
-- `focus-window-or-monitor-down`
-- `focus-column-or-monitor-left`
-- `focus-column-or-monitor-right`
-- `focus-window-down`
-- `focus-window-up`
-- `focus-window-down-or-column-left`
-- `focus-window-down-or-column-right`
-- `focus-window-up-or-column-left`
-- `focus-window-up-or-column-right`
-- `focus-window-or-workspace-down`
-- `focus-window-or-workspace-up`
-- `focus-window-top`
-- `focus-window-bottom`
-- `focus-window-down-or-top`
-- `focus-window-up-or-bottom`
-- `move-column-left`
-- `move-column-right`
-- `move-column-to-first`
-- `move-column-to-last`
-- `move-column-left-or-to-monitor-left`
-- `move-column-right-or-to-monitor-right`
-- `λ move-column-to-index :: usize`
-- `move-window-down`
-- `move-window-up`
-- `move-window-down-or-to-workspace-down`
-- `move-window-up-or-to-workspace-up`
-- `consume-or-expel-window-left`
-- `consume-or-expel-window-right`
-- `consume-window-into-column`
-- `expel-window-from-column`
-- `swap-window-left`
-- `swap-window-right`
-- `toggle-column-tabbed-display`
-- `λ set-column-display :: string`
-- `center-column`
-- `center-window`
-- `center-visible-columns`
-- `focus-workspace-down`
-- `focus-workspace-up`
-- `λ focus-workspace :: u8 | string`
-- `focus-workspace-previous`
-- `λ move-window-to-workspace-down :: { focus :: bool }`
-- `λ move-window-to-workspace-up :: { focus :: bool }`
-- `λ move-column-to-workspace-down :: { focus :: bool }`
-- `λ move-column-to-workspace-up :: { focus :: bool }`
-- `move-workspace-down`
-- `move-workspace-up`
-- `λ move-workspace-to-index :: usize`
-- `λ move-workspace-to-monitor :: string`
-- `λ set-workspace-name :: string`
-- `unset-workspace-name`
-- `focus-monitor-left`
-- `focus-monitor-right`
-- `focus-monitor-down`
-- `focus-monitor-up`
-- `focus-monitor-previous`
-- `focus-monitor-next`
-- `λ focus-monitor :: string`
-- `move-window-to-monitor-left`
-- `move-window-to-monitor-right`
-- `move-window-to-monitor-down`
-- `move-window-to-monitor-up`
-- `move-window-to-monitor-previous`
-- `move-window-to-monitor-next`
-- `λ move-window-to-monitor :: string`
-- `move-column-to-monitor-left`
-- `move-column-to-monitor-right`
-- `move-column-to-monitor-down`
-- `move-column-to-monitor-up`
-- `move-column-to-monitor-previous`
-- `move-column-to-monitor-next`
-- `λ move-column-to-monitor :: string`
-- `λ set-window-width :: size-change`
-- `λ set-window-height :: size-change`
-- `reset-window-height`
-- `switch-preset-column-width`
-- `switch-preset-column-width-back`
-- `switch-preset-window-width`
-- `switch-preset-window-width-back`
-- `switch-preset-window-height`
-- `switch-preset-window-height-back`
-- `maximize-column`
-- `maximize-window-to-edges`
-- `λ set-column-width :: size-change`
-- `expand-column-to-available-width`
-- `λ switch-layout :: "next" | "prev"`
-- `show-hotkey-overlay`
-- `move-workspace-to-monitor-left`
-- `move-workspace-to-monitor-right`
-- `move-workspace-to-monitor-down`
-- `move-workspace-to-monitor-up`
-- `move-workspace-to-monitor-previous`
-- `move-workspace-to-monitor-next`
-- `toggle-window-floating`
-- `move-window-to-floating`
-- `move-window-to-tiling`
-- `focus-floating`
-- `focus-tiling`
-- `switch-focus-between-floating-and-tiling`
-- `toggle-window-rule-opacity`
-- `set-dynamic-cast-window`
-- `λ set-dynamic-cast-monitor :: unknown`
-  
-    The code that generates this documentation does not know how to parse the definition:
-    ```rs
-    SetDynamicCastMonitor(#[knuffel(argument)] Option<String>)
-    ```
-- `clear-dynamic-cast-target`
-- `toggle-overview`
-- `open-overview`
-- `close-overview`
 
 
 
@@ -1930,7 +1745,7 @@ the bottom edge of the big window is almost entirely yellow, and the top edge of
 ](/assets/relative-to-workspace-view.png "behaviour of relative-to=\"workspace-view\"")
 
 
-these beautiful images are sourced from the release notes for [`v0.1.3`](https://github.com/soulvice/niri/releases/tag/v0.1.3)
+these beautiful images are sourced from the release notes for [`v0.1.3`](https://github.com/YaLTeR/niri/releases/tag/v0.1.3)
 
 
 ## `<decoration>.gradient.to`
@@ -2277,7 +2092,7 @@ Source code for a GLSL shader to use for this animation.
 
 For example, set it to `builtins.readFile ./window-close.glsl` to use a shader from the same directory as your configuration file.
 
-See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shader
+See: https://github.com/YaLTeR/niri/wiki/Configuration:-Animations#custom-shader
 
 
 ## `programs.niri.settings.animations.window-close.enable`
@@ -2312,7 +2127,7 @@ Source code for a GLSL shader to use for this animation.
 
 For example, set it to `builtins.readFile ./window-open.glsl` to use a shader from the same directory as your configuration file.
 
-See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shader
+See: https://github.com/YaLTeR/niri/wiki/Configuration:-Animations#custom-shader
 
 
 ## `programs.niri.settings.animations.window-open.enable`
@@ -2335,7 +2150,7 @@ Source code for a GLSL shader to use for this animation.
 
 For example, set it to `builtins.readFile ./window-resize.glsl` to use a shader from the same directory as your configuration file.
 
-See: https://github.com/soulvice/niri/wiki/Configuration:-Animations#custom-shader
+See: https://github.com/YaLTeR/niri/wiki/Configuration:-Animations#custom-shader
 
 
 ## `programs.niri.settings.animations.window-resize.enable`
