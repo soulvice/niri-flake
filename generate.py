@@ -419,18 +419,6 @@ PRIMITIVE: dict[str, str] = {
         '(lib.types.enum [ "normal" "90" "180" "270" '
         '"flipped" "flipped-90" "flipped-180" "flipped-270" ])'
     ),
-    # Animation config blocks (easing or spring params + optional shader)
-    'WorkspaceSwitchAnim':               '(lib.types.attrsOf lib.types.anything)',
-    'WindowOpenAnim':                    '(lib.types.attrsOf lib.types.anything)',
-    'WindowCloseAnim':                   '(lib.types.attrsOf lib.types.anything)',
-    'HorizontalViewMovementAnim':        '(lib.types.attrsOf lib.types.anything)',
-    'WindowMovementAnim':                '(lib.types.attrsOf lib.types.anything)',
-    'WindowResizeAnim':                  '(lib.types.attrsOf lib.types.anything)',
-    'ConfigNotificationOpenCloseAnim':   '(lib.types.attrsOf lib.types.anything)',
-    'ExitConfirmationOpenCloseAnim':     '(lib.types.attrsOf lib.types.anything)',
-    'ScreenshotUiOpenAnim':              '(lib.types.attrsOf lib.types.anything)',
-    'OverviewOpenCloseAnim':             '(lib.types.attrsOf lib.types.anything)',
-    'RecentWindowsCloseAnim':            '(lib.types.attrsOf lib.types.anything)',
 }
 
 
@@ -740,7 +728,7 @@ def _human_type(rt: str, structs: dict, enums: dict) -> tuple[str, str]:
         return '`string`', vals
     if t == 'PresetSize':
         return '`any`', 'proportion (`{ proportion = 0.5; }`) or fixed (`{ fixed = 960; }`)'
-    if t in ('MruBinds',) or t.endswith('Anim') or 'Anim' in t:
+    if t in ('MruBinds',):
         return '`attrs`', ''
 
     if t in enums:
@@ -881,6 +869,45 @@ def _gen_docs(sections: list, structs: dict, enums: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Animation struct injection
+# ---------------------------------------------------------------------------
+
+# Animation types have custom knuffel::Decode impls so the parser misses them.
+# We inject synthetic structs that mirror the KDL-level fields.
+
+_ANIM_NO_SHADER = [
+    'WorkspaceSwitchAnim', 'HorizontalViewMovementAnim', 'WindowMovementAnim',
+    'ConfigNotificationOpenCloseAnim', 'ExitConfirmationOpenCloseAnim',
+    'ScreenshotUiOpenAnim', 'OverviewOpenCloseAnim', 'RecentWindowsCloseAnim',
+]
+_ANIM_WITH_SHADER = ['WindowOpenAnim', 'WindowCloseAnim', 'WindowResizeAnim']
+
+
+def _inject_animation_structs(structs: dict) -> None:
+    structs['EasingParams'] = RustStruct('EasingParams', [
+        RustField('duration_ms', 'u32',    'child, unwrap(argument)', default='250'),
+        RustField('curve',       'String', 'child, unwrap(argument)', default=None),
+    ])
+    structs['SpringParams'] = RustStruct('SpringParams', [
+        RustField('damping_ratio', 'f64', 'child, unwrap(argument)', default='1.0'),
+        RustField('stiffness',     'u32', 'child, unwrap(argument)', default='1000'),
+        RustField('epsilon',       'f64', 'child, unwrap(argument)', default='0.0001'),
+    ])
+
+    base = [
+        RustField('off',    'bool',                 'child', default='false'),
+        RustField('easing', 'Option<EasingParams>', 'child', default=None),
+        RustField('spring', 'Option<SpringParams>', 'child', default=None),
+    ]
+    for name in _ANIM_NO_SHADER:
+        structs[name] = RustStruct(name, list(base))
+    for name in _ANIM_WITH_SHADER:
+        structs[name] = RustStruct(name, base + [
+            RustField('custom_shader', 'Option<String>', 'child, unwrap(argument)', default=None),
+        ])
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -923,6 +950,7 @@ def main():
 
     print(f"Scanning: {niri_root}", file=sys.stderr)
     structs, enums = parse_all(niri_root)
+    _inject_animation_structs(structs)
     print(f"  {len(structs)} structs with #[derive(knuffel::Decode)]", file=sys.stderr)
     print(f"  {len(enums)} enums (DecodeScalar + plain)", file=sys.stderr)
 

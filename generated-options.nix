@@ -427,47 +427,521 @@
         default = null;
       };
       workspace-switch = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       window-open = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+            custom-shader = lib.mkOption {
+              type = (lib.types.nullOr lib.types.str);
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       window-close = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+            custom-shader = lib.mkOption {
+              type = (lib.types.nullOr lib.types.str);
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       horizontal-view-movement = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       window-movement = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       window-resize = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+            custom-shader = lib.mkOption {
+              type = (lib.types.nullOr lib.types.str);
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       config-notification-open-close = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       exit-confirmation-open-close = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       screenshot-ui-open = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       overview-open-close = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       recent-windows-close = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.attrsOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
+            };
+            easing = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  duration-ms = lib.mkOption {
+                    type = lib.types.int;
+                    default = 250;
+                  };
+                  curve = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.str);
+                    default = null;
+                  };
+                };
+              }));
+              default = null;
+            };
+            spring = lib.mkOption {
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  damping-ratio = lib.mkOption {
+                    type = lib.types.float;
+                    default = 1.0;
+                  };
+                  stiffness = lib.mkOption {
+                    type = lib.types.int;
+                    default = 1000;
+                  };
+                  epsilon = lib.mkOption {
+                    type = lib.types.float;
+                    default = 0.0001;
+                  };
+                };
+              }));
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
     };

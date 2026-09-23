@@ -507,47 +507,422 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.workspace-switch`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.workspace-switch.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.workspace-switch.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.workspace-switch.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.workspace-switch.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.workspace-switch.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.workspace-switch.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.workspace-switch.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.workspace-switch.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.window-open`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-open.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.window-open.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-open.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.window-open.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.window-open.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-open.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.window-open.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.window-open.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
+
+### `programs.niri.settings.animations.window-open.custom-shader`
+
+**Type:** `null` or `string`  **Default:** `null`
 
 ### `programs.niri.settings.animations.window-close`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-close.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.window-close.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-close.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.window-close.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.window-close.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-close.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.window-close.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.window-close.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
+
+### `programs.niri.settings.animations.window-close.custom-shader`
+
+**Type:** `null` or `string`  **Default:** `null`
 
 ### `programs.niri.settings.animations.horizontal-view-movement`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.horizontal-view-movement.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.horizontal-view-movement.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.horizontal-view-movement.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.horizontal-view-movement.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.horizontal-view-movement.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.horizontal-view-movement.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.horizontal-view-movement.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.horizontal-view-movement.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.window-movement`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-movement.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.window-movement.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-movement.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.window-movement.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.window-movement.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-movement.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.window-movement.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.window-movement.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.window-resize`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-resize.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.window-resize.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-resize.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.window-resize.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.window-resize.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.window-resize.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.window-resize.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.window-resize.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
+
+### `programs.niri.settings.animations.window-resize.custom-shader`
+
+**Type:** `null` or `string`  **Default:** `null`
 
 ### `programs.niri.settings.animations.config-notification-open-close`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.config-notification-open-close.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.config-notification-open-close.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.config-notification-open-close.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.config-notification-open-close.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.config-notification-open-close.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.config-notification-open-close.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.config-notification-open-close.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.config-notification-open-close.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.exit-confirmation-open-close`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.exit-confirmation-open-close.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.screenshot-ui-open`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.screenshot-ui-open.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.screenshot-ui-open.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.screenshot-ui-open.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.screenshot-ui-open.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.screenshot-ui-open.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.screenshot-ui-open.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.screenshot-ui-open.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.screenshot-ui-open.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.overview-open-close`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.overview-open-close.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.overview-open-close.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.overview-open-close.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.overview-open-close.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.overview-open-close.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.overview-open-close.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.overview-open-close.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.overview-open-close.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ### `programs.niri.settings.animations.recent-windows-close`
 
-**Type:** `null` or `attrs`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.recent-windows-close.off`
+
+**Type:** `bool`  **Default:** `false`
+**Values:** `true`, `false`
+
+### `programs.niri.settings.animations.recent-windows-close.easing`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.recent-windows-close.easing.duration-ms`
+
+**Type:** `int`  **Default:** `250`
+
+### `programs.niri.settings.animations.recent-windows-close.easing.curve`
+
+**Type:** `string`
+
+### `programs.niri.settings.animations.recent-windows-close.spring`
+
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.animations.recent-windows-close.spring.damping-ratio`
+
+**Type:** `float`  **Default:** `1.0`
+
+### `programs.niri.settings.animations.recent-windows-close.spring.stiffness`
+
+**Type:** `int`  **Default:** `1000`
+
+### `programs.niri.settings.animations.recent-windows-close.spring.epsilon`
+
+**Type:** `float`  **Default:** `0.0001`
 
 ---
 
