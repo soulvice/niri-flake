@@ -581,7 +581,33 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
     lines: list[str] = []
     pad = '  ' * depth
 
+    # Detect on/off flag fields and collapse them into a single `enable` option.
+    field_names = {f.name for f in fields}
+    has_on  = 'on'  in field_names
+    has_off = 'off' in field_names
+
+    if has_on or has_off:
+        if has_on and has_off:
+            # Both flags: true → emit on;  false → emit off;  null → nothing
+            apply_fn = 'v: if v == null then null else { __kdl_flag = if v then "on" else "off"; }'
+        elif has_on:
+            # on-only: true → emit on;  false/null → nothing
+            apply_fn = 'v: if v == true then { __kdl_flag = "on"; } else null'
+        else:
+            # off-only: false → emit off;  true/null → nothing
+            apply_fn = 'v: if v == false then { __kdl_flag = "off"; } else null'
+
+        lines.append(f'{pad}enable = lib.mkOption {{')
+        lines.append(f'{pad}  type = (lib.types.nullOr lib.types.bool);')
+        lines.append(f'{pad}  default = null;')
+        lines.append(f'{pad}  apply = {apply_fn};')
+        lines.append(f'{pad}}};')
+
     for f in fields:
+        # Skip on/off — replaced by enable above.
+        if f.name in ('on', 'off') and (has_on or has_off):
+            continue
+
         nix_name = snake_to_kebab(f.name)
         nix_type = _field_nix_type(f, structs, enums, depth)
         nix_def  = _field_default(f)

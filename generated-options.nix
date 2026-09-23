@@ -63,9 +63,10 @@
       touchpad = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             tap = lib.mkOption {
               type = lib.types.bool;
@@ -146,9 +147,10 @@
       mouse = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             natural-scroll = lib.mkOption {
               type = lib.types.bool;
@@ -193,9 +195,10 @@
       trackpoint = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             natural-scroll = lib.mkOption {
               type = lib.types.bool;
@@ -236,9 +239,10 @@
       trackball = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             natural-scroll = lib.mkOption {
               type = lib.types.bool;
@@ -279,9 +283,10 @@
       tablet = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             calibration-matrix = lib.mkOption {
               type = (lib.types.nullOr (lib.types.listOf lib.types.float));
@@ -310,9 +315,10 @@
       touch = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             calibration-matrix = lib.mkOption {
               type = (lib.types.nullOr (lib.types.listOf lib.types.float));
@@ -411,13 +417,10 @@
     };
 
     animations = {
-      off = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      on = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
+      enable = lib.mkOption {
+        type = (lib.types.nullOr lib.types.bool);
+        default = null;
+        apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
       };
       slowdown = lib.mkOption {
         type = (lib.types.nullOr lib.types.float);
@@ -470,13 +473,10 @@
     };
 
     blur = {
-      off = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      on = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
+      enable = lib.mkOption {
+        type = (lib.types.nullOr lib.types.bool);
+        default = null;
+        apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
       };
       passes = lib.mkOption {
         type = (lib.types.nullOr lib.types.int);
@@ -538,9 +538,10 @@
       hot-corners = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             top-left = lib.mkOption {
               type = lib.types.bool;
@@ -576,13 +577,10 @@
       workspace-shadow = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-            on = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             offset = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -618,13 +616,10 @@
     };
 
     xwayland-satellite = {
-      off = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      on = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
+      enable = lib.mkOption {
+        type = (lib.types.nullOr lib.types.bool);
+        default = null;
+        apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
       };
       path = lib.mkOption {
         type = (lib.types.nullOr lib.types.str);
@@ -773,9 +768,10 @@
     output = lib.mkOption {
       type = lib.types.listOf (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == false then { __kdl_flag = "off"; } else null;
             };
             name = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
@@ -842,9 +838,10 @@
             hot-corners = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
-                  off = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
+                  enable = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                    apply = v: if v == false then { __kdl_flag = "off"; } else null;
                   };
                   top-left = lib.mkOption {
                     type = lib.types.bool;
@@ -872,13 +869,10 @@
                   focus-ring = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
                           type = (lib.types.nullOr lib.types.float);
@@ -984,13 +978,10 @@
                   border = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
                           type = (lib.types.nullOr lib.types.float);
@@ -1096,13 +1087,10 @@
                   shadow = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         offset = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1146,13 +1134,10 @@
                   tab-indicator = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         hide-when-single-tab = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
@@ -1293,13 +1278,10 @@
                   insert-hint = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         color = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
@@ -1576,13 +1558,10 @@
             focus-ring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
-                  off = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
-                  };
-                  on = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
+                  enable = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                    apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                   };
                   width = lib.mkOption {
                     type = (lib.types.nullOr lib.types.float);
@@ -1688,13 +1667,10 @@
             border = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
-                  off = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
-                  };
-                  on = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
+                  enable = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                    apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                   };
                   width = lib.mkOption {
                     type = (lib.types.nullOr lib.types.float);
@@ -1800,13 +1776,10 @@
             shadow = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
-                  off = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
-                  };
-                  on = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
+                  enable = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                    apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                   };
                   offset = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2176,13 +2149,10 @@
             shadow = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
-                  off = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
-                  };
-                  on = lib.mkOption {
-                    type = lib.types.bool;
-                    default = false;
+                  enable = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                    apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                   };
                   offset = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2318,13 +2288,10 @@
                   focus-ring = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
                           type = (lib.types.nullOr lib.types.float);
@@ -2430,13 +2397,10 @@
                   border = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
                           type = (lib.types.nullOr lib.types.float);
@@ -2542,13 +2506,10 @@
                   shadow = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         offset = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -2592,13 +2553,10 @@
                   tab-indicator = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         hide-when-single-tab = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
@@ -2739,13 +2697,10 @@
                   insert-hint = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
-                        off = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
-                        };
-                        on = lib.mkOption {
-                          type = lib.types.bool;
-                          default = false;
+                        enable = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.bool);
+                          default = null;
+                          apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         color = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
@@ -2882,13 +2837,10 @@
       focus-ring = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-            on = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             width = lib.mkOption {
               type = (lib.types.nullOr lib.types.float);
@@ -2994,13 +2946,10 @@
       border = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-            on = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             width = lib.mkOption {
               type = (lib.types.nullOr lib.types.float);
@@ -3106,13 +3055,10 @@
       shadow = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-            on = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             offset = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3156,13 +3102,10 @@
       tab-indicator = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-            on = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             hide-when-single-tab = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
@@ -3303,13 +3246,10 @@
       insert-hint = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
-            off = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-            };
-            on = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
+            enable = lib.mkOption {
+              type = (lib.types.nullOr lib.types.bool);
+              default = null;
+              apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             color = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
@@ -3408,13 +3348,10 @@
     };
 
     recent-windows = {
-      on = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      off = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
+      enable = lib.mkOption {
+        type = (lib.types.nullOr lib.types.bool);
+        default = null;
+        apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
       };
       debounce-ms = lib.mkOption {
         type = (lib.types.nullOr lib.types.int);

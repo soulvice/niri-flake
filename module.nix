@@ -44,6 +44,7 @@ let
     if v == null            then ""
     else if v == false      then ""                                       # Flag off → omit
     else if v == true       then "${p}${kk}\n"                            # Flag on → bare node
+    else if builtins.isAttrs v && v ? __kdl_flag then "${p}${v.__kdl_flag}\n"
     else if builtins.isInt v    || builtins.isFloat v then "${p}${kk} ${toString v}\n"
     else if builtins.isString v then "${p}${kk} ${escKdl v}\n"
     else if builtins.isList v   then renderList n kk v
