@@ -1418,10 +1418,14 @@ def _camel_to_snake(s: str) -> str:
 
 def _fetch_niri(dest: Path) -> None:
     """Clone or update github:soulvice/niri into dest."""
-    if dest.exists():
+    if (dest / ".git").exists():
         print(f"Pulling {GITHUB_NIRI} → {dest}", file=sys.stderr)
         subprocess.run(["git", "-C", str(dest), "pull", "--ff-only"], check=True)
     else:
+        # Remove empty dir if it exists (e.g. from tempfile.mkdtemp) so git
+        # clone can create it fresh.
+        if dest.exists() and not any(dest.iterdir()):
+            dest.rmdir()
         print(f"Cloning {GITHUB_NIRI} → {dest}", file=sys.stderr)
         subprocess.run(
             ["git", "clone", "--depth=1", GITHUB_NIRI, str(dest)],
@@ -1439,19 +1443,19 @@ def main():
     niri_root = Path(args[0]) if len(args) > 0 else DEFAULT_NIRI_ROOT
     output    = Path(args[1]) if len(args) > 1 else DEFAULT_OUTPUT
 
-    # Auto-fetch when local path is absent, or when --fetch is explicit.
+    # Fetch logic:
+    #   --fetch  → update/clone into the local default path (developer workflow)
+    #   path absent, no --fetch → temp clone (CI / first-time run without local checkout)
     _tmp_dir = None
-    if fetch or not niri_root.exists():
-        if fetch or niri_root == DEFAULT_NIRI_ROOT:
-            # Use the default local path as the clone target so repeated
-            # runs just do a fast-forward pull.
-            niri_root.parent.mkdir(parents=True, exist_ok=True)
-            _fetch_niri(niri_root)
-        else:
-            # Explicit non-existent path given → fall back to a temp clone.
-            _tmp_dir = tempfile.mkdtemp(prefix="niri-src-")
-            niri_root = Path(_tmp_dir)
-            _fetch_niri(niri_root)
+    if fetch:
+        # Intentional local update: clone/pull into ~/codes/nix/niri
+        niri_root.parent.mkdir(parents=True, exist_ok=True)
+        _fetch_niri(niri_root)
+    elif not niri_root.exists():
+        # Path absent (CI or no local clone): use a temp dir, leave home alone
+        _tmp_dir = tempfile.mkdtemp(prefix="niri-src-")
+        niri_root = Path(_tmp_dir)
+        _fetch_niri(niri_root)
 
     print(f"Scanning: {niri_root}", file=sys.stderr)
     structs, enums = parse_all(niri_root)
