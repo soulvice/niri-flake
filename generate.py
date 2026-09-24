@@ -373,9 +373,10 @@ def _enum_body(lines: list, start: int) -> tuple[list, Optional[str], int]:
             i += 1
             continue
 
-        # Variant: `VariantName,`  or  `VariantName(type),`
+        # Variant: `VariantName,`  or  `VariantName(#[attr] type, …),`
+        # Use a loose match — [^)]* breaks on nested parens like `(#[knuffel(argument)] f64)`.
         SKIP = {'pub', 'use', 'impl', 'fn', 'let', 'match', 'where', 'mod', 'extern', 'crate'}
-        vm = re.match(r'^(_?\w+)(?:\([^)]*\))?\s*[,{]?\s*(?://.*)?$', line)
+        vm = re.match(r'^(_?\w+)', line)
         if vm:
             vname = vm.group(1)
             if vname not in SKIP and (vname[0].isupper() or vname.startswith('_')):
@@ -406,8 +407,7 @@ PRIMITIVE: dict[str, str] = {
     'CornerRadius':            'lib.types.float',   # single radius or per-corner; simplified
     'GradientInterpolation':   'lib.types.str',     # CSS-like "srgb", "oklch shorter", etc.
     'RegexEq':                 'lib.types.str',
-    'PresetSize':              'lib.types.anything',
-    'DefaultPresetSize':       '(lib.types.nullOr lib.types.anything)',
+    # PresetSize / DefaultPresetSize: injected as RustStructs in _inject_animation_structs
     'MruBinds':                '(lib.types.attrsOf lib.types.anything)',
     # Simple newtype wrappers and special string types
     'PathBuf':             'lib.types.str',
@@ -484,15 +484,15 @@ def rust_type_to_nix(rt: str, structs: dict, enums: dict, depth: int = 0) -> str
     if t in FLOAT_TYPES:
         return 'lib.types.float'
 
+    # Known struct → submodule (checked before enums so injected structs win)
+    if t in structs:
+        return _struct_to_submodule(structs[t], structs, enums, depth)
+
     # Known enum → enum type with all variant values
     if t in enums:
         e = enums[t]
         vs = ' '.join(f'"{camel_to_kebab(v)}"' for v in e.variants)
         return f'(lib.types.enum [ {vs} ])'
-
-    # Known struct → submodule
-    if t in structs:
-        return _struct_to_submodule(structs[t], structs, enums, depth)
 
     return f'lib.types.anything  # TODO: resolve {t}'
 
@@ -884,6 +884,14 @@ _ANIM_WITH_SHADER = ['WindowOpenAnim', 'WindowCloseAnim', 'WindowResizeAnim']
 
 
 def _inject_animation_structs(structs: dict) -> None:
+    # PresetSize: proportion 0.33 | fixed 960  — user sets exactly one field.
+    preset_fields = [
+        RustField('proportion', 'Option<f64>', 'child, unwrap(argument)', default=None),
+        RustField('fixed',      'Option<i32>', 'child, unwrap(argument)', default=None),
+    ]
+    structs['PresetSize']        = RustStruct('PresetSize',        preset_fields)
+    structs['DefaultPresetSize'] = RustStruct('DefaultPresetSize', list(preset_fields))
+
     structs['EasingParams'] = RustStruct('EasingParams', [
         RustField('duration_ms', 'u32',    'child, unwrap(argument)', default='250'),
         RustField('curve',       'String', 'child, unwrap(argument)', default=None),

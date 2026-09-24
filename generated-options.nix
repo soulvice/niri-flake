@@ -1793,15 +1793,48 @@
                     default = null;
                   };
                   preset-column-widths = lib.mkOption {
-                    type = (lib.types.nullOr (lib.types.listOf lib.types.anything));
+                    type = (lib.types.nullOr (lib.types.listOf (lib.types.submodule {
+                      options = {
+                        proportion = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.float);
+                          default = null;
+                        };
+                        fixed = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.int);
+                          default = null;
+                        };
+                      };
+                    })));
                     default = null;
                   };
                   default-column-width = lib.mkOption {
-                    type = (lib.types.nullOr (lib.types.nullOr lib.types.anything));
+                    type = (lib.types.nullOr (lib.types.submodule {
+                      options = {
+                        proportion = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.float);
+                          default = null;
+                        };
+                        fixed = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.int);
+                          default = null;
+                        };
+                      };
+                    }));
                     default = null;
                   };
                   preset-window-heights = lib.mkOption {
-                    type = (lib.types.nullOr (lib.types.listOf lib.types.anything));
+                    type = (lib.types.nullOr (lib.types.listOf (lib.types.submodule {
+                      options = {
+                        proportion = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.float);
+                          default = null;
+                        };
+                        fixed = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.int);
+                          default = null;
+                        };
+                      };
+                    })));
                     default = null;
                   };
                   center-focused-column = lib.mkOption {
@@ -1974,11 +2007,33 @@
               default = [];
             };
             default-column-width = lib.mkOption {
-              type = (lib.types.nullOr (lib.types.nullOr lib.types.anything));
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  proportion = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.float);
+                    default = null;
+                  };
+                  fixed = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.int);
+                    default = null;
+                  };
+                };
+              }));
               default = null;
             };
             default-window-height = lib.mkOption {
-              type = (lib.types.nullOr (lib.types.nullOr lib.types.anything));
+              type = (lib.types.nullOr (lib.types.submodule {
+                options = {
+                  proportion = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.float);
+                    default = null;
+                  };
+                  fixed = lib.mkOption {
+                    type = (lib.types.nullOr lib.types.int);
+                    default = null;
+                  };
+                };
+              }));
               default = null;
             };
             open-on-output = lib.mkOption {
@@ -3212,15 +3267,48 @@
                     default = null;
                   };
                   preset-column-widths = lib.mkOption {
-                    type = (lib.types.nullOr (lib.types.listOf lib.types.anything));
+                    type = (lib.types.nullOr (lib.types.listOf (lib.types.submodule {
+                      options = {
+                        proportion = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.float);
+                          default = null;
+                        };
+                        fixed = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.int);
+                          default = null;
+                        };
+                      };
+                    })));
                     default = null;
                   };
                   default-column-width = lib.mkOption {
-                    type = (lib.types.nullOr (lib.types.nullOr lib.types.anything));
+                    type = (lib.types.nullOr (lib.types.submodule {
+                      options = {
+                        proportion = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.float);
+                          default = null;
+                        };
+                        fixed = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.int);
+                          default = null;
+                        };
+                      };
+                    }));
                     default = null;
                   };
                   preset-window-heights = lib.mkOption {
-                    type = (lib.types.nullOr (lib.types.listOf lib.types.anything));
+                    type = (lib.types.nullOr (lib.types.listOf (lib.types.submodule {
+                      options = {
+                        proportion = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.float);
+                          default = null;
+                        };
+                        fixed = lib.mkOption {
+                          type = (lib.types.nullOr lib.types.int);
+                          default = null;
+                        };
+                      };
+                    })));
                     default = null;
                   };
                   center-focused-column = lib.mkOption {
@@ -3761,15 +3849,48 @@
         default = null;
       };
       preset-column-widths = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.listOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.listOf (lib.types.submodule {
+          options = {
+            proportion = lib.mkOption {
+              type = (lib.types.nullOr lib.types.float);
+              default = null;
+            };
+            fixed = lib.mkOption {
+              type = (lib.types.nullOr lib.types.int);
+              default = null;
+            };
+          };
+        })));
         default = null;
       };
       default-column-width = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.nullOr lib.types.anything));
+        type = (lib.types.nullOr (lib.types.submodule {
+          options = {
+            proportion = lib.mkOption {
+              type = (lib.types.nullOr lib.types.float);
+              default = null;
+            };
+            fixed = lib.mkOption {
+              type = (lib.types.nullOr lib.types.int);
+              default = null;
+            };
+          };
+        }));
         default = null;
       };
       preset-window-heights = lib.mkOption {
-        type = (lib.types.nullOr (lib.types.listOf lib.types.anything));
+        type = (lib.types.nullOr (lib.types.listOf (lib.types.submodule {
+          options = {
+            proportion = lib.mkOption {
+              type = (lib.types.nullOr lib.types.float);
+              default = null;
+            };
+            fixed = lib.mkOption {
+              type = (lib.types.nullOr lib.types.int);
+              default = null;
+            };
+          };
+        })));
         default = null;
       };
       center-focused-column = lib.mkOption {

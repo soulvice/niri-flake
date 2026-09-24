@@ -1782,13 +1782,37 @@ Regenerate: `python3 generate.py`
 
 **Type:** `null` or list of `any`  **Default:** `null`
 
+### `programs.niri.settings.output.<n>.layout.preset-column-widths.<item>.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.output.<n>.layout.preset-column-widths.<item>.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
+
 ### `programs.niri.settings.output.<n>.layout.default-column-width`
 
-**Type:** `null` or `any`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.output.<n>.layout.default-column-width.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.output.<n>.layout.default-column-width.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.output.<n>.layout.preset-window-heights`
 
 **Type:** `null` or list of `any`  **Default:** `null`
+
+### `programs.niri.settings.output.<n>.layout.preset-window-heights.<item>.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.output.<n>.layout.preset-window-heights.<item>.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.output.<n>.layout.center-focused-column`
 
@@ -1960,11 +1984,27 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.window-rule.<n>.default-column-width`
 
-**Type:** `null` or `any`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.window-rule.<n>.default-column-width.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.window-rule.<n>.default-column-width.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.window-rule.<n>.default-window-height`
 
-**Type:** `null` or `any`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.window-rule.<n>.default-window-height.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.window-rule.<n>.default-window-height.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.window-rule.<n>.open-on-output`
 
@@ -3180,13 +3220,37 @@ Regenerate: `python3 generate.py`
 
 **Type:** `null` or list of `any`  **Default:** `null`
 
+### `programs.niri.settings.workspace.<n>.layout.preset-column-widths.<item>.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.workspace.<n>.layout.preset-column-widths.<item>.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
+
 ### `programs.niri.settings.workspace.<n>.layout.default-column-width`
 
-**Type:** `null` or `any`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.workspace.<n>.layout.default-column-width.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.workspace.<n>.layout.default-column-width.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.workspace.<n>.layout.preset-window-heights`
 
 **Type:** `null` or list of `any`  **Default:** `null`
+
+### `programs.niri.settings.workspace.<n>.layout.preset-window-heights.<item>.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.workspace.<n>.layout.preset-window-heights.<item>.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.workspace.<n>.layout.center-focused-column`
 
@@ -3718,13 +3782,37 @@ Each key is a key combination (e.g. `"Mod+Return"`). Each value is a submodule w
 
 **Type:** `null` or list of `any`  **Default:** `null`
 
+### `programs.niri.settings.layout.preset-column-widths.<item>.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.layout.preset-column-widths.<item>.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
+
 ### `programs.niri.settings.layout.default-column-width`
 
-**Type:** `null` or `any`  **Default:** `null`
+**Type:** `null` or `submodule`  **Default:** `null`
+
+### `programs.niri.settings.layout.default-column-width.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.layout.default-column-width.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.layout.preset-window-heights`
 
 **Type:** `null` or list of `any`  **Default:** `null`
+
+### `programs.niri.settings.layout.preset-window-heights.<item>.proportion`
+
+**Type:** `null` or `float`  **Default:** `null`
+
+### `programs.niri.settings.layout.preset-window-heights.<item>.fixed`
+
+**Type:** `null` or `int`  **Default:** `null`
 
 ### `programs.niri.settings.layout.center-focused-column`
 
