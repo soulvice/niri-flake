@@ -1,0 +1,103 @@
+name: Update niri
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # weekly, Monday 06:00 UTC
+  workflow_dispatch:        # allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v15
+
+      - name: Enable Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v9
+
+      # ── record the niri version currently in the lock ──────────────────
+      - name: Record current niri version
+        id: before
+        run: |
+          nixpkgs_rev=$(jq -r '.nodes.nixpkgs.locked.rev' flake.lock)
+          ver=$(nix eval --raw \
+            "github:NixOS/nixpkgs/${nixpkgs_rev}#legacyPackages.x86_64-linux.niri.version")
+          echo "version=${ver}" >> "$GITHUB_OUTPUT"
+          echo "Current niri: ${ver}"
+
+      # ── bump inputs ─────────────────────────────────────────────────────
+      - name: Update flake inputs
+        run: nix flake update
+
+      # ── record the niri version now in the (updated) lock ───────────────
+      - name: Record new niri version
+        id: after
+        run: |
+          nixpkgs_rev=$(jq -r '.nodes.nixpkgs.locked.rev' flake.lock)
+          ver=$(nix eval --raw \
+            "github:NixOS/nixpkgs/${nixpkgs_rev}#legacyPackages.x86_64-linux.niri.version")
+          echo "version=${ver}" >> "$GITHUB_OUTPUT"
+          echo "New niri: ${ver}"
+
+      # ── if niri moved, pull its source and regenerate options ────────────
+      - name: Detect niri change
+        id: detect
+        run: |
+          OLD="${{ steps.before.outputs.version }}"
+          NEW="${{ steps.after.outputs.version }}"
+          if [ "$OLD" != "$NEW" ]; then
+            echo "changed=true"  >> "$GITHUB_OUTPUT"
+            echo "niri changed: ${OLD} → ${NEW}"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "niri unchanged at ${NEW}"
+          fi
+
+      - name: Fetch niri source
+        if: steps.detect.outputs.changed == 'true'
+        run: |
+          nixpkgs_rev=$(jq -r '.nodes.nixpkgs.locked.rev' flake.lock)
+          niri_src=$(nix build --no-link --print-out-paths \
+            "github:NixOS/nixpkgs/${nixpkgs_rev}#legacyPackages.x86_64-linux.niri.src")
+          echo "NIRI_SRC=${niri_src}" >> "$GITHUB_ENV"
+          echo "Fetched niri source: ${niri_src}"
+
+      - name: Regenerate options
+        if: steps.detect.outputs.changed == 'true'
+        run: nix develop --command python3 generate.py "$NIRI_SRC"
+
+      # ── always check ──────────────────────────────────────────────────
+      - name: nix flake check
+        run: nix flake check
+
+      # ── open a PR if anything changed ─────────────────────────────────
+      - name: Open PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            chore: update niri ${{ steps.before.outputs.version }} → ${{ steps.after.outputs.version }}
+          branch: update/niri-v${{ steps.after.outputs.version }}
+          delete-branch: true
+          title: >-
+            ${{ steps.detect.outputs.changed == 'true'
+              && format('Update niri to v{0}', steps.after.outputs.version)
+              || format('Update nixpkgs (niri unchanged at v{0})', steps.after.outputs.version) }}
+          body: |
+            Automated weekly update.
+
+            | | Before | After |
+            |---|---|---|
+            | niri | `${{ steps.before.outputs.version }}` | `${{ steps.after.outputs.version }}` |
+
+            ${{ steps.detect.outputs.changed == 'true' && '`generated-options.nix` and `options.md` regenerated from new niri source.' || '_niri source unchanged — only `flake.lock` updated._' }}
+
+            `nix flake check` passed. ✓
