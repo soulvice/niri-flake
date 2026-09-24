@@ -40,7 +40,7 @@ in
       xdg.portal = {
         enable = lib.mkDefault true;
         config.niri = {
-          default = [ "gnome" "gtk" ];
+          default = lib.mkDefault [ "gnome" "gtk" ];
           "org.freedesktop.impl.portal.Access" = "gtk";
           "org.freedesktop.impl.portal.FileChooser" = lib.mkIf (!cfg.useNautilus) "gtk";
           "org.freedesktop.impl.portal.Notification" = "gtk";
