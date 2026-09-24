@@ -747,6 +747,338 @@ def _human_type(rt: str, structs: dict, enums: dict) -> tuple[str, str]:
     return '`any`', ''
 
 
+def _esc_html(s: str) -> str:
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+
+def _gen_html_docs(sections: list, structs: dict, enums: dict) -> str:
+    """Generate interactive HTML documentation for all programs.niri.settings.* options."""
+    base = 'programs.niri.settings'
+
+    # ── gather per-section data ──────────────────────────────────────────────
+    section_data = []
+    total_opts = 0
+
+    for kdl_name, struct_name, is_list in sections:
+        section_path = f'{base}.{kdl_name}'
+        rows = []
+
+        if struct_name == '_bool_flag':
+            rows = [{'path': section_path, 'type': '`bool`', 'values': '', 'default': 'false', 'doc': ''}]
+        elif kdl_name == 'binds' or struct_name == 'Binds':
+            rows = [{'path': f'{section_path}.<key>', 'type': '`attrsOf submodule`', 'values': '',
+                     'default': '{}',
+                     'doc': 'Key is a key combination (e.g. "Mod+Return"). '
+                            'Set one action field per bind. Metadata: allow-when-locked, allow-inhibiting, cooldown-ms, repeat.'}]
+        elif struct_name in TUPLE_STRUCT_ROOT:
+            nix_type, nix_def = TUPLE_STRUCT_ROOT[struct_name]
+            human = nix_type.replace('lib.types.', '').replace('(', '').replace(')', '').strip()
+            rows = [{'path': section_path, 'type': f'`{human}`', 'values': '', 'default': nix_def, 'doc': ''}]
+        elif struct_name in structs:
+            path_tpl = f'{section_path}.<n>' if is_list else section_path
+            rows = _doc_fields_flat(struct_name, path_tpl, structs, enums)
+
+        total_opts += len(rows)
+        section_data.append((kdl_name, rows))
+
+    # ── HTML template ────────────────────────────────────────────────────────
+    sections_html = ''
+    for kdl_name, rows in section_data:
+        rows_html = ''
+        for r in rows:
+            path_short = r['path'].replace(base + '.', '')
+            type_html  = _esc_html(r['type'].strip('`'))
+            vals_html  = _esc_html(r['values']) if r['values'] else '—'
+            def_html   = _esc_html(str(r['default'])) if r['default'] is not None else '—'
+            doc_html   = _esc_html(r['doc']) if r.get('doc') else ''
+            rows_html += (
+                f'<tr data-path="{_esc_html(r["path"])}">'
+                f'<td><code>{_esc_html(path_short)}</code>'
+                f'{"<br><span class=doc>" + doc_html + "</span>" if doc_html else ""}</td>'
+                f'<td><span class="badge">{type_html}</span></td>'
+                f'<td><code>{def_html}</code></td>'
+                f'<td class="vals">{vals_html}</td>'
+                f'</tr>\n'
+            )
+        sections_html += (
+            f'<details class="section" id="{_esc_html(kdl_name)}">\n'
+            f'<summary>'
+            f'<span class="sec-name">{_esc_html(kdl_name)}</span>'
+            f'<span class="sec-count">{len(rows)}</span>'
+            f'</summary>\n'
+            f'<table>\n'
+            f'<thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Allowed values</th></tr></thead>\n'
+            f'<tbody>\n{rows_html}</tbody>\n</table>\n'
+            f'</details>\n'
+        )
+
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>niri Options</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {{
+  --bg:       #f8f8f8;
+  --bg2:      #ffffff;
+  --bg3:      #f0f0f2;
+  --border:   #e0e0e6;
+  --text:     #1a1a2e;
+  --text2:    #555566;
+  --accent:   #5b6af0;
+  --accent2:  #e8eaff;
+  --mono:     'JetBrains Mono', 'Fira Mono', monospace;
+  --sans:     'Inter', system-ui, sans-serif;
+  --radius:   6px;
+}}
+@media (prefers-color-scheme: dark) {{
+  :root:not([data-theme="light"]) {{
+    --bg:     #13131a;
+    --bg2:    #1c1c26;
+    --bg3:    #24242f;
+    --border: #2e2e3e;
+    --text:   #e8e8f2;
+    --text2:  #9090aa;
+    --accent: #7c89f8;
+    --accent2:#1e2040;
+  }}
+}}
+:root[data-theme="dark"] {{
+  --bg:     #13131a;
+  --bg2:    #1c1c26;
+  --bg3:    #24242f;
+  --border: #2e2e3e;
+  --text:   #e8e8f2;
+  --text2:  #9090aa;
+  --accent: #7c89f8;
+  --accent2:#1e2040;
+}}
+
+*, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+html {{ font-size: 15px; }}
+body {{
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  padding-inline: max(16px, 5vw);
+  padding-block: 32px env(safe-area-inset-bottom, 0px);
+  line-height: 1.5;
+}}
+
+header {{
+  margin-bottom: 28px;
+}}
+header h1 {{
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}}
+header p {{
+  color: var(--text2);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}}
+.stats {{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}}
+.stat {{
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  color: var(--text2);
+}}
+.stat strong {{ color: var(--text); font-variant-numeric: tabular-nums; }}
+
+.controls {{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}}
+#search {{
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  outline: none;
+}}
+#search:focus {{ border-color: var(--accent); }}
+.btn {{
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--sans);
+  white-space: nowrap;
+}}
+.btn:hover {{ border-color: var(--accent); color: var(--accent); }}
+
+.section {{
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+}}
+.section[hidden] {{ display: none; }}
+summary {{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}}
+summary::-webkit-details-marker {{ display: none; }}
+summary::before {{
+  content: '›';
+  font-size: 1.1rem;
+  color: var(--text2);
+  transition: transform 0.15s;
+  min-width: 14px;
+  text-align: center;
+}}
+details[open] > summary::before {{ transform: rotate(90deg); }}
+.sec-name {{
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent);
+}}
+.sec-count {{
+  margin-left: auto;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1px 10px;
+  font-size: 0.75rem;
+  color: var(--text2);
+}}
+
+table {{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}}
+thead {{ background: var(--bg3); }}
+th {{
+  text-align: left;
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 0.77rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}}
+td {{
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text);
+}}
+tr:last-child td {{ border-bottom: none; }}
+tr[hidden] {{ display: none; }}
+tr:hover td {{ background: var(--bg3); }}
+td code {{
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+}}
+.badge {{
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  background: var(--accent2);
+  color: var(--accent);
+  padding: 2px 7px;
+  border-radius: 20px;
+  white-space: nowrap;
+}}
+.vals {{ color: var(--text2); font-size: 0.8rem; }}
+.doc {{ color: var(--text2); font-size: 0.79rem; display: block; margin-top: 3px; }}
+.no-results {{
+  text-align: center;
+  color: var(--text2);
+  padding: 40px 0;
+  font-size: 0.9rem;
+}}
+</style>
+</head>
+<body>
+<header>
+  <h1>niri Options</h1>
+  <p>Auto-generated from niri Rust config source. All <code>programs.niri.settings.*</code> options.</p>
+  <div class="stats">
+    <div class="stat"><strong>{len(sections)}</strong> sections</div>
+    <div class="stat"><strong>{total_opts}</strong> options</div>
+    <div class="stat">Regenerate: <strong>nix run .#generate</strong></div>
+  </div>
+</header>
+
+<div class="controls">
+  <input id="search" type="search" placeholder="Search options…" autocomplete="off" spellcheck="false">
+  <button class="btn" onclick="expandAll()">Expand all</button>
+  <button class="btn" onclick="collapseAll()">Collapse all</button>
+</div>
+
+<div id="sections">
+{sections_html}
+</div>
+<p class="no-results" id="no-results" hidden>No options match your search.</p>
+
+<script>
+const search = document.getElementById('search');
+const noResults = document.getElementById('no-results');
+search.addEventListener('input', () => {{
+  const q = search.value.toLowerCase().trim();
+  let anyVisible = false;
+  document.querySelectorAll('.section').forEach(sec => {{
+    let secVisible = false;
+    sec.querySelectorAll('tr[data-path]').forEach(row => {{
+      const match = !q || row.dataset.path.toLowerCase().includes(q)
+                       || (row.textContent || '').toLowerCase().includes(q);
+      row.hidden = !match;
+      if (match) secVisible = true;
+    }});
+    sec.hidden = !secVisible;
+    if (secVisible) {{ anyVisible = true; if (q) sec.open = true; }}
+  }});
+  noResults.hidden = anyVisible;
+}});
+function expandAll() {{
+  document.querySelectorAll('.section:not([hidden])').forEach(s => s.open = true);
+}}
+function collapseAll() {{
+  document.querySelectorAll('.section').forEach(s => s.open = false);
+}}
+</script>
+</body>
+</html>
+'''
+
+
 def _doc_fields_flat(struct_name: str, path: str, structs: dict, enums: dict,
                      depth: int = 0, max_depth: int = 4,
                      _visited: Optional[frozenset] = None) -> list[dict]:
@@ -1155,6 +1487,10 @@ def main():
     docs_output = output.parent / "options.md"
     docs_output.write_text(_gen_docs(sections, structs, enums))
     print(f"Written: {docs_output}", file=sys.stderr)
+
+    html_output = output.parent / "options.html"
+    html_output.write_text(_gen_html_docs(sections, structs, enums))
+    print(f"Written: {html_output}", file=sys.stderr)
 
     if _tmp_dir:
         import shutil
