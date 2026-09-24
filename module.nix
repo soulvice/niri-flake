@@ -156,7 +156,7 @@ let
         body    =
           if attrs.action == null then ""
           else if builtins.isAttrs attrs.action && attrs.action ? __niriAction
-          then renderAction (n + 1) attrs.action   # new sentinel: config.lib.niri.actions.*
+          then renderAction (n + 1) attrs.action   # sentinel from config.lib.niri.actions.*
           else renderBindAction (n + 1) attrs.action;  # legacy: { spawn = ["..."]; }
       in
       if body == "" && propStr == "" then ""

@@ -13,10 +13,10 @@
   {
     # -----------------------------------------------------------------------
     # Action constructors — importable without evaluating any module
-    #   inputs.niri-flake.lib.niri.actions
+    #   inputs.niri-flake.lib.niri.spawn "alacritty"
     #   or via config.lib.niri.actions inside a home-manager module
     # -----------------------------------------------------------------------
-    lib.niri.actions = import ./lib/actions.nix;
+    lib.niri = import ./lib/actions.nix;
 
     # -----------------------------------------------------------------------
     # Home Manager module
