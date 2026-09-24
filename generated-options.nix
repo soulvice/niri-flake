@@ -3370,11 +3370,572 @@
     binds = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
         options = {
-          action = lib.mkOption { type = lib.types.anything; };
-          allow-when-locked = lib.mkOption { type = lib.types.bool; default = false; };
-          allow-inhibiting = lib.mkOption { type = lib.types.bool; default = true; };
-          cooldown-ms = lib.mkOption { type = (lib.types.nullOr lib.types.int); default = null; };
-          repeat = lib.mkOption { type = lib.types.bool; default = true; };
+          action = lib.mkOption {
+            type = (lib.types.nullOr (lib.types.submodule {
+              options = {
+                quit = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                suspend = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                power-off-monitors = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                power-on-monitors = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-debug-tint = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                debug-toggle-opaque-regions = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                debug-toggle-damage = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-keyboard-shortcuts-inhibit = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                close-window = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                fullscreen-window = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-windowed-fullscreen = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-previous = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-first = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-last = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-right-or-first = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-left-or-last = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-or-monitor-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-or-monitor-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-or-monitor-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-column-or-monitor-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-down-or-column-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-down-or-column-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-up-or-column-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-up-or-column-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-or-workspace-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-or-workspace-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-top = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-bottom = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-down-or-top = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-window-up-or-bottom = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-first = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-last = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-left-or-to-monitor-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-right-or-to-monitor-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-down-or-to-workspace-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-up-or-to-workspace-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-workspace-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-workspace-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-workspace-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-workspace-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                consume-or-expel-window-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                consume-or-expel-window-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                consume-window-into-column = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                expel-window-from-column = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                swap-window-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                swap-window-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-column-tabbed-display = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                center-column = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                center-window = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                center-visible-columns = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-workspace-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-workspace-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-workspace-previous = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                unset-workspace-name = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-monitor-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-monitor-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-monitor-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-monitor-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-monitor-previous = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-monitor-next = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-monitor-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-monitor-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-monitor-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-monitor-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-monitor-previous = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-monitor-next = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-monitor-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-monitor-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-monitor-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-monitor-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-monitor-previous = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-column-to-monitor-next = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                reset-window-height = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-preset-column-width = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-preset-column-width-back = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-preset-window-width = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-preset-window-width-back = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-preset-window-height = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-preset-window-height-back = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                maximize-column = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                maximize-window-to-edges = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                expand-column-to-available-width = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                show-hotkey-overlay = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-to-monitor-left = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-to-monitor-right = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-to-monitor-down = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-to-monitor-up = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-to-monitor-previous = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-workspace-to-monitor-next = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-window-floating = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-floating = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                move-window-to-tiling = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-floating = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                focus-tiling = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                switch-focus-between-floating-and-tiling = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-window-rule-opacity = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                set-dynamic-cast-window = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                clear-dynamic-cast-target = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                toggle-overview = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                open-overview = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                close-overview = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                screenshot = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                screenshot-screen = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                screenshot-window = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                do-screen-transition = lib.mkOption {
+                  type = lib.types.bool;
+                  default = false;
+                };
+                spawn-sh = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                set-column-width = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                set-window-width = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                set-window-height = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                switch-layout = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                set-workspace-name = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                focus-monitor = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                move-window-to-monitor = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                move-column-to-monitor = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                move-workspace-to-monitor = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                set-column-display = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+                focus-window-in-column = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.int);
+                  default = null;
+                };
+                focus-column = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.int);
+                  default = null;
+                };
+                move-column-to-index = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.int);
+                  default = null;
+                };
+                move-workspace-to-index = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.int);
+                  default = null;
+                };
+                focus-workspace = lib.mkOption {
+                  type = (lib.types.nullOr (lib.types.either lib.types.int lib.types.str));
+                  default = null;
+                };
+                move-window-to-workspace = lib.mkOption {
+                  type = (lib.types.nullOr (lib.types.either lib.types.int lib.types.str));
+                  default = null;
+                };
+                move-column-to-workspace = lib.mkOption {
+                  type = (lib.types.nullOr (lib.types.either lib.types.int lib.types.str));
+                  default = null;
+                };
+                spawn = lib.mkOption {
+                  type = (lib.types.nullOr (lib.types.listOf lib.types.str));
+                  default = null;
+                };
+                set-dynamic-cast-monitor = lib.mkOption {
+                  type = (lib.types.nullOr lib.types.str);
+                  default = null;
+                };
+              };
+            }));
+            default = null;
+          };
+          allow-when-locked = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            apply = v: if v == false then null else v;
+          };
+          allow-inhibiting = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            apply = v: if v == true then null else v;
+          };
+          cooldown-ms = lib.mkOption {
+            type = (lib.types.nullOr lib.types.int);
+            default = null;
+          };
+          repeat = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            apply = v: if v == true then null else v;
+          };
         };
       });
       default = {};

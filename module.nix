@@ -100,20 +100,44 @@ let
           else renderField n kk item
         ) items);
 
+  # Render the action submodule of a bind entry as KDL child nodes.
+  # Lists become multi-argument nodes: spawn = ["a" "b"] → spawn "a" "b"
+  renderBindAction = n: action:
+    builtins.concatStringsSep "" (lib.mapAttrsToList (ak: av:
+      if av == null || av == false || av == [] then ""
+      else if av == true then "${ind n}${ak}\n"
+      else if builtins.isList av then
+        "${ind n}${ak}${builtins.concatStringsSep "" (map (a: " ${escKdl a}") av)}\n"
+      else renderField n ak av
+    ) action);
+
   # Render an attrset as a KDL block.
   # If attrs has a string-valued "name" field it becomes the positional argument.
+  # If attrs has an "action" field it is a bind entry: metadata → KDL properties,
+  # action fields → KDL child nodes.
   renderAttrBlock = n: kk: attrs:
-    let
-      posArg    = if attrs ? name && builtins.isString attrs.name
-                  then " ${escKdl attrs.name}" else "";
-      childAttrs = if attrs ? name && builtins.isString attrs.name
-                   then builtins.removeAttrs attrs [ "name" ] else attrs;
-      children  = builtins.concatStringsSep "" (
-        lib.mapAttrsToList (ck: cv: renderField (n + 1) ck cv) childAttrs
-      );
-    in
-    if children == "" && posArg == "" then ""
-    else "${ind n}${kk}${posArg} {\n${children}${ind n}}\n";
+    if attrs ? action then
+      # Bind entry: action is a child node; everything else is a KDL property.
+      let
+        props   = builtins.removeAttrs attrs [ "action" ];
+        propStr = attrsToProps props;
+        body    = if attrs.action == null then ""
+                  else renderBindAction (n + 1) attrs.action;
+      in
+      if body == "" && propStr == "" then ""
+      else "${ind n}${kk}${propStr} {\n${body}${ind n}}\n"
+    else
+      let
+        posArg    = if attrs ? name && builtins.isString attrs.name
+                    then " ${escKdl attrs.name}" else "";
+        childAttrs = if attrs ? name && builtins.isString attrs.name
+                     then builtins.removeAttrs attrs [ "name" ] else attrs;
+        children  = builtins.concatStringsSep "" (
+          lib.mapAttrsToList (ck: cv: renderField (n + 1) ck cv) childAttrs
+        );
+      in
+      if children == "" && posArg == "" then ""
+      else "${ind n}${kk}${posArg} {\n${children}${ind n}}\n";
 
   # Top-level conversion: settings attrset → KDL string.
   settingsToKdl = settings:

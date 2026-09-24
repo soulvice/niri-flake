@@ -183,6 +183,7 @@ class RustField:
     knuffel: str           # annotation body, e.g. "child, unwrap(argument)"
     default: Optional[str] = None  # raw default literal from annotation
     doc: str = ""          # /// doc comment text
+    apply: Optional[str] = None    # Nix apply expression, e.g. "v: if v == true then null else v"
 
 @dataclass
 class RustStruct:
@@ -404,6 +405,8 @@ PRIMITIVE: dict[str, str] = {
     'MaxBpc':       'lib.types.int',
     'ScrollFactor': 'lib.types.float',
     # Complex types without knuffel::Decode — resolved manually
+    'WorkspaceReference':      '(lib.types.either lib.types.int lib.types.str)',  # 1 or "name"
+    'WorkspaceReferenceArg':   '(lib.types.either lib.types.int lib.types.str)',
     'CornerRadius':            'lib.types.float',   # single radius or per-corner; simplified
     'GradientInterpolation':   'lib.types.str',     # CSS-like "srgb", "oklch shorter", etc.
     'RegexEq':                 'lib.types.str',
@@ -614,6 +617,8 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
         lines.append(f'{pad}{nix_name} = lib.mkOption {{')
         lines.append(f'{pad}  type = {nix_type};')
         lines.append(f'{pad}  default = {nix_def};')
+        if f.apply:
+            lines.append(f'{pad}  apply = {f.apply};')
         lines.append(f'{pad}}};')
 
     return '\n'.join(lines) + ('\n' if lines else '')
@@ -639,17 +644,15 @@ def _gen_root_sections(root_sections: list, structs: dict, enums: dict) -> str:
             continue
 
         if struct_name not in structs:
-            # binds has a hand-rolled Decode impl — emit a structured per-bind submodule
-            if kdl_name == 'binds':
+            # binds: use injected Bind struct (attrsOf keyed by key-combo string)
+            if kdl_name == 'binds' and 'Bind' in structs:
+                bind_s = structs['Bind']
+                bind_opts = _gen_options(bind_s.fields, structs, enums, depth=5)
                 sections.append(
                     f'{pad}{kdl_name} = lib.mkOption {{\n'
                     f'{pad}  type = lib.types.attrsOf (lib.types.submodule {{\n'
                     f'{pad}    options = {{\n'
-                    f'{pad}      action = lib.mkOption {{ type = lib.types.anything; }};\n'
-                    f'{pad}      allow-when-locked = lib.mkOption {{ type = lib.types.bool; default = false; }};\n'
-                    f'{pad}      allow-inhibiting = lib.mkOption {{ type = lib.types.bool; default = true; }};\n'
-                    f'{pad}      cooldown-ms = lib.mkOption {{ type = (lib.types.nullOr lib.types.int); default = null; }};\n'
-                    f'{pad}      repeat = lib.mkOption {{ type = lib.types.bool; default = true; }};\n'
+                    f'{bind_opts}'
                     f'{pad}    }};\n'
                     f'{pad}  }});\n'
                     f'{pad}  default = {{}};\n'
@@ -816,11 +819,19 @@ def _gen_docs(sections: list, structs: dict, enums: dict) -> str:
             lines += [
                 '**Type:** `attrsOf submodule`  **Default:** `{}`',
                 '',
-                'Each key is a key combination (e.g. `"Mod+Return"`). Each value is a submodule with:',
+                'Each key is a key combination (e.g. `"Mod+Return"`). Set exactly one action field'
+                ' per bind; the rest default to `false`/`null`.',
+                '',
+                '**Action fields** (all `bool` or typed, default `false`/`null`):'
+                ' `quit`, `suspend`, `close-window`, `fullscreen-window`, `spawn` (list of str),'
+                ' `spawn-sh` (str), `focus-column-left/right`, `focus-workspace` (int or str),'
+                ' `set-column-width` (str), `set-window-width/height` (str), `maximize-column`,'
+                ' and many more — see the generated options for the full list.',
+                '',
+                '**Metadata fields:**',
                 '',
                 '| Option | Type | Default | Description |',
                 '|--------|------|---------|-------------|',
-                '| `action` | `any` | — | The niri action to trigger |',
                 '| `allow-when-locked` | `bool` | `false` | Allow this bind when the screen is locked |',
                 '| `allow-inhibiting` | `bool` | `true` | Allow apps to inhibit this keybind |',
                 '| `cooldown-ms` | `null or int` | `null` | Minimum ms between triggers |',
@@ -916,6 +927,160 @@ def _inject_animation_structs(structs: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Bind struct injection
+# ---------------------------------------------------------------------------
+
+# Non-skip Action variants that take no argument — rendered as bare KDL nodes (bool true/false).
+_ACTION_BARE = [
+    'Quit', 'Suspend', 'PowerOffMonitors', 'PowerOnMonitors',
+    'ToggleDebugTint', 'DebugToggleOpaqueRegions', 'DebugToggleDamage',
+    'ToggleKeyboardShortcutsInhibit',
+    'CloseWindow', 'FullscreenWindow', 'ToggleWindowedFullscreen',
+    'FocusWindowPrevious',
+    'FocusColumnLeft', 'FocusColumnRight', 'FocusColumnFirst', 'FocusColumnLast',
+    'FocusColumnRightOrFirst', 'FocusColumnLeftOrLast',
+    'FocusWindowOrMonitorUp', 'FocusWindowOrMonitorDown',
+    'FocusColumnOrMonitorLeft', 'FocusColumnOrMonitorRight',
+    'FocusWindowDown', 'FocusWindowUp',
+    'FocusWindowDownOrColumnLeft', 'FocusWindowDownOrColumnRight',
+    'FocusWindowUpOrColumnLeft', 'FocusWindowUpOrColumnRight',
+    'FocusWindowOrWorkspaceDown', 'FocusWindowOrWorkspaceUp',
+    'FocusWindowTop', 'FocusWindowBottom', 'FocusWindowDownOrTop', 'FocusWindowUpOrBottom',
+    'MoveColumnLeft', 'MoveColumnRight', 'MoveColumnToFirst', 'MoveColumnToLast',
+    'MoveColumnLeftOrToMonitorLeft', 'MoveColumnRightOrToMonitorRight',
+    'MoveWindowDown', 'MoveWindowUp',
+    'MoveWindowDownOrToWorkspaceDown', 'MoveWindowUpOrToWorkspaceUp',
+    'MoveColumnToWorkspaceDown', 'MoveColumnToWorkspaceUp',
+    'MoveWindowToWorkspaceDown', 'MoveWindowToWorkspaceUp',
+    'ConsumeOrExpelWindowLeft', 'ConsumeOrExpelWindowRight',
+    'ConsumeWindowIntoColumn', 'ExpelWindowFromColumn',
+    'SwapWindowLeft', 'SwapWindowRight',
+    'ToggleColumnTabbedDisplay',
+    'CenterColumn', 'CenterWindow', 'CenterVisibleColumns',
+    'FocusWorkspaceDown', 'FocusWorkspaceUp', 'FocusWorkspacePrevious',
+    'MoveWorkspaceDown', 'MoveWorkspaceUp',
+    'UnsetWorkspaceName',
+    'FocusMonitorLeft', 'FocusMonitorRight', 'FocusMonitorDown', 'FocusMonitorUp',
+    'FocusMonitorPrevious', 'FocusMonitorNext',
+    'MoveWindowToMonitorLeft', 'MoveWindowToMonitorRight',
+    'MoveWindowToMonitorDown', 'MoveWindowToMonitorUp',
+    'MoveWindowToMonitorPrevious', 'MoveWindowToMonitorNext',
+    'MoveColumnToMonitorLeft', 'MoveColumnToMonitorRight',
+    'MoveColumnToMonitorDown', 'MoveColumnToMonitorUp',
+    'MoveColumnToMonitorPrevious', 'MoveColumnToMonitorNext',
+    'ResetWindowHeight',
+    'SwitchPresetColumnWidth', 'SwitchPresetColumnWidthBack',
+    'SwitchPresetWindowWidth', 'SwitchPresetWindowWidthBack',
+    'SwitchPresetWindowHeight', 'SwitchPresetWindowHeightBack',
+    'MaximizeColumn', 'MaximizeWindowToEdges', 'ExpandColumnToAvailableWidth',
+    'SetColumnDisplay',  # string arg but we treat as flag; user uses set-column-display str
+    'ShowHotkeyOverlay',
+    'MoveWorkspaceToMonitorLeft', 'MoveWorkspaceToMonitorRight',
+    'MoveWorkspaceToMonitorDown', 'MoveWorkspaceToMonitorUp',
+    'MoveWorkspaceToMonitorPrevious', 'MoveWorkspaceToMonitorNext',
+    'ToggleWindowFloating', 'MoveWindowToFloating', 'MoveWindowToTiling',
+    'FocusFloating', 'FocusTiling', 'SwitchFocusBetweenFloatingAndTiling',
+    'ToggleWindowRuleOpacity', 'SetDynamicCastWindow', 'ClearDynamicCastTarget',
+    'ToggleOverview', 'OpenOverview', 'CloseOverview',
+    # These have focus=bool properties but default=true, so bare node is fine for most users.
+    'Screenshot', 'ScreenshotScreen', 'ScreenshotWindow',
+    'DoScreenTransition',
+]
+
+# Removed from _ACTION_BARE — need typed handling:
+# SetColumnDisplay → str arg
+# So add it to _ACTION_STR instead.
+
+# Action variants that take a single string argument (or SizeChange/enum serialised as str).
+_ACTION_STR = [
+    'SpawnSh',             # spawn-sh "command string"
+    'SetColumnWidth',      # set-column-width "+10%" / "960"
+    'SetWindowWidth',
+    'SetWindowHeight',
+    'SwitchLayout',        # switch-layout "next" / "prev"
+    'SetWorkspaceName',    # set-workspace-name "name"
+    'FocusMonitor',        # focus-monitor "output-name"
+    'MoveWindowToMonitor',
+    'MoveColumnToMonitor',
+    'MoveWorkspaceToMonitor',
+]
+
+# Action variants that take a string arg for column display (enum).
+_ACTION_STR_DISPLAY = ['SetColumnDisplay']   # set-column-display "normal" / "tabbed"
+
+# Action variants that take a single int argument.
+_ACTION_INT = [
+    'FocusWindowInColumn',  # focus-window-in-column 2
+    'FocusColumn',          # focus-column 3
+    'MoveColumnToIndex',
+    'MoveWorkspaceToIndex',
+]
+
+# Action variants that take a workspace reference (int or string name).
+_ACTION_WORKSPACE_REF = [
+    'FocusWorkspace',
+    'MoveWindowToWorkspace',
+    'MoveColumnToWorkspace',
+]
+
+# Spawn: listOf str rendered as multi-arg node.
+# SetDynamicCastMonitor: optional string.
+
+
+def _inject_bind_structs(structs: dict) -> None:
+    """Inject BindAction and Bind structs for typed binds support."""
+    action_fields: list[RustField] = []
+
+    # Bare/bool actions
+    for v in _ACTION_BARE:
+        name = _camel_to_snake(v)
+        action_fields.append(RustField(name, 'bool', 'child', default='false'))
+
+    # Remove SetColumnDisplay from bare (added to _ACTION_STR_DISPLAY instead)
+    action_fields = [f for f in action_fields if f.name != 'set_column_display']
+
+    # String-arg actions
+    for v in _ACTION_STR + _ACTION_STR_DISPLAY:
+        name = _camel_to_snake(v)
+        action_fields.append(RustField(name, 'Option<String>', 'child, unwrap(argument)'))
+
+    # Int-arg actions
+    for v in _ACTION_INT:
+        name = _camel_to_snake(v)
+        action_fields.append(RustField(name, 'Option<u32>', 'child, unwrap(argument)'))
+
+    # Workspace-reference actions (int or str)
+    for v in _ACTION_WORKSPACE_REF:
+        name = _camel_to_snake(v)
+        action_fields.append(RustField(name, 'Option<WorkspaceReference>', 'child, unwrap(argument)'))
+
+    # spawn — listOf str, rendered as multi-arg node by renderBindAction
+    action_fields.append(RustField('spawn',    'Option<Vec<String>>', 'child, unwrap(arguments)'))
+    # set-dynamic-cast-monitor — optional string
+    action_fields.append(RustField('set_dynamic_cast_monitor', 'Option<String>', 'child, unwrap(argument)'))
+
+    structs['BindAction'] = RustStruct('BindAction', action_fields)
+
+    structs['Bind'] = RustStruct('Bind', [
+        RustField('action',            'BindAction',    'child'),
+        RustField('allow_when_locked', 'bool',          'property', default='false',
+                  apply='v: if v == false then null else v'),
+        RustField('allow_inhibiting',  'bool',          'property', default='true',
+                  apply='v: if v == true then null else v'),
+        RustField('cooldown_ms',       'Option<u64>',   'property', default=None),
+        RustField('repeat',            'bool',          'property', default='true',
+                  apply='v: if v == true then null else v'),
+    ])
+
+
+def _camel_to_snake(s: str) -> str:
+    """CamelCase → snake_case."""
+    s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', s)
+    s = re.sub(r'([a-z])([A-Z])', r'\1_\2', s)
+    return s.lower()
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -959,6 +1124,7 @@ def main():
     print(f"Scanning: {niri_root}", file=sys.stderr)
     structs, enums = parse_all(niri_root)
     _inject_animation_structs(structs)
+    _inject_bind_structs(structs)
     print(f"  {len(structs)} structs with #[derive(knuffel::Decode)]", file=sys.stderr)
     print(f"  {len(enums)} enums (DecodeScalar + plain)", file=sys.stderr)
 

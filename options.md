@@ -3306,11 +3306,14 @@ Regenerate: `python3 generate.py`
 
 **Type:** `attrsOf submodule`  **Default:** `{}`
 
-Each key is a key combination (e.g. `"Mod+Return"`). Each value is a submodule with:
+Each key is a key combination (e.g. `"Mod+Return"`). Set exactly one action field per bind; the rest default to `false`/`null`.
+
+**Action fields** (all `bool` or typed, default `false`/`null`): `quit`, `suspend`, `close-window`, `fullscreen-window`, `spawn` (list of str), `spawn-sh` (str), `focus-column-left/right`, `focus-workspace` (int or str), `set-column-width` (str), `set-window-width/height` (str), `maximize-column`, and many more — see the generated options for the full list.
+
+**Metadata fields:**
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `action` | `any` | — | The niri action to trigger |
 | `allow-when-locked` | `bool` | `false` | Allow this bind when the screen is locked |
 | `allow-inhibiting` | `bool` | `true` | Allow apps to inhibit this keybind |
 | `cooldown-ms` | `null or int` | `null` | Minimum ms between triggers |
