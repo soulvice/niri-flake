@@ -72,7 +72,7 @@ jobs:
 
       - name: Regenerate options
         if: steps.detect.outputs.changed == 'true'
-        run: nix develop --command python3 generate.py "$NIRI_SRC"
+        run: nix run .#generate -- "$NIRI_SRC"
 
       # ── always check ──────────────────────────────────────────────────
       - name: nix flake check

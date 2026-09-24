@@ -33,17 +33,35 @@
     nixosModules.niri    = ./nixos-module.nix;   # alias
 
     # -----------------------------------------------------------------------
-    # Dev shell — re-generate options from niri source
+    # Apps — run the generator without a Python installation
+    #   nix run .#generate [/path/to/niri-src]
+    # -----------------------------------------------------------------------
+    apps = forAllSystems (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      in {
+        generate = {
+          type    = "app";
+          program = toString (pkgs.writeShellScript "generate" ''
+            cd "$(${pkgs.git}/bin/git rev-parse --show-toplevel)"
+            exec ${pkgs.python3}/bin/python3 generate.py "$@"
+          '');
+        };
+      }
+    );
+
+    # -----------------------------------------------------------------------
+    # Dev shell — for active development on the generator itself
     #   nix develop
-    #   python3 generate.py
     # -----------------------------------------------------------------------
     devShells = forAllSystems (system:
       let pkgs = nixpkgs.legacyPackages.${system};
       in {
         default = pkgs.mkShell {
-          packages = [ pkgs.python3 ];
+          packages = [ pkgs.python3 pkgs.git ];
           shellHook = ''
-            echo "Run 'python3 generate.py' to regenerate generated-options.nix and options.md"
+            echo "niri-flake dev shell"
+            echo "  nix run .#generate [/path/to/niri-src]  — regenerate options"
+            echo "  python3 generate.py                     — same, if python3 is on PATH"
           '';
         };
       }
