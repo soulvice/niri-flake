@@ -500,6 +500,16 @@ def rust_type_to_nix(rt: str, structs: dict, enums: dict, depth: int = 0) -> str
     if t == '__NiriAction':
         return 'lib.types.anything'
 
+    if t == '__HotkeyOverlay':
+        return (
+            '(lib.types.nullOr (lib.types.submodule {\n'
+            '            options = {\n'
+            '              title  = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };\n'
+            '              hidden = lib.mkOption { type = lib.types.bool; default = false; };\n'
+            '            };\n'
+            '          }))'
+        )
+
     return f'lib.types.anything  # TODO: resolve {t}'
 
 
@@ -772,7 +782,7 @@ def _gen_html_docs(sections: list, structs: dict, enums: dict) -> str:
             rows = [{'path': f'{section_path}.<key>', 'type': '`attrsOf submodule`', 'values': '',
                      'default': '{}',
                      'doc': 'Key is a key combination (e.g. "Mod+Return"). '
-                            'Set one action field per bind. Metadata: allow-when-locked, allow-inhibiting, cooldown-ms, repeat, hotkey-overlay-title.'}]
+                            'Set one action field per bind. Metadata: allow-when-locked, allow-inhibiting, cooldown-ms, repeat, hotkey-overlay.'}]
         elif struct_name in TUPLE_STRUCT_ROOT:
             nix_type, nix_def = TUPLE_STRUCT_ROOT[struct_name]
             human = nix_type.replace('lib.types.', '').replace('(', '').replace(')', '').strip()
@@ -1171,7 +1181,7 @@ def _gen_docs(sections: list, structs: dict, enums: dict) -> str:
                 '| `allow-inhibiting` | `bool` | `true` | Allow apps to inhibit this keybind |',
                 '| `cooldown-ms` | `null or int` | `null` | Minimum ms between triggers |',
                 '| `repeat` | `bool` | `true` | Trigger repeatedly when held |',
-                '| `hotkey-overlay-title` | `null or str` | `null` | Label shown in the hotkey overlay; `null` omits the property (niri default) |',
+                '| `hotkey-overlay` | `null or submodule` | `null` | Hotkey overlay display: `{ title = "…"; }` sets a label, `{ hidden = true; }` hides the bind |',
                 '',
                 '---',
                 '',
@@ -1512,7 +1522,7 @@ def _inject_bind_structs(structs: dict) -> None:
         RustField('cooldown_ms',           'Option<u64>',    'property', default=None),
         RustField('repeat',                'bool',           'property', default='true',
                   apply='v: if v == true then null else v'),
-        RustField('hotkey_overlay_title',  'Option<String>', 'property', default=None),
+        RustField('hotkey_overlay',         '__HotkeyOverlay', 'property', default=None),
     ])
 
 

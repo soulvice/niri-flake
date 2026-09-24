@@ -25,6 +25,7 @@ let
   attrsToProps = attrs:
     builtins.concatStringsSep "" (lib.mapAttrsToList (k: v:
       if v == null then ""
+      else if builtins.isAttrs v && v ? __kdl_null then " ${k}=null"
       else if builtins.isBool v          then " ${k}=${if v then "true" else "false"}"
       else if builtins.isInt v           then " ${k}=${toString v}"
       else if builtins.isFloat v         then " ${k}=${toString v}"
@@ -140,8 +141,17 @@ let
   renderAttrBlock = n: kk: attrs:
     if attrs ? action then
       # Bind entry: action is a child node; everything else is a KDL property.
+      # hotkey-overlay submodule → hotkey-overlay-title property
       let
-        props   = builtins.removeAttrs attrs [ "action" ];
+        rawProps = builtins.removeAttrs attrs [ "action" ];
+        hoTitle  =
+          if rawProps ? hotkey-overlay && rawProps.hotkey-overlay != null then
+            let ho = rawProps.hotkey-overlay; in
+            { "hotkey-overlay-title" =
+                if ho.hidden then { __kdl_null = true; }
+                else ho.title; }
+          else {};
+        props   = (builtins.removeAttrs rawProps [ "hotkey-overlay" ]) // hoTitle;
         propStr = attrsToProps props;
         body    =
           if attrs.action == null then ""

@@ -3318,7 +3318,7 @@ Each key is a key combination (e.g. `"Mod+Return"`). Set exactly one action fiel
 | `allow-inhibiting` | `bool` | `true` | Allow apps to inhibit this keybind |
 | `cooldown-ms` | `null or int` | `null` | Minimum ms between triggers |
 | `repeat` | `bool` | `true` | Trigger repeatedly when held |
-| `hotkey-overlay-title` | `null or str` | `null` | Label shown in the hotkey overlay; `null` omits the property (niri default) |
+| `hotkey-overlay` | `null or submodule` | `null` | Hotkey overlay display: `{ title = "…"; }` sets a label, `{ hidden = true; }` hides the bind |
 
 ---
 
