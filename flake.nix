@@ -25,8 +25,8 @@
     #   Writes ~/.config/niri/config.kdl and validates it with `niri validate`.
     #   Coexists with the nixpkgs NixOS programs.niri module.
     # -----------------------------------------------------------------------
-    homeManagerModules.default = ./module.nix;
-    homeManagerModules.niri    = ./module.nix;   # alias
+    homeModules.default = ./module.nix;
+    homeModules.niri    = ./module.nix;   # alias
 
     # -----------------------------------------------------------------------
     # NixOS module
