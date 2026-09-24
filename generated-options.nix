@@ -3393,6 +3393,10 @@
             default = true;
             apply = v: if v == true then null else v;
           };
+          hotkey-overlay-title = lib.mkOption {
+            type = (lib.types.nullOr lib.types.str);
+            default = null;
+          };
         };
       });
       default = {};

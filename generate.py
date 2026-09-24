@@ -772,7 +772,7 @@ def _gen_html_docs(sections: list, structs: dict, enums: dict) -> str:
             rows = [{'path': f'{section_path}.<key>', 'type': '`attrsOf submodule`', 'values': '',
                      'default': '{}',
                      'doc': 'Key is a key combination (e.g. "Mod+Return"). '
-                            'Set one action field per bind. Metadata: allow-when-locked, allow-inhibiting, cooldown-ms, repeat.'}]
+                            'Set one action field per bind. Metadata: allow-when-locked, allow-inhibiting, cooldown-ms, repeat, hotkey-overlay-title.'}]
         elif struct_name in TUPLE_STRUCT_ROOT:
             nix_type, nix_def = TUPLE_STRUCT_ROOT[struct_name]
             human = nix_type.replace('lib.types.', '').replace('(', '').replace(')', '').strip()
@@ -1171,6 +1171,7 @@ def _gen_docs(sections: list, structs: dict, enums: dict) -> str:
                 '| `allow-inhibiting` | `bool` | `true` | Allow apps to inhibit this keybind |',
                 '| `cooldown-ms` | `null or int` | `null` | Minimum ms between triggers |',
                 '| `repeat` | `bool` | `true` | Trigger repeatedly when held |',
+                '| `hotkey-overlay-title` | `null or str` | `null` | Label shown in the hotkey overlay; `null` omits the property (niri default) |',
                 '',
                 '---',
                 '',
@@ -1503,14 +1504,15 @@ def _inject_bind_structs(structs: dict) -> None:
     # action uses lib.types.anything so the __niriAction sentinel (config.lib.niri.actions.*)
     # passes through without submodule validation.
     structs['Bind'] = RustStruct('Bind', [
-        RustField('action',            '__NiriAction',  'child'),
-        RustField('allow_when_locked', 'bool',          'property', default='false',
+        RustField('action',                '__NiriAction',   'child'),
+        RustField('allow_when_locked',     'bool',           'property', default='false',
                   apply='v: if v == false then null else v'),
-        RustField('allow_inhibiting',  'bool',          'property', default='true',
+        RustField('allow_inhibiting',      'bool',           'property', default='true',
                   apply='v: if v == true then null else v'),
-        RustField('cooldown_ms',       'Option<u64>',   'property', default=None),
-        RustField('repeat',            'bool',          'property', default='true',
+        RustField('cooldown_ms',           'Option<u64>',    'property', default=None),
+        RustField('repeat',                'bool',           'property', default='true',
                   apply='v: if v == true then null else v'),
+        RustField('hotkey_overlay_title',  'Option<String>', 'property', default=None),
     ])
 
 
