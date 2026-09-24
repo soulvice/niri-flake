@@ -497,6 +497,9 @@ def rust_type_to_nix(rt: str, structs: dict, enums: dict, depth: int = 0) -> str
         vs = ' '.join(f'"{camel_to_kebab(v)}"' for v in e.variants)
         return f'(lib.types.enum [ {vs} ])'
 
+    if t == '__NiriAction':
+        return 'lib.types.anything'
+
     return f'lib.types.anything  # TODO: resolve {t}'
 
 
@@ -1393,8 +1396,10 @@ def _inject_bind_structs(structs: dict) -> None:
 
     structs['BindAction'] = RustStruct('BindAction', action_fields)
 
+    # action uses lib.types.anything so the __niriAction sentinel (config.lib.niri.actions.*)
+    # passes through without submodule validation.
     structs['Bind'] = RustStruct('Bind', [
-        RustField('action',            'BindAction',    'child'),
+        RustField('action',            '__NiriAction',  'child'),
         RustField('allow_when_locked', 'bool',          'property', default='false',
                   apply='v: if v == false then null else v'),
         RustField('allow_inhibiting',  'bool',          'property', default='true',

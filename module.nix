@@ -100,8 +100,30 @@ let
           else renderField n kk item
         ) items);
 
+  # Render a __niriAction sentinel as a single KDL action node (no wrapper).
+  # { __niriAction = "spawn"; args = ["alacritty"]; props = {}; }  →  spawn "alacritty"
+  renderAction = n: v:
+    let
+      p     = ind n;
+      name  = v.__niriAction;
+      args  = if v ? args  then v.args  else [];
+      props = if v ? props then v.props else {};
+      argStr = lib.concatStrings (map (a:
+        if builtins.isString a                       then " ${escKdl a}"
+        else if builtins.isInt a || builtins.isFloat a then " ${toString a}"
+        else ""
+      ) args);
+      propStr = lib.concatStrings (lib.mapAttrsToList (pk: pv:
+        if pv == null || pv == false then ""
+        else if pv == true  then " ${pk}=true"
+        else if builtins.isInt pv || builtins.isFloat pv then " ${pk}=${toString pv}"
+        else " ${pk}=${escKdl (toString pv)}"
+      ) props);
+    in "${p}${name}${argStr}${propStr}\n";
+
   # Render the action submodule of a bind entry as KDL child nodes.
-  # Lists become multi-argument nodes: spawn = ["a" "b"] → spawn "a" "b"
+  # Legacy attrset form: { spawn = ["a" "b"]; } → spawn "a" "b"
+  # Sentinel form handled by renderAction above.
   renderBindAction = n: action:
     builtins.concatStringsSep "" (lib.mapAttrsToList (ak: av:
       if av == null || av == false || av == [] then ""
@@ -114,15 +136,18 @@ let
   # Render an attrset as a KDL block.
   # If attrs has a string-valued "name" field it becomes the positional argument.
   # If attrs has an "action" field it is a bind entry: metadata → KDL properties,
-  # action fields → KDL child nodes.
+  # action → KDL child node.
   renderAttrBlock = n: kk: attrs:
     if attrs ? action then
       # Bind entry: action is a child node; everything else is a KDL property.
       let
         props   = builtins.removeAttrs attrs [ "action" ];
         propStr = attrsToProps props;
-        body    = if attrs.action == null then ""
-                  else renderBindAction (n + 1) attrs.action;
+        body    =
+          if attrs.action == null then ""
+          else if builtins.isAttrs attrs.action && attrs.action ? __niriAction
+          then renderAction (n + 1) attrs.action   # new sentinel: config.lib.niri.actions.*
+          else renderBindAction (n + 1) attrs.action;  # legacy: { spawn = ["..."]; }
       in
       if body == "" && propStr == "" then ""
       else "${ind n}${kk}${propStr} {\n${body}${ind n}}\n"
@@ -172,11 +197,31 @@ in
     finalConfig = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       readOnly = true;
-      default = null;
       description = lib.mdDoc ''
         The fully rendered niri config KDL that will be written to
         `~/.config/niri/config.kdl`. Read-only — useful for inspecting exactly
         what the module generates, e.g. `nix eval .#homeConfigurations.you.config.programs.niri.finalConfig`.
+      '';
+    };
+  };
+
+  options.lib.niri = {
+    actions = lib.mkOption {
+      type     = lib.types.attrs;
+      readOnly = true;
+      internal = true;
+      default  = import ./lib/actions.nix;
+      description = lib.mdDoc ''
+        Niri action constructors for use in `programs.niri.settings.binds`.
+
+        ```nix
+        programs.niri.settings.binds = with config.lib.niri.actions; {
+          "Mod+Return".action  = spawn "alacritty";
+          "Mod+Q".action       = close-window;
+          "Mod+1".action       = focus-workspace 1;
+          "Mod+S".action       = screenshot;
+        };
+        ```
       '';
     };
   };
