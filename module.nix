@@ -215,28 +215,11 @@ in
     };
   };
 
-  options.lib.niri = {
-    actions = lib.mkOption {
-      type     = lib.types.attrs;
-      readOnly = true;
-      internal = true;
-      default  = import ./lib/actions.nix;
-      description = lib.mdDoc ''
-        Niri action constructors for use in `programs.niri.settings.binds`.
-
-        ```nix
-        programs.niri.settings.binds = with config.lib.niri.actions; {
-          "Mod+Return".action  = spawn "alacritty";
-          "Mod+Q".action       = close-window;
-          "Mod+1".action       = focus-workspace 1;
-          "Mod+S".action       = screenshot;
-        };
-        ```
-      '';
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+  config = lib.mkMerge [
+  {
+    lib.niri.actions = import ./lib/actions.nix;
+  }
+  (lib.mkIf cfg.enable {
     programs.niri.finalConfig = kdlText;
 
     home.packages = [ cfg.package ];
@@ -255,5 +238,5 @@ in
           XDG_DATA_HOME="$HOME/.local/share" \
           niri validate --config "$out"
       '';
-  };
-}
+  })
+  ];
