@@ -165,14 +165,25 @@ in
       default = "";
       description = lib.mdDoc ''
         Raw KDL appended verbatim after the generated config.
+        Use this for constructs the structured options cannot yet express.
+      '';
+    };
 
-        Use this for constructs the structured options cannot express, such as
-        `binds { }` blocks or any section not yet covered by the generator.
+    finalConfig = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      readOnly = true;
+      default = null;
+      description = lib.mdDoc ''
+        The fully rendered niri config KDL that will be written to
+        `~/.config/niri/config.kdl`. Read-only — useful for inspecting exactly
+        what the module generates, e.g. `nix eval .#homeConfigurations.you.config.programs.niri.finalConfig`.
       '';
     };
   };
 
   config = lib.mkIf cfg.enable {
+    programs.niri.finalConfig = kdlText;
+
     home.packages = [ cfg.package ];
 
     # Write the config file via a derivation so that niri validate runs at
