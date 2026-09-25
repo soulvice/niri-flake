@@ -695,11 +695,16 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
         # For fields whose inner type is an all-property struct (like Gradient,
         # ShadowOffset), inject a __kdl_props sentinel so the serialiser renders
         # them as inline KDL properties rather than a child block.
+        # Skip list types (Vec<T>) — list items are rendered individually and
+        # the attrset-merge in the apply would fail on a list value.
         apply = f.apply
         if apply is None:
-            inner = _resolve_inner_struct(f.rust_type)
-            if _is_all_property_struct(inner, structs):
-                apply = 'v: if v == null then null else v // { __kdl_props = true; }'
+            t_bare = f.rust_type.strip()
+            is_list = t_bare.startswith('Vec<') or bool(re.match(r'^Option<Vec<', t_bare))
+            if not is_list:
+                inner = _resolve_inner_struct(t_bare)
+                if _is_all_property_struct(inner, structs):
+                    apply = 'v: if v == null then null else v // { __kdl_props = true; }'
 
         lines.append(f'{pad}{nix_name} = lib.mkOption {{')
         lines.append(f'{pad}  type = {nix_type};')

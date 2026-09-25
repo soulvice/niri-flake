@@ -1979,7 +1979,6 @@
                 };
               }));
               default = [];
-              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             excludes = lib.mkOption {
               type = (lib.types.listOf (lib.types.submodule {
@@ -2023,7 +2022,6 @@
                 };
               }));
               default = [];
-              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             default-column-width = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -2643,7 +2641,6 @@
                 };
               }));
               default = [];
-              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             excludes = lib.mkOption {
               type = (lib.types.listOf (lib.types.submodule {
@@ -2663,7 +2660,6 @@
                 };
               }));
               default = [];
-              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             opacity = lib.mkOption {
               type = (lib.types.nullOr lib.types.float);
