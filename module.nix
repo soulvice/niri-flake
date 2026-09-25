@@ -224,7 +224,8 @@ in
 
   config = lib.mkMerge [
   {
-    lib.niri = (import ./lib/actions.nix) // {
+    lib.niri = {
+      actions = import ./lib/actions.nix;
       curves = {
         ease-out-quad  = "ease-out-quad";
         ease-out-cubic = "ease-out-cubic";

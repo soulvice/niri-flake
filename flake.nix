@@ -16,7 +16,8 @@
     #   inputs.niri-flake.lib.niri.spawn "alacritty"
     #   or via config.lib.niri.actions inside a home-manager module
     # -----------------------------------------------------------------------
-    lib.niri = (import ./lib/actions.nix) // {
+    lib.niri = {
+      actions = import ./lib/actions.nix;
       curves = {
         ease-out-quad  = "ease-out-quad";
         ease-out-cubic = "ease-out-cubic";
