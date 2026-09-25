@@ -97,7 +97,7 @@
               default = null;
             };
             accel-speed = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             accel-profile = lib.mkOption {
@@ -137,7 +137,7 @@
               default = null;
             };
             pinch-sensitivity = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
           };
@@ -157,7 +157,7 @@
               default = false;
             };
             accel-speed = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             accel-profile = lib.mkOption {
@@ -205,7 +205,7 @@
               default = false;
             };
             accel-speed = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             accel-profile = lib.mkOption {
@@ -249,7 +249,7 @@
               default = false;
             };
             accel-speed = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             accel-profile = lib.mkOption {
@@ -423,7 +423,7 @@
         apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
       };
       slowdown = lib.mkOption {
-        type = (lib.types.nullOr lib.types.float);
+        type = (lib.types.nullOr lib.types.number);
         default = null;
       };
       workspace-switch = lib.mkOption {
@@ -957,15 +957,15 @@
         default = null;
       };
       offset = lib.mkOption {
-        type = (lib.types.nullOr lib.types.float);
+        type = (lib.types.nullOr lib.types.number);
         default = null;
       };
       noise = lib.mkOption {
-        type = (lib.types.nullOr lib.types.float);
+        type = (lib.types.nullOr lib.types.number);
         default = null;
       };
       saturation = lib.mkOption {
-        type = (lib.types.nullOr lib.types.float);
+        type = (lib.types.nullOr lib.types.number);
         default = null;
       };
     };
@@ -975,7 +975,7 @@
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
             trigger-width = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             delay-ms = lib.mkOption {
@@ -983,7 +983,7 @@
               default = null;
             };
             max-speed = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
           };
@@ -994,7 +994,7 @@
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
             trigger-height = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             delay-ms = lib.mkOption {
@@ -1002,7 +1002,7 @@
               default = null;
             };
             max-speed = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
           };
@@ -1041,7 +1041,7 @@
 
     overview = {
       zoom = lib.mkOption {
-        type = (lib.types.nullOr lib.types.float);
+        type = (lib.types.nullOr lib.types.number);
         default = null;
       };
       backdrop-color = lib.mkOption {
@@ -1060,11 +1060,11 @@
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
                   x = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   y = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                 };
@@ -1072,11 +1072,11 @@
               default = null;
             };
             softness = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             spread = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             color = lib.mkOption {
@@ -1252,7 +1252,7 @@
               default = null;
             };
             scale = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             transform = lib.mkOption {
@@ -1349,7 +1349,7 @@
                           apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         active-color = lib.mkOption {
@@ -1458,7 +1458,7 @@
                           apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         active-color = lib.mkOption {
@@ -1570,11 +1570,11 @@
                           type = (lib.types.nullOr (lib.types.submodule {
                             options = {
                               x = lib.mkOption {
-                                type = (lib.types.nullOr lib.types.float);
+                                type = (lib.types.nullOr lib.types.number);
                                 default = null;
                               };
                               y = lib.mkOption {
-                                type = (lib.types.nullOr lib.types.float);
+                                type = (lib.types.nullOr lib.types.number);
                                 default = null;
                               };
                             };
@@ -1582,11 +1582,11 @@
                           default = null;
                         };
                         softness = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         spread = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         draw-behind-window = lib.mkOption {
@@ -1622,11 +1622,11 @@
                           default = null;
                         };
                         gap = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         width = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         length = lib.mkOption {
@@ -1645,11 +1645,11 @@
                           default = null;
                         };
                         gaps-between-tabs = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         corner-radius = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         active-color = lib.mkOption {
@@ -1854,26 +1854,26 @@
                     default = null;
                   };
                   gaps = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   struts = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
                         left = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         right = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         top = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         bottom = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                       };
@@ -2093,7 +2093,7 @@
                     apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                   };
                   width = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   active-color = lib.mkOption {
@@ -2202,7 +2202,7 @@
                     apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                   };
                   width = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   active-color = lib.mkOption {
@@ -2314,11 +2314,11 @@
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
                         x = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         y = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                       };
@@ -2326,11 +2326,11 @@
                     default = null;
                   };
                   softness = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   spread = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   draw-behind-window = lib.mkOption {
@@ -2492,11 +2492,11 @@
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
                   x = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   y = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   relative-to = lib.mkOption {
@@ -2508,11 +2508,11 @@
               default = null;
             };
             scroll-factor = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             pinch-sensitivity = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             tiled-state = lib.mkOption {
@@ -2531,11 +2531,11 @@
                     default = null;
                   };
                   noise = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   saturation = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                 };
@@ -2572,11 +2572,11 @@
                           default = null;
                         };
                         noise = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         saturation = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                       };
@@ -2653,11 +2653,11 @@
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
                         x = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         y = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                       };
@@ -2665,11 +2665,11 @@
                     default = null;
                   };
                   softness = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   spread = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   draw-behind-window = lib.mkOption {
@@ -2719,11 +2719,11 @@
                     default = null;
                   };
                   noise = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   saturation = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                 };
@@ -2760,11 +2760,11 @@
                           default = null;
                         };
                         noise = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         saturation = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                       };
@@ -2803,7 +2803,7 @@
                           apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         active-color = lib.mkOption {
@@ -2912,7 +2912,7 @@
                           apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
                         };
                         width = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         active-color = lib.mkOption {
@@ -3024,11 +3024,11 @@
                           type = (lib.types.nullOr (lib.types.submodule {
                             options = {
                               x = lib.mkOption {
-                                type = (lib.types.nullOr lib.types.float);
+                                type = (lib.types.nullOr lib.types.number);
                                 default = null;
                               };
                               y = lib.mkOption {
-                                type = (lib.types.nullOr lib.types.float);
+                                type = (lib.types.nullOr lib.types.number);
                                 default = null;
                               };
                             };
@@ -3036,11 +3036,11 @@
                           default = null;
                         };
                         softness = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         spread = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         draw-behind-window = lib.mkOption {
@@ -3076,11 +3076,11 @@
                           default = null;
                         };
                         gap = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         width = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         length = lib.mkOption {
@@ -3099,11 +3099,11 @@
                           default = null;
                         };
                         gaps-between-tabs = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         corner-radius = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         active-color = lib.mkOption {
@@ -3308,26 +3308,26 @@
                     default = null;
                   };
                   gaps = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   struts = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
                       options = {
                         left = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         right = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         top = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                         bottom = lib.mkOption {
-                          type = (lib.types.nullOr lib.types.float);
+                          type = (lib.types.nullOr lib.types.number);
                           default = null;
                         };
                       };
@@ -3412,7 +3412,7 @@
               apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             width = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             active-color = lib.mkOption {
@@ -3521,7 +3521,7 @@
               apply = v: if v == null then null else { __kdl_flag = if v then "on" else "off"; };
             };
             width = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             active-color = lib.mkOption {
@@ -3633,11 +3633,11 @@
               type = (lib.types.nullOr (lib.types.submodule {
                 options = {
                   x = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                   y = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr lib.types.number);
                     default = null;
                   };
                 };
@@ -3645,11 +3645,11 @@
               default = null;
             };
             softness = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             spread = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             draw-behind-window = lib.mkOption {
@@ -3685,11 +3685,11 @@
               default = null;
             };
             gap = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             width = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             length = lib.mkOption {
@@ -3708,11 +3708,11 @@
               default = null;
             };
             gaps-between-tabs = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             corner-radius = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             active-color = lib.mkOption {
@@ -3917,26 +3917,26 @@
         default = null;
       };
       gaps = lib.mkOption {
-        type = (lib.types.nullOr lib.types.float);
+        type = (lib.types.nullOr lib.types.number);
         default = null;
       };
       struts = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
             left = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             right = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             top = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             bottom = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
           };
@@ -3975,11 +3975,11 @@
               default = null;
             };
             padding = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             corner-radius = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
           };
@@ -3990,11 +3990,11 @@
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
             max-height = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
             max-scale = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr lib.types.number);
               default = null;
             };
           };

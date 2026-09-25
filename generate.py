@@ -487,9 +487,9 @@ def rust_type_to_nix(rt: str, structs: dict, enums: dict, depth: int = 0) -> str
         inner = rust_type_to_nix(m.group(1), structs, enums, depth)
         return f'(lib.types.listOf {inner})'
 
-    # FloatOrInt<min, max>
+    # FloatOrInt<min, max> — accepts both integers and floats in KDL
     if t.startswith('FloatOrInt<'):
-        return 'lib.types.float'
+        return 'lib.types.number'
 
     if t in PRIMITIVE:
         return PRIMITIVE[t]
