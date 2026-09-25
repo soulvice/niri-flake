@@ -407,7 +407,16 @@ PRIMITIVE: dict[str, str] = {
     # Complex types without knuffel::Decode — resolved manually
     'WorkspaceReference':      '(lib.types.either lib.types.int lib.types.str)',  # 1 or "name"
     'WorkspaceReferenceArg':   '(lib.types.either lib.types.int lib.types.str)',
-    'CornerRadius':            'lib.types.float',   # single radius or per-corner; simplified
+    'CornerRadius': (
+        '(lib.types.either lib.types.float (lib.types.submodule {\n'
+        '            options = {\n'
+        '              top-left     = lib.mkOption { type = lib.types.float; default = 0.0; };\n'
+        '              top-right    = lib.mkOption { type = lib.types.float; default = 0.0; };\n'
+        '              bottom-right = lib.mkOption { type = lib.types.float; default = 0.0; };\n'
+        '              bottom-left  = lib.mkOption { type = lib.types.float; default = 0.0; };\n'
+        '            };\n'
+        '          }))'
+    ),
     'GradientInterpolation':   'lib.types.str',     # CSS-like "srgb", "oklch shorter", etc.
     'RegexEq':                 'lib.types.str',
     # PresetSize / DefaultPresetSize: injected as RustStructs in _inject_animation_structs

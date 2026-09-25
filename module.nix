@@ -46,6 +46,8 @@ let
     else if v == false      then ""                                       # Flag off → omit
     else if v == true       then "${p}${kk}\n"                            # Flag on → bare node
     else if builtins.isAttrs v && v ? __kdl_flag then "${p}${v.__kdl_flag}\n"
+    else if builtins.isAttrs v && v ? top-left && v ? top-right && v ? bottom-right && v ? bottom-left then
+      "${p}${kk} ${toString v.top-left} ${toString v.top-right} ${toString v.bottom-right} ${toString v.bottom-left}\n"
     else if builtins.isAttrs v && v ? __kdl_args then
       let argStr = lib.concatStrings (map (a:
         if builtins.isString a                        then " ${escKdl a}"

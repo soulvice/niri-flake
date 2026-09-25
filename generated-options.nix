@@ -2458,7 +2458,14 @@
               default = null;
             };
             geometry-corner-radius = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr (lib.types.either lib.types.float (lib.types.submodule {
+            options = {
+              top-left     = lib.mkOption { type = lib.types.float; default = 0.0; };
+              top-right    = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-right = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-left  = lib.mkOption { type = lib.types.float; default = 0.0; };
+            };
+          })));
               default = null;
             };
             clip-to-geometry = lib.mkOption {
@@ -2543,7 +2550,14 @@
                     default = null;
                   };
                   geometry-corner-radius = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr (lib.types.either lib.types.float (lib.types.submodule {
+            options = {
+              top-left     = lib.mkOption { type = lib.types.float; default = 0.0; };
+              top-right    = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-right = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-left  = lib.mkOption { type = lib.types.float; default = 0.0; };
+            };
+          })));
                     default = null;
                   };
                   background-effect = lib.mkOption {
@@ -2723,7 +2737,14 @@
               default = null;
             };
             geometry-corner-radius = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr (lib.types.either lib.types.float (lib.types.submodule {
+            options = {
+              top-left     = lib.mkOption { type = lib.types.float; default = 0.0; };
+              top-right    = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-right = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-left  = lib.mkOption { type = lib.types.float; default = 0.0; };
+            };
+          })));
               default = null;
             };
             place-within-backdrop = lib.mkOption {
@@ -2765,7 +2786,14 @@
                     default = null;
                   };
                   geometry-corner-radius = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.float);
+                    type = (lib.types.nullOr (lib.types.either lib.types.float (lib.types.submodule {
+            options = {
+              top-left     = lib.mkOption { type = lib.types.float; default = 0.0; };
+              top-right    = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-right = lib.mkOption { type = lib.types.float; default = 0.0; };
+              bottom-left  = lib.mkOption { type = lib.types.float; default = 0.0; };
+            };
+          })));
                     default = null;
                   };
                   background-effect = lib.mkOption {
