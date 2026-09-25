@@ -46,6 +46,12 @@ let
     else if v == false      then ""                                       # Flag off → omit
     else if v == true       then "${p}${kk}\n"                            # Flag on → bare node
     else if builtins.isAttrs v && v ? __kdl_flag then "${p}${v.__kdl_flag}\n"
+    else if builtins.isAttrs v && v ? __kdl_attrsOf then
+      # attrsOf expansion: render each entry as a separate named KDL node.
+      builtins.concatStringsSep "" (lib.mapAttrsToList (entryName: attrs:
+        if attrs == null then ""
+        else renderAttrBlock n kk (attrs // { name = entryName; })
+      ) v.value)
     else if builtins.isAttrs v && v ? __kdl_props then
       let props = builtins.removeAttrs v [ "__kdl_props" ];
       in "${p}${kk}${attrsToProps props}\n"

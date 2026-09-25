@@ -1243,7 +1243,7 @@
     };
 
     output = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
+      type = lib.types.attrsOf (lib.types.submodule {
           options = {
             enable = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
@@ -1907,7 +1907,8 @@
             };
           };
         });
-      default = [];
+      default = {};
+      apply = v: { __kdl_attrsOf = true; value = v; };
     };
 
     spawn-at-startup = lib.mkOption {
@@ -2810,7 +2811,7 @@
     };
 
     workspace = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
+      type = lib.types.attrsOf (lib.types.submodule {
           options = {
             name = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
@@ -3385,7 +3386,8 @@
             };
           };
         });
-      default = [];
+      default = {};
+      apply = v: { __kdl_attrsOf = true; value = v; };
     };
 
     binds = lib.mkOption {

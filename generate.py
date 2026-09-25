@@ -758,7 +758,21 @@ def _gen_root_sections(root_sections: list, structs: dict, enums: dict) -> str:
 
         s = structs[struct_name]
 
-        if is_list:
+        # These sections are better represented as attrsOf keyed by name so
+        # that multiple definitions can be merged with lib.mkMerge.  The
+        # serialiser expands them back to repeated KDL nodes via __kdl_attrsOf.
+        _EXPAND_AS_ATTRS = {'output', 'workspace'}
+
+        if is_list and kdl_name in _EXPAND_AS_ATTRS:
+            inner = _struct_to_submodule(s, structs, enums, depth=3)
+            sections.append(
+                f'{pad}{kdl_name} = lib.mkOption {{\n'
+                f'{pad}  type = lib.types.attrsOf {inner};\n'
+                f'{pad}  default = {{}};\n'
+                f'{pad}  apply = v: {{ __kdl_attrsOf = true; value = v; }};\n'
+                f'{pad}}};'
+            )
+        elif is_list:
             inner = _struct_to_submodule(s, structs, enums, depth=3)
             sections.append(
                 f'{pad}{kdl_name} = lib.mkOption {{\n'
