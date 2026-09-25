@@ -222,12 +222,6 @@ in
     };
   };
 
-  options.lib.niri = lib.mkOption {
-    type     = lib.types.attrs;
-    default  = {};
-    internal = true;
-  };
-
   config = lib.mkMerge [
   {
     lib.niri = (import ./lib/actions.nix) // {
