@@ -17,7 +17,13 @@
     #   or via config.lib.niri.actions inside a home-manager module
     # -----------------------------------------------------------------------
     lib.niri = (import ./lib/actions.nix) // {
-      cubic-bezier = x1: y1: x2: y2: { __kdl_args = [ "cubic-bezier" x1 y1 x2 y2 ]; };
+      curves = {
+        ease-out-quad  = "ease-out-quad";
+        ease-out-cubic = "ease-out-cubic";
+        ease-out-expo  = "ease-out-expo";
+        linear         = "linear";
+        cubic-bezier   = x1: y1: x2: y2: { __kdl_args = [ "cubic-bezier" x1 y1 x2 y2 ]; };
+      };
     };
 
     # -----------------------------------------------------------------------

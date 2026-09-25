@@ -231,7 +231,13 @@ in
   config = lib.mkMerge [
   {
     lib.niri = (import ./lib/actions.nix) // {
-      cubic-bezier = x1: y1: x2: y2: { __kdl_args = [ "cubic-bezier" x1 y1 x2 y2 ]; };
+      curves = {
+        ease-out-quad  = "ease-out-quad";
+        ease-out-cubic = "ease-out-cubic";
+        ease-out-expo  = "ease-out-expo";
+        linear         = "linear";
+        cubic-bezier   = x1: y1: x2: y2: { __kdl_args = [ "cubic-bezier" x1 y1 x2 y2 ]; };
+      };
     };
   }
   (lib.mkIf cfg.enable {
