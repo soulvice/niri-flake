@@ -421,6 +421,8 @@ PRIMITIVE: dict[str, str] = {
     'RegexEq':                 'lib.types.str',
     # PresetSize / DefaultPresetSize: injected as RustStructs in _inject_animation_structs
     'MruBinds':                '(lib.types.attrsOf lib.types.anything)',
+    # niri_ipc::Layer — not knuffel::DecodeScalar, so parser misses it
+    'Layer':    '(lib.types.enum [ "background" "bottom" "top" "overlay" ])',
     # Simple newtype wrappers and special string types
     'PathBuf':             'lib.types.str',
     'WorkspaceName':       'lib.types.str',
@@ -522,7 +524,24 @@ def rust_type_to_nix(rt: str, structs: dict, enums: dict, depth: int = 0) -> str
             '          }))'
         )
 
-    return f'lib.types.anything  # TODO: resolve {t}'
+    # Strip Rust module path prefix (e.g. niri_ipc::Layer → Layer) and retry.
+    if '::' in t:
+        short = t.split('::')[-1]
+        short = TYPE_ALIASES.get(short, short)
+        if short in PRIMITIVE:
+            return PRIMITIVE[short]
+        if short in INT_TYPES:
+            return 'lib.types.int'
+        if short in FLOAT_TYPES:
+            return 'lib.types.float'
+        if short in structs:
+            return _struct_to_submodule(structs[short], structs, enums, depth)
+        if short in enums:
+            e = enums[short]
+            vs = ' '.join(f'"{camel_to_kebab(v)}"' for v in e.variants)
+            return f'(lib.types.enum [ {vs} ])'
+
+    return 'lib.types.anything'
 
 
 def _struct_to_submodule(s: RustStruct, structs: dict, enums: dict, depth: int) -> str:
@@ -1546,6 +1565,44 @@ def _camel_to_snake(s: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Layer-rule Match collision fix
+# ---------------------------------------------------------------------------
+
+def _fix_layer_rule_match(structs: dict, niri_root: Path) -> None:
+    """
+    Both layer_rule.rs and window_rule.rs define a struct named Match.
+    parse_all scans files in sorted order, so window_rule.rs wins and
+    structs['Match'] ends up with window-rule fields.
+
+    This re-parses layer_rule.rs, saves its Match as LayerRuleMatch, and
+    patches LayerRule's field types so matches/excludes resolve correctly.
+    """
+    from dataclasses import replace as dc_replace
+
+    lr_path = niri_root / "niri-config" / "src" / "layer_rule.rs"
+    if not lr_path.exists():
+        return
+
+    tmp_structs: dict = {}
+    tmp_enums:   dict = {}
+    _parse_file(lr_path.read_text(), tmp_structs, tmp_enums)
+
+    if 'Match' not in tmp_structs:
+        return
+
+    structs['LayerRuleMatch'] = RustStruct('LayerRuleMatch', tmp_structs['Match'].fields)
+
+    if 'LayerRule' in structs:
+        fixed = []
+        for f in structs['LayerRule'].fields:
+            if f.rust_type == 'Vec<Match>':
+                fixed.append(dc_replace(f, rust_type='Vec<LayerRuleMatch>'))
+            else:
+                fixed.append(f)
+        structs['LayerRule'] = RustStruct('LayerRule', fixed)
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -1594,6 +1651,7 @@ def main():
     structs, enums = parse_all(niri_root)
     _inject_animation_structs(structs)
     _inject_bind_structs(structs)
+    _fix_layer_rule_match(structs, niri_root)
     print(f"  {len(structs)} structs with #[derive(knuffel::Decode)]", file=sys.stderr)
     print(f"  {len(enums)} enums (DecodeScalar + plain)", file=sys.stderr)
 

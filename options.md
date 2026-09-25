@@ -2542,95 +2542,35 @@ Regenerate: `python3 generate.py`
 
 **Type:** list of `submodule`  **Default:** `[]`
 
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.app-id`
+### `programs.niri.settings.layer-rule.<n>.matches.<item>.namespace`
 
 **Type:** `null` or `string`  **Default:** `null`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.title`
-
-**Type:** `null` or `string`  **Default:** `null`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.is-active`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.is-focused`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.is-active-in-column`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.is-floating`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.is-window-cast-target`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.matches.<item>.is-urgent`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
 
 ### `programs.niri.settings.layer-rule.<n>.matches.<item>.at-startup`
 
 **Type:** `null` or `bool`  **Default:** `null`
 **Values:** `true`, `false`
 
+### `programs.niri.settings.layer-rule.<n>.matches.<item>.layer`
+
+**Type:** `null` or `any`  **Default:** `null`
+
 ### `programs.niri.settings.layer-rule.<n>.excludes`
 
 **Type:** list of `submodule`  **Default:** `[]`
 
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.app-id`
+### `programs.niri.settings.layer-rule.<n>.excludes.<item>.namespace`
 
 **Type:** `null` or `string`  **Default:** `null`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.title`
-
-**Type:** `null` or `string`  **Default:** `null`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.is-active`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.is-focused`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.is-active-in-column`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.is-floating`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.is-window-cast-target`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
-
-### `programs.niri.settings.layer-rule.<n>.excludes.<item>.is-urgent`
-
-**Type:** `null` or `bool`  **Default:** `null`
-**Values:** `true`, `false`
 
 ### `programs.niri.settings.layer-rule.<n>.excludes.<item>.at-startup`
 
 **Type:** `null` or `bool`  **Default:** `null`
 **Values:** `true`, `false`
+
+### `programs.niri.settings.layer-rule.<n>.excludes.<item>.layer`
+
+**Type:** `null` or `any`  **Default:** `null`
 
 ### `programs.niri.settings.layer-rule.<n>.opacity`
 

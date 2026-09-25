@@ -2598,40 +2598,16 @@
             matches = lib.mkOption {
               type = (lib.types.listOf (lib.types.submodule {
                 options = {
-                  app-id = lib.mkOption {
+                  namespace = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
-                    default = null;
-                  };
-                  title = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
-                    default = null;
-                  };
-                  is-active = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-focused = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-active-in-column = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-floating = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-window-cast-target = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-urgent = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
                     default = null;
                   };
                   at-startup = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                  };
+                  layer = lib.mkOption {
+                    type = (lib.types.nullOr (lib.types.enum [ "background" "bottom" "top" "overlay" ]));
                     default = null;
                   };
                 };
@@ -2641,40 +2617,16 @@
             excludes = lib.mkOption {
               type = (lib.types.listOf (lib.types.submodule {
                 options = {
-                  app-id = lib.mkOption {
+                  namespace = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
-                    default = null;
-                  };
-                  title = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
-                    default = null;
-                  };
-                  is-active = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-focused = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-active-in-column = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-floating = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-window-cast-target = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
-                    default = null;
-                  };
-                  is-urgent = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.bool);
                     default = null;
                   };
                   at-startup = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
+                    default = null;
+                  };
+                  layer = lib.mkOption {
+                    type = (lib.types.nullOr (lib.types.enum [ "background" "bottom" "top" "overlay" ]));
                     default = null;
                   };
                 };

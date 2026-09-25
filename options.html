@@ -218,7 +218,7 @@ td code {
   <p>Auto-generated from niri Rust config source. All <code>programs.niri.settings.*</code> options.</p>
   <div class="stats">
     <div class="stat"><strong>24</strong> sections</div>
-    <div class="stat"><strong>879</strong> options</div>
+    <div class="stat"><strong>867</strong> options</div>
     <div class="stat">Regenerate: <strong>nix run .#generate</strong></div>
   </div>
 </header>
@@ -921,30 +921,18 @@ td code {
 </table>
 </details>
 <details class="section" id="layer-rule">
-<summary><span class="sec-name">layer-rule</span><span class="sec-count">49</span></summary>
+<summary><span class="sec-name">layer-rule</span><span class="sec-count">37</span></summary>
 <table>
 <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Allowed values</th></tr></thead>
 <tbody>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches"><td><code>layer-rule.&lt;n&gt;.matches</code></td><td><span class="badge">list of `submodule</span></td><td><code>[]</code></td><td class="vals">—</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.app-id"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.app-id</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">—</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.title"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.title</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">—</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-active"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-active</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-focused"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-focused</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-active-in-column"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-active-in-column</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-floating"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-floating</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-window-cast-target"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-window-cast-target</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-urgent"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.is-urgent</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
+<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.namespace"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.namespace</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">—</td></tr>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.at-startup"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.at-startup</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
+<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.matches.&lt;item&gt;.layer"><td><code>layer-rule.&lt;n&gt;.matches.&lt;item&gt;.layer</code></td><td><span class="badge">null` or `any</span></td><td><code>null</code></td><td class="vals">—</td></tr>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes"><td><code>layer-rule.&lt;n&gt;.excludes</code></td><td><span class="badge">list of `submodule</span></td><td><code>[]</code></td><td class="vals">—</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.app-id"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.app-id</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">—</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.title"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.title</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">—</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-active"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-active</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-focused"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-focused</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-active-in-column"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-active-in-column</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-floating"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-floating</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-window-cast-target"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-window-cast-target</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
-<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-urgent"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.is-urgent</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
+<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.namespace"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.namespace</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">—</td></tr>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.at-startup"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.at-startup</code></td><td><span class="badge">null` or `bool</span></td><td><code>null</code></td><td class="vals">`true`, `false`</td></tr>
+<tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.layer"><td><code>layer-rule.&lt;n&gt;.excludes.&lt;item&gt;.layer</code></td><td><span class="badge">null` or `any</span></td><td><code>null</code></td><td class="vals">—</td></tr>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.opacity"><td><code>layer-rule.&lt;n&gt;.opacity</code></td><td><span class="badge">null` or `float</span></td><td><code>null</code></td><td class="vals">—</td></tr>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.block-out-from"><td><code>layer-rule.&lt;n&gt;.block-out-from</code></td><td><span class="badge">null` or `string</span></td><td><code>null</code></td><td class="vals">`&quot;screencast&quot;`, `&quot;screen-capture&quot;`</td></tr>
 <tr data-path="programs.niri.settings.layer-rule.&lt;n&gt;.shadow"><td><code>layer-rule.&lt;n&gt;.shadow</code></td><td><span class="badge">submodule</span></td><td><code>—</code></td><td class="vals">—</td></tr>
