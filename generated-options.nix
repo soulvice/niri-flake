@@ -442,7 +442,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -488,7 +488,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -538,7 +538,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -588,7 +588,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -634,7 +634,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -680,7 +680,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -730,7 +730,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -776,7 +776,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -822,7 +822,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -868,7 +868,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };
@@ -914,7 +914,7 @@
                     default = 250;
                   };
                   curve = lib.mkOption {
-                    type = (lib.types.nullOr lib.types.str);
+                    type = (lib.types.nullOr lib.types.anything);
                     default = null;
                   };
                 };

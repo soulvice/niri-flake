@@ -46,6 +46,13 @@ let
     else if v == false      then ""                                       # Flag off → omit
     else if v == true       then "${p}${kk}\n"                            # Flag on → bare node
     else if builtins.isAttrs v && v ? __kdl_flag then "${p}${v.__kdl_flag}\n"
+    else if builtins.isAttrs v && v ? __kdl_args then
+      let argStr = lib.concatStrings (map (a:
+        if builtins.isString a                        then " ${escKdl a}"
+        else if builtins.isInt a || builtins.isFloat a then " ${toString a}"
+        else ""
+      ) v.__kdl_args);
+      in "${p}${kk}${argStr}\n"
     else if builtins.isInt v    || builtins.isFloat v then "${p}${kk} ${toString v}\n"
     else if builtins.isString v then "${p}${kk} ${escKdl v}\n"
     else if builtins.isList v   then renderList n kk v
@@ -215,9 +222,17 @@ in
     };
   };
 
+  options.lib.niri = lib.mkOption {
+    type     = lib.types.attrs;
+    default  = {};
+    internal = true;
+  };
+
   config = lib.mkMerge [
   {
-    lib.niri.actions = import ./lib/actions.nix;
+    lib.niri = (import ./lib/actions.nix) // {
+      cubic-bezier = x1: y1: x2: y2: { __kdl_args = [ "cubic-bezier" x1 y1 x2 y2 ]; };
+    };
   }
   (lib.mkIf cfg.enable {
     programs.niri.finalConfig = kdlText;

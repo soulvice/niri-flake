@@ -524,7 +524,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.workspace-switch.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.workspace-switch.spring`
 
@@ -561,7 +561,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.window-open.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.window-open.spring`
 
@@ -602,7 +602,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.window-close.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.window-close.spring`
 
@@ -643,7 +643,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.horizontal-view-movement.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.horizontal-view-movement.spring`
 
@@ -680,7 +680,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.window-movement.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.window-movement.spring`
 
@@ -717,7 +717,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.window-resize.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.window-resize.spring`
 
@@ -758,7 +758,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.config-notification-open-close.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.config-notification-open-close.spring`
 
@@ -795,7 +795,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.exit-confirmation-open-close.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.exit-confirmation-open-close.spring`
 
@@ -832,7 +832,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.screenshot-ui-open.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.screenshot-ui-open.spring`
 
@@ -869,7 +869,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.overview-open-close.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.overview-open-close.spring`
 
@@ -906,7 +906,7 @@ Regenerate: `python3 generate.py`
 
 ### `programs.niri.settings.animations.recent-windows-close.easing.curve`
 
-**Type:** `string`
+**Type:** `any`
 
 ### `programs.niri.settings.animations.recent-windows-close.spring`
 

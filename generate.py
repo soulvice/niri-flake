@@ -500,6 +500,9 @@ def rust_type_to_nix(rt: str, structs: dict, enums: dict, depth: int = 0) -> str
     if t == '__NiriAction':
         return 'lib.types.anything'
 
+    if t == '__EasingCurve':
+        return 'lib.types.anything'
+
     if t == '__HotkeyOverlay':
         return (
             '(lib.types.nullOr (lib.types.submodule {\n'
@@ -1251,7 +1254,7 @@ def _inject_animation_structs(structs: dict) -> None:
 
     structs['EasingParams'] = RustStruct('EasingParams', [
         RustField('duration_ms', 'u32',    'child, unwrap(argument)', default='250'),
-        RustField('curve',       'String', 'child, unwrap(argument)', default=None),
+        RustField('curve',       '__EasingCurve', 'child, unwrap(argument)', default=None),
     ])
     structs['SpringParams'] = RustStruct('SpringParams', [
         RustField('damping_ratio', 'f64', 'child, unwrap(argument)', default='1.0'),
