@@ -443,6 +443,29 @@ PRIMITIVE: dict[str, str] = {
     ),
 }
 
+# Custom field overrides: for specific Rust types, replace the auto-generated
+# type expression AND inject an apply function.  Keyed by inner Rust type name.
+# Each value is (nix_type_str, apply_fn_str); both exclude the outer nullOr
+# wrapper (that is added automatically when the field is Option<T>).
+_CUSTOM_FIELD_OVERRIDES: dict[str, tuple[str, str]] = {
+    # Mode parses "WxH[@R]" in KDL but we also accept a structured submodule.
+    # The apply converts the structured form back to the string the serialiser
+    # will emit as a positional argument: mode "2560x1440@60"
+    'Mode': (
+        '(lib.types.either lib.types.str (lib.types.submodule {\n'
+        '              options = {\n'
+        '                width   = lib.mkOption { type = lib.types.int; };\n'
+        '                height  = lib.mkOption { type = lib.types.int; };\n'
+        '                refresh = lib.mkOption { type = lib.types.nullOr lib.types.number; default = null; };\n'
+        '              };\n'
+        '            }))',
+        'v: if v == null then null'
+        ' else if builtins.isString v then v'
+        ' else "${toString v.width}x${toString v.height}"'
+        ' + (if v.refresh != null then "@${toString v.refresh}" else "")',
+    ),
+}
+
 
 # Types that are transparent wrappers — resolve them as their inner type.
 TYPE_ALIASES: dict[str, str] = {
@@ -681,6 +704,16 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
         nix_type = _field_nix_type(f, structs, enums, depth)
         nix_def  = _field_default(f)
 
+        # Custom field overrides: replace type/apply for known Rust types.
+        _inner_t = _resolve_inner_struct(f.rust_type.strip())
+        custom_apply_override = None
+        if _inner_t in _CUSTOM_FIELD_OVERRIDES:
+            _ctype, custom_apply_override = _CUSTOM_FIELD_OVERRIDES[_inner_t]
+            _is_opt = f.rust_type.strip().startswith('Option<')
+            nix_type = f'(lib.types.nullOr {_ctype})' if _is_opt else _ctype
+            if _is_opt:
+                nix_def = 'null'
+
         # Every option must have a default so partial submodule configs evaluate.
         # Fields with no natural default become `nullOr T` defaulting to null;
         # the KDL serialiser already skips null values.
@@ -697,7 +730,7 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
         # them as inline KDL properties rather than a child block.
         # Skip list types (Vec<T>) — list items are rendered individually and
         # the attrset-merge in the apply would fail on a list value.
-        apply = f.apply
+        apply = f.apply if f.apply is not None else custom_apply_override
         if apply is None:
             t_bare = f.rust_type.strip()
             is_list = t_bare.startswith('Vec<') or bool(re.match(r'^Option<Vec<', t_bare))

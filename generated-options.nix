@@ -1283,8 +1283,15 @@
               default = null;
             };
             mode = lib.mkOption {
-              type = (lib.types.nullOr lib.types.str);
+              type = (lib.types.nullOr (lib.types.either lib.types.str (lib.types.submodule {
+              options = {
+                width   = lib.mkOption { type = lib.types.int; };
+                height  = lib.mkOption { type = lib.types.int; };
+                refresh = lib.mkOption { type = lib.types.nullOr lib.types.number; default = null; };
+              };
+            })));
               default = null;
+              apply = v: if v == null then null else if builtins.isString v then v else "${toString v.width}x${toString v.height}" + (if v.refresh != null then "@${toString v.refresh}" else "");
             };
             modeline = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
