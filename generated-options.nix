@@ -346,6 +346,7 @@
           };
         }));
         default = null;
+        apply = v: if v == null then null else v // { __kdl_props = true; };
       };
       focus-follows-mouse = lib.mkOption {
         type = (lib.types.nullOr (lib.types.submodule {
@@ -357,6 +358,7 @@
           };
         }));
         default = null;
+        apply = v: if v == null then null else v // { __kdl_props = true; };
       };
       workspace-auto-back-and-forth = lib.mkOption {
         type = (lib.types.nullOr lib.types.bool);
@@ -1070,6 +1072,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             softness = lib.mkOption {
               type = (lib.types.nullOr lib.types.number);
@@ -1273,6 +1276,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             max-bpc = lib.mkOption {
               type = (lib.types.nullOr lib.types.int);
@@ -1296,6 +1300,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             focus-at-startup = lib.mkOption {
               type = lib.types.bool;
@@ -1383,13 +1388,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         inactive-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1410,13 +1416,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         urgent-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1437,13 +1444,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -1492,13 +1500,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         inactive-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1519,13 +1528,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         urgent-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1546,13 +1556,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -1580,6 +1591,7 @@
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         softness = lib.mkOption {
                           type = (lib.types.nullOr lib.types.number);
@@ -1639,6 +1651,7 @@
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         position = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.enum [ "left" "right" "top" "bottom" ]));
@@ -1683,13 +1696,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         inactive-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1710,13 +1724,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         urgent-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -1737,13 +1752,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -1780,13 +1796,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -1962,6 +1979,7 @@
                 };
               }));
               default = [];
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             excludes = lib.mkOption {
               type = (lib.types.listOf (lib.types.submodule {
@@ -2005,6 +2023,7 @@
                 };
               }));
               default = [];
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             default-column-width = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -2127,13 +2146,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   inactive-gradient = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2154,13 +2174,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   urgent-gradient = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2181,13 +2202,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                 };
               }));
@@ -2236,13 +2258,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   inactive-gradient = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2263,13 +2286,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   urgent-gradient = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2290,13 +2314,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                 };
               }));
@@ -2324,6 +2349,7 @@
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   softness = lib.mkOption {
                     type = (lib.types.nullOr lib.types.number);
@@ -2383,13 +2409,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   inactive-gradient = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2410,13 +2437,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   urgent-gradient = lib.mkOption {
                     type = (lib.types.nullOr (lib.types.submodule {
@@ -2437,13 +2465,14 @@
                           type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                           default = null;
                         };
-                        in- = lib.mkOption {
+                        "in" = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
                           default = null;
                         };
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                 };
               }));
@@ -2506,6 +2535,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             scroll-factor = lib.mkOption {
               type = (lib.types.nullOr lib.types.number);
@@ -2613,6 +2643,7 @@
                 };
               }));
               default = [];
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             excludes = lib.mkOption {
               type = (lib.types.listOf (lib.types.submodule {
@@ -2632,6 +2663,7 @@
                 };
               }));
               default = [];
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             opacity = lib.mkOption {
               type = (lib.types.nullOr lib.types.float);
@@ -2663,6 +2695,7 @@
                       };
                     }));
                     default = null;
+                    apply = v: if v == null then null else v // { __kdl_props = true; };
                   };
                   softness = lib.mkOption {
                     type = (lib.types.nullOr lib.types.number);
@@ -2837,13 +2870,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         inactive-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -2864,13 +2898,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         urgent-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -2891,13 +2926,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -2946,13 +2982,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         inactive-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -2973,13 +3010,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         urgent-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -3000,13 +3038,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -3034,6 +3073,7 @@
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         softness = lib.mkOption {
                           type = (lib.types.nullOr lib.types.number);
@@ -3093,6 +3133,7 @@
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         position = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.enum [ "left" "right" "top" "bottom" ]));
@@ -3137,13 +3178,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         inactive-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -3164,13 +3206,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                         urgent-gradient = lib.mkOption {
                           type = (lib.types.nullOr (lib.types.submodule {
@@ -3191,13 +3234,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -3234,13 +3278,14 @@
                                 type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                                 default = null;
                               };
-                              in- = lib.mkOption {
+                              "in" = lib.mkOption {
                                 type = (lib.types.nullOr lib.types.str);
                                 default = null;
                               };
                             };
                           }));
                           default = null;
+                          apply = v: if v == null then null else v // { __kdl_props = true; };
                         };
                       };
                     }));
@@ -3446,13 +3491,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             inactive-gradient = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3473,13 +3519,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             urgent-gradient = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3500,13 +3547,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -3555,13 +3603,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             inactive-gradient = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3582,13 +3631,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             urgent-gradient = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3609,13 +3659,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -3643,6 +3694,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             softness = lib.mkOption {
               type = (lib.types.nullOr lib.types.number);
@@ -3702,6 +3754,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             position = lib.mkOption {
               type = (lib.types.nullOr (lib.types.enum [ "left" "right" "top" "bottom" ]));
@@ -3746,13 +3799,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             inactive-gradient = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3773,13 +3827,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             urgent-gradient = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -3800,13 +3855,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -3843,13 +3899,14 @@
                     type = (lib.types.nullOr (lib.types.enum [ "window" "workspace-view" ]));
                     default = null;
                   };
-                  in- = lib.mkOption {
+                  "in" = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
                     default = null;
                   };
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));

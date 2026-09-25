@@ -184,6 +184,7 @@ class RustField:
     default: Optional[str] = None  # raw default literal from annotation
     doc: str = ""          # /// doc comment text
     apply: Optional[str] = None    # Nix apply expression, e.g. "v: if v == true then null else v"
+    kdl_name: Optional[str] = None  # KDL property name override from property(name = "X")
 
 @dataclass
 class RustStruct:
@@ -281,6 +282,7 @@ def _struct_body(lines: list, start: int) -> tuple[list, int]:
     fields: list[RustField] = []
     pending_knuffel: Optional[str] = None
     pending_default: Optional[str] = None
+    pending_kdl_name: Optional[str] = None
     pending_doc: list[str] = []
     depth = 1
 
@@ -306,6 +308,9 @@ def _struct_body(lines: list, start: int) -> tuple[list, int]:
             has_bare = bool(re.search(r',\s*default\s*[,\)]', annot))
             pending_default = dm.group(1).strip() if dm else (None if not has_bare else "__default")
             pending_knuffel = annot
+            # Extract KDL name override: property(name = "X")
+            nm = re.search(r'property\s*\(\s*name\s*=\s*"([^"]+)"', annot)
+            pending_kdl_name = nm.group(1) if nm else None
             i += 1
             continue
 
@@ -331,14 +336,17 @@ def _struct_body(lines: list, start: int) -> tuple[list, int]:
                     knuffel=pending_knuffel,
                     default=pending_default,
                     doc=' '.join(pending_doc),
+                    kdl_name=pending_kdl_name,
                 ))
             pending_knuffel = None
             pending_default = None
+            pending_kdl_name = None
             pending_doc = []
         elif line and not line.startswith('//') and not line.startswith('#'):
             # Any real code line resets the pending annotation
             pending_knuffel = None
             pending_default = None
+            pending_kdl_name = None
             pending_doc = []
 
         i += 1
@@ -611,6 +619,28 @@ def _field_default(f: RustField) -> Optional[str]:
     return None  # no annotation default → caller forces null
 
 
+def _resolve_inner_struct(rt: str) -> str:
+    """Strip Option<>/Vec<> wrappers and return the bare type name."""
+    t = rt.strip()
+    while True:
+        m = re.match(r'^Option<(.+)>$', t)
+        if m: t = m.group(1).strip(); continue
+        m = re.match(r'^Vec<(.+)>$', t)
+        if m: t = m.group(1).strip(); continue
+        break
+    return t
+
+
+def _is_all_property_struct(name: str, structs: dict) -> bool:
+    """Return True if every field in the struct has a KDL property annotation."""
+    if name not in structs:
+        return False
+    s = structs[name]
+    if not s.fields:
+        return False
+    return all('property' in f.knuffel for f in s.fields)
+
+
 def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
     """Render a list of RustFields as Nix mkOption stanzas."""
     lines: list[str] = []
@@ -643,7 +673,11 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
         if f.name in ('on', 'off') and (has_on or has_off):
             continue
 
-        nix_name = snake_to_kebab(f.name)
+        # Use KDL name override from property(name = "X") annotation if present.
+        # Quote the name in Nix if it's a reserved word or contains special chars.
+        raw_name = f.kdl_name if f.kdl_name else snake_to_kebab(f.name)
+        nix_name = f'"{raw_name}"' if raw_name in ('in',) else raw_name
+
         nix_type = _field_nix_type(f, structs, enums, depth)
         nix_def  = _field_default(f)
 
@@ -658,11 +692,20 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
                     and not nix_type.startswith('lib.types.nullOr'):
                 nix_type = f'(lib.types.nullOr {nix_type})'
 
+        # For fields whose inner type is an all-property struct (like Gradient,
+        # ShadowOffset), inject a __kdl_props sentinel so the serialiser renders
+        # them as inline KDL properties rather than a child block.
+        apply = f.apply
+        if apply is None:
+            inner = _resolve_inner_struct(f.rust_type)
+            if _is_all_property_struct(inner, structs):
+                apply = 'v: if v == null then null else v // { __kdl_props = true; }'
+
         lines.append(f'{pad}{nix_name} = lib.mkOption {{')
         lines.append(f'{pad}  type = {nix_type};')
         lines.append(f'{pad}  default = {nix_def};')
-        if f.apply:
-            lines.append(f'{pad}  apply = {f.apply};')
+        if apply:
+            lines.append(f'{pad}  apply = {apply};')
         lines.append(f'{pad}}};')
 
     return '\n'.join(lines) + ('\n' if lines else '')
