@@ -106,24 +106,31 @@ let
           else "${ind n}${kk}${cmdArgs} {\n${children}${ind n}}\n"
         ) items)
       # Single-key scalar items → one block whose children are the list items
-      # (preset-column-widths, preset-window-heights)
-      else if builtins.isAttrs first
-              && builtins.length (builtins.attrNames first) == 1
-              && ! (builtins.isAttrs first.${builtins.head (builtins.attrNames first)})
-      then
-        let
-          children = builtins.concatStringsSep "" (map (item:
-            let nm = builtins.head (builtins.attrNames item);
-            in renderField (n + 1) nm item.${nm}
-          ) items);
-        in
-        if children == "" then "" else "${ind n}${kk} {\n${children}${ind n}}\n"
-      # Standard: one node per list item (output, workspace, window-rule, …)
+      # (preset-column-widths, preset-window-heights). Filter nulls first because
+      # submodule evaluation adds null fields for unset options.
       else
-        builtins.concatStringsSep "" (map (item:
-          if builtins.isAttrs item then renderAttrBlock n kk item
-          else renderField n kk item
-        ) items);
+        let
+          nonNullFirst = lib.filterAttrs (_: v: v != null) first;
+          isSingleKeyScalar =
+            builtins.isAttrs first
+            && builtins.length (builtins.attrNames nonNullFirst) == 1
+            && ! (builtins.isAttrs nonNullFirst.${builtins.head (builtins.attrNames nonNullFirst)});
+        in
+        if isSingleKeyScalar then
+          let
+            children = builtins.concatStringsSep "" (map (item:
+              let nonNullItem = lib.filterAttrs (_: v: v != null) item;
+                  nm = builtins.head (builtins.attrNames nonNullItem);
+              in renderField (n + 1) nm nonNullItem.${nm}
+            ) items);
+          in
+          if children == "" then "" else "${ind n}${kk} {\n${children}${ind n}}\n"
+        # Standard: one node per list item (output, workspace, window-rule, …)
+        else
+          builtins.concatStringsSep "" (map (item:
+            if builtins.isAttrs item then renderAttrBlock n kk item
+            else renderField n kk item
+          ) items);
 
   # Render a __niriAction sentinel as a single KDL action node (no wrapper).
   # { __niriAction = "spawn"; args = ["alacritty"]; props = {}; }  →  spawn "alacritty"
