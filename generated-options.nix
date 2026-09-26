@@ -83,6 +83,7 @@
             drag = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             drag-lock = lib.mkOption {
               type = lib.types.bool;
@@ -352,8 +353,9 @@
         type = (lib.types.nullOr (lib.types.submodule {
           options = {
             max-scroll-amount = lib.mkOption {
-              type = (lib.types.nullOr lib.types.float);
+              type = (lib.types.nullOr (lib.types.either lib.types.str lib.types.number));
               default = null;
+              apply = v: if v == null then null else if builtins.isString v then v else "${toString (builtins.floor (v * 100))}%";
             };
           };
         }));
@@ -450,6 +452,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -497,6 +500,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -548,6 +552,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -599,6 +604,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -646,6 +652,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -693,6 +700,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -744,6 +752,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -791,6 +800,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -838,6 +848,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -885,6 +896,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -932,6 +944,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_flatten = true; };
             };
             spring = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -1622,6 +1635,7 @@
                         draw-behind-window = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
                           default = null;
+                          apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                         };
                         color = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
@@ -2083,22 +2097,27 @@
             open-maximized = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             open-maximized-to-edges = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             open-fullscreen = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             open-floating = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             open-focused = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             on-xdg-activate = lib.mkOption {
               type = (lib.types.nullOr (lib.types.enum [ "ignore" "set-urgent" "focus" ]));
@@ -2379,6 +2398,7 @@
                   draw-behind-window = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
                     default = null;
+                    apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                   };
                   color = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
@@ -2498,6 +2518,7 @@
             draw-border-with-background = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             opacity = lib.mkOption {
               type = (lib.types.nullOr lib.types.float);
@@ -2517,10 +2538,12 @@
             clip-to-geometry = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             baba-is-float = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             block-out-from = lib.mkOption {
               type = (lib.types.nullOr (lib.types.enum [ "screencast" "screen-capture" ]));
@@ -2529,6 +2552,7 @@
             variable-refresh-rate = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             default-column-display = lib.mkOption {
               type = (lib.types.nullOr (lib.types.enum [ "normal" "tabbed" ]));
@@ -2565,6 +2589,7 @@
             tiled-state = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             background-effect = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -2572,10 +2597,12 @@
                   xray = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
                     default = null;
+                    apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                   };
                   blur = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
                     default = null;
+                    apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                   };
                   noise = lib.mkOption {
                     type = (lib.types.nullOr lib.types.number);
@@ -2613,10 +2640,12 @@
                         xray = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
                           default = null;
+                          apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                         };
                         blur = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
                           default = null;
+                          apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                         };
                         noise = lib.mkOption {
                           type = (lib.types.nullOr lib.types.number);
@@ -2723,6 +2752,7 @@
                   draw-behind-window = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
                     default = null;
+                    apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                   };
                   color = lib.mkOption {
                     type = (lib.types.nullOr lib.types.str);
@@ -2750,10 +2780,12 @@
             place-within-backdrop = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             baba-is-float = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             background-effect = lib.mkOption {
               type = (lib.types.nullOr (lib.types.submodule {
@@ -2761,10 +2793,12 @@
                   xray = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
                     default = null;
+                    apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                   };
                   blur = lib.mkOption {
                     type = (lib.types.nullOr lib.types.bool);
                     default = null;
+                    apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                   };
                   noise = lib.mkOption {
                     type = (lib.types.nullOr lib.types.number);
@@ -2802,10 +2836,12 @@
                         xray = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
                           default = null;
+                          apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                         };
                         blur = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
                           default = null;
+                          apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                         };
                         noise = lib.mkOption {
                           type = (lib.types.nullOr lib.types.number);
@@ -3101,6 +3137,7 @@
                         draw-behind-window = lib.mkOption {
                           type = (lib.types.nullOr lib.types.bool);
                           default = null;
+                          apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
                         };
                         color = lib.mkOption {
                           type = (lib.types.nullOr lib.types.str);
@@ -3723,6 +3760,7 @@
             draw-behind-window = lib.mkOption {
               type = (lib.types.nullOr lib.types.bool);
               default = null;
+              apply = v: if v == null then null else if v then { __kdl_args = [ true ]; } else { __kdl_args = [ false ]; };
             };
             color = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);

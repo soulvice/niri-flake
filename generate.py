@@ -431,6 +431,8 @@ PRIMITIVE: dict[str, str] = {
     'MruBinds':                '(lib.types.attrsOf lib.types.anything)',
     # niri_ipc::Layer — not knuffel::DecodeScalar, so parser misses it
     'Layer':    '(lib.types.enum [ "background" "bottom" "top" "overlay" ])',
+    # Percent: parsed from "90%" strings by niri
+    'Percent':             'lib.types.str',     # e.g. "90%"
     # Simple newtype wrappers and special string types
     'PathBuf':             'lib.types.str',
     'WorkspaceName':       'lib.types.str',
@@ -448,6 +450,14 @@ PRIMITIVE: dict[str, str] = {
 # Each value is (nix_type_str, apply_fn_str); both exclude the outer nullOr
 # wrapper (that is added automatically when the field is Option<T>).
 _CUSTOM_FIELD_OVERRIDES: dict[str, tuple[str, str]] = {
+    # Percent is parsed from "90%" strings, but we also accept a float (0–1)
+    # and convert it: 0.9 → "90%".  Strings pass through unchanged.
+    'Percent': (
+        '(lib.types.either lib.types.str lib.types.number)',
+        'v: if v == null then null'
+        ' else if builtins.isString v then v'
+        ' else "${toString (builtins.floor (v * 100))}%"',
+    ),
     # Mode parses "WxH[@R]" in KDL but we also accept a structured submodule.
     # The apply converts the structured form back to the string the serialiser
     # will emit as a positional argument: mode "2560x1440@60"
@@ -738,6 +748,15 @@ def _gen_options(fields: list, structs: dict, enums: dict, depth: int) -> str:
                 inner = _resolve_inner_struct(t_bare)
                 if _is_all_property_struct(inner, structs):
                     apply = 'v: if v == null then null else v // { __kdl_props = true; }'
+
+        # Option<bool> fields decoded with knuffel `unwrap(argument)` must emit
+        # the boolean as an explicit KDL argument (e.g. `draw-behind-window true`)
+        # rather than a bare flag node.  We tag them with __kdl_args so the
+        # serialiser renders the value correctly.
+        if apply is None and 'unwrap' in f.knuffel and f.rust_type.strip() in ('bool', 'Option<bool>'):
+            apply = ('v: if v == null then null'
+                     ' else if v then { __kdl_args = [ true ]; }'
+                     ' else { __kdl_args = [ false ]; }')
 
         lines.append(f'{pad}{nix_name} = lib.mkOption {{')
         lines.append(f'{pad}  type = {nix_type};')
@@ -1387,7 +1406,11 @@ def _inject_animation_structs(structs: dict) -> None:
 
     base = [
         RustField('off',    'bool',                 'child', default='false'),
-        RustField('easing', 'Option<EasingParams>', 'child', default=None),
+        # easing has no KDL wrapper node; duration-ms and curve are direct
+        # children of the animation node.  __kdl_flatten causes the serialiser
+        # to inline those fields without a wrapping "easing { }" block.
+        RustField('easing', 'Option<EasingParams>', 'child', default=None,
+                  apply='v: if v == null then null else v // { __kdl_flatten = true; }'),
         RustField('spring', 'Option<SpringParams>', 'child', default=None),
     ]
     for name in _ANIM_NO_SHADER:

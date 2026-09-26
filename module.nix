@@ -45,7 +45,12 @@ let
     if v == null            then ""
     else if v == false      then ""                                       # Flag off → omit
     else if v == true       then "${p}${kk}\n"                            # Flag on → bare node
-    else if builtins.isAttrs v && v ? __kdl_flag then "${p}${v.__kdl_flag}\n"
+    else if builtins.isAttrs v && v ? __kdl_flag  then "${p}${v.__kdl_flag}\n"
+    # Flatten: emit attrset fields directly into parent (no wrapper node).
+    # Used by animation easing — duration-ms and curve are direct children.
+    else if builtins.isAttrs v && v ? __kdl_flatten then
+      let inner = builtins.removeAttrs v [ "__kdl_flatten" ];
+      in builtins.concatStringsSep "" (lib.mapAttrsToList (ck: cv: renderField n ck cv) inner)
     else if builtins.isAttrs v && v ? __kdl_attrsOf then
       # attrsOf expansion: render each entry as a separate named KDL node.
       builtins.concatStringsSep "" (lib.mapAttrsToList (entryName: attrs:
@@ -59,8 +64,9 @@ let
       "${p}${kk} ${toString v.top-left} ${toString v.top-right} ${toString v.bottom-right} ${toString v.bottom-left}\n"
     else if builtins.isAttrs v && v ? __kdl_args then
       let argStr = lib.concatStrings (map (a:
-        if builtins.isString a                        then " ${escKdl a}"
-        else if builtins.isInt a || builtins.isFloat a then " ${toString a}"
+        if builtins.isString a                         then " ${escKdl a}"
+        else if builtins.isInt a || builtins.isFloat a  then " ${toString a}"
+        else if builtins.isBool a                       then " ${if a then "true" else "false"}"
         else ""
       ) v.__kdl_args);
       in "${p}${kk}${argStr}\n"
@@ -149,6 +155,13 @@ let
       else if av == true then "${ind n}${ak}\n"
       else if builtins.isList av then
         "${ind n}${ak}${builtins.concatStringsSep "" (map (a: " ${escKdl a}") av)}\n"
+      # Action attrset values are KDL properties on the action node, not children.
+      # e.g. { "screenshot-screen" = { "write-to-disk" = true; }; }
+      #    → screenshot-screen write-to-disk=true
+      else if builtins.isAttrs av then
+        let props = attrsToProps av;
+        in if props == "" then "${ind n}${ak}\n"
+           else "${ind n}${ak}${props}\n"
       else renderField n ak av
     ) action);
 
