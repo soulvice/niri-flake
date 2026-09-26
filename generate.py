@@ -1380,9 +1380,9 @@ def _inject_animation_structs(structs: dict) -> None:
         RustField('curve',       '__EasingCurve', 'child, unwrap(argument)', default=None),
     ])
     structs['SpringParams'] = RustStruct('SpringParams', [
-        RustField('damping_ratio', 'f64', 'child, unwrap(argument)', default='1.0'),
-        RustField('stiffness',     'u32', 'child, unwrap(argument)', default='1000'),
-        RustField('epsilon',       'f64', 'child, unwrap(argument)', default='0.0001'),
+        RustField('damping_ratio', 'f64', 'property', default='1.0'),
+        RustField('stiffness',     'u32', 'property', default='1000'),
+        RustField('epsilon',       'f64', 'property', default='0.0001'),
     ])
 
     base = [

@@ -469,6 +469,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -515,6 +516,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             custom-shader = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
@@ -565,6 +567,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             custom-shader = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
@@ -615,6 +618,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -661,6 +665,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -707,6 +712,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
             custom-shader = lib.mkOption {
               type = (lib.types.nullOr lib.types.str);
@@ -757,6 +763,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -803,6 +810,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -849,6 +857,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -895,6 +904,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
@@ -941,6 +951,7 @@
                 };
               }));
               default = null;
+              apply = v: if v == null then null else v // { __kdl_props = true; };
             };
           };
         }));
