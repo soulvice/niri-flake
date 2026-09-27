@@ -105,6 +105,17 @@ let
           if children == "" then "${ind n}${kk}${cmdArgs}\n"
           else "${ind n}${kk}${cmdArgs} {\n${children}${ind n}}\n"
         ) items)
+      # Primitive items (strings/numbers) → single node with positional args.
+      # e.g. spawn = ["notify-send" "msg"] → spawn "notify-send" "msg"
+      else if ! (builtins.isAttrs first) && ! (builtins.isList first) then
+        let
+          argStr = builtins.concatStringsSep "" (map (a:
+            if builtins.isString a                         then " ${escKdl a}"
+            else if builtins.isInt a || builtins.isFloat a then " ${toString a}"
+            else ""
+          ) items);
+        in
+        "${ind n}${kk}${argStr}\n"
       # Single-key scalar items → one block whose children are the list items
       # (preset-column-widths, preset-window-heights). Filter nulls first because
       # submodule evaluation adds null fields for unset options.
